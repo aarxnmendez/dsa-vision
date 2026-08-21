@@ -10,10 +10,22 @@ export const algorithms: AlgorithmMeta[] = [
     complexityVariant: "success",
     difficulty: "beginner",
     category: "arrays",
-    imageUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuBJnYa081i6v17_UiS8fCfudWXnKGN52JxRo8zyUCNjNF2l8qZ_jSW59-At-F18WGAm80JJRMceCE98SCnJYl12DOYgdl6TQIpv6mH3t3wQmNKyddQuE99OSrRkD5HiMNHUCpnK5MJkTgC6qnf8AyyElZxAT7mBukHZ1xCH7KJMiIAlnM5tVV80Kxl1U-6MFZPM93n3-weSZlYaXtnpHSWE7eTs7_5Ii5cuSR8gDVSPlTsAcUaKJdai",
+    imageUrl: "/images/binary-search-cover.jpg",
     imageBg: "bg-primary-fixed",
     route: "/binary-search",
+  },
+  {
+    id: "selection-sort",
+    title: "Selection Sort",
+    description:
+      "Repeatedly select the smallest element from the unsorted portion and swap it into place.",
+    complexity: "O(n²)",
+    complexityVariant: "warning",
+    difficulty: "beginner",
+    category: "sorting",
+    imageUrl: "/images/selection-sort-cover.jpg",
+    imageBg: "bg-tertiary-fixed",
+    route: "/selection-sort",
   },
   {
     id: "merge-sort",
