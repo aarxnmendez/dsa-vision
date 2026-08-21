@@ -17,19 +17,26 @@ import { Icon } from "../ui/Icon";
 
 interface CustomInputModalProps {
   initialValues: string;
-  initialTarget: string;
+  initialTarget?: string;
+  showTargetInput?: boolean;
+  preserveArrayOrder?: boolean;
+  description?: string;
+  arrayPlaceholder?: string;
   onClose: () => void;
   onApply: (payload: CustomDatasetPayload) => void;
 }
 
 export function CustomInputModal({
   initialValues,
-  initialTarget,
+  initialTarget = "",
+  showTargetInput = false,
+  preserveArrayOrder = false,
+  description,
+  arrayPlaceholder = "4, 10, 18, 23, 42, 55",
   onClose,
   onApply,
 }: CustomInputModalProps) {
   const titleId = useId();
-  const dialogRef = useRef<HTMLDivElement>(null);
   const valuesInputRef = useRef<HTMLInputElement>(null);
   const [valuesInput, setValuesInput] = useState(initialValues);
   const [targetInput, setTargetInput] = useState(initialTarget);
@@ -62,22 +69,30 @@ export function CustomInputModal({
   }, []);
 
   const handleApply = () => {
-    const arrayResult = parseCustomArrayInput(valuesInput);
+    const arrayResult = parseCustomArrayInput(valuesInput, {
+      preserveOrder: preserveArrayOrder,
+    });
+
     if ("error" in arrayResult) {
       setError(arrayResult.error);
       return;
     }
 
-    const targetResult = parseOptionalTarget(targetInput);
-    if ("error" in targetResult) {
-      setError(targetResult.error);
-      return;
+    if (showTargetInput) {
+      const targetResult = parseOptionalTarget(targetInput);
+      if ("error" in targetResult) {
+        setError(targetResult.error);
+        return;
+      }
+
+      onApply({
+        array: arrayResult.array,
+        target: targetResult.target,
+      });
+    } else {
+      onApply({ array: arrayResult.array });
     }
 
-    onApply({
-      array: arrayResult.array,
-      target: targetResult.target,
-    });
     onClose();
   };
 
@@ -91,7 +106,6 @@ export function CustomInputModal({
       }}
     >
       <div
-        ref={dialogRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
@@ -105,9 +119,11 @@ export function CustomInputModal({
             >
               {CUSTOM_DATA_INPUT_TITLE}
             </h2>
-            <p className="mt-1 font-body-md text-body-md text-on-surface-variant">
-              Values are automatically sorted for Binary Search.
-            </p>
+            {description && (
+              <p className="mt-1 font-body-md text-body-md text-on-surface-variant">
+                {description}
+              </p>
+            )}
           </div>
           <button
             type="button"
@@ -132,7 +148,7 @@ export function CustomInputModal({
               setValuesInput(event.target.value);
               setError(null);
             }}
-            placeholder="4, 10, 18, 23, 42, 55"
+            placeholder={arrayPlaceholder}
             className="w-full bg-surface text-on-surface border-2 border-surface-variant rounded-xl py-3 px-4 font-body-md focus:outline-none focus:border-primary focus:ring-0 transition-colors"
           />
           <p className="font-body-md text-body-md text-on-surface-variant text-sm">
@@ -141,23 +157,25 @@ export function CustomInputModal({
           </p>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <label htmlFor="custom-target-value" className={sectionLabelClass}>
-            Target Value (optional)
-          </label>
-          <input
-            id="custom-target-value"
-            type="text"
-            inputMode="numeric"
-            value={targetInput}
-            onChange={(event) => {
-              setTargetInput(event.target.value);
-              setError(null);
-            }}
-            placeholder="e.g. 23"
-            className="w-full bg-surface text-on-surface border-2 border-surface-variant rounded-xl py-3 px-4 font-body-md focus:outline-none focus:border-primary focus:ring-0 transition-colors no-spinner"
-          />
-        </div>
+        {showTargetInput && (
+          <div className="flex flex-col gap-2">
+            <label htmlFor="custom-target-value" className={sectionLabelClass}>
+              Target Value (optional)
+            </label>
+            <input
+              id="custom-target-value"
+              type="text"
+              inputMode="numeric"
+              value={targetInput}
+              onChange={(event) => {
+                setTargetInput(event.target.value);
+                setError(null);
+              }}
+              placeholder="e.g. 23"
+              className="w-full bg-surface text-on-surface border-2 border-surface-variant rounded-xl py-3 px-4 font-body-md focus:outline-none focus:border-primary focus:ring-0 transition-colors no-spinner"
+            />
+          </div>
+        )}
 
         {error && (
           <p
@@ -195,5 +213,3 @@ export function CustomInputModal({
     document.body,
   );
 }
-
-export type { CustomDatasetPayload };
