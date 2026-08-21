@@ -57,6 +57,8 @@
   --color-secondary-fixed-dim: #4edea3;
   --color-success: #58cc02;
   --color-success-dark: #4aad02;
+  --color-blue-600: #026fef;
+  --color-amber-600: #a36700;
 
   --spacing-margin-mobile: 16px;
   --spacing-unit: 4px;
@@ -121,14 +123,6 @@
     margin-top: 2px;
   }
 
-  .material-symbols-outlined {
-    font-variation-settings:
-      "FILL" 1,
-      "wght" 700,
-      "GRAD" 0,
-      "opsz" 24;
-  }
-
   .no-spinner {
     appearance: textfield;
     -moz-appearance: textfield;
@@ -156,5 +150,23 @@
   .scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
     background-color: #d1d5db;
     border-radius: 9999px;
+  }
+
+  .sort-bar-default {
+    @apply border border-solid border-slate-200 bg-surface-container dark:border-slate-700/60;
+  }
+
+  .sort-bar-active {
+    @apply border border-solid border-blue-500 bg-blue-500/15;
+  }
+
+  .sort-bar-comparing {
+    @apply border border-solid border-amber-500 bg-amber-500/15;
+  }
+
+  .sort-bar-sorted {
+    @apply border border-solid;
+    border-color: var(--color-success);
+    background: color-mix(in oklab, var(--color-success) 15%, transparent);
   }
 }
