@@ -29,7 +29,7 @@ export function Button({
   return (
     <button
       className={[
-        "btn-3d font-body-lg text-body-lg rounded-2xl px-4 py-3 transition-all duration-300 ease-in-out cursor-pointer disabled:cursor-not-allowed",
+        "btn-3d font-body-lg text-body-lg font-semibold rounded-2xl px-4 py-3 transition-all duration-300 ease-in-out cursor-pointer disabled:cursor-not-allowed",
         variantClasses[variant],
         fullWidth ? "w-full" : "",
         className,

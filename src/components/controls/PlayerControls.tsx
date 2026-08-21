@@ -1,4 +1,5 @@
 import { SPEED_MAX_MS, SPEED_MIN_MS } from "../../constants/player";
+import { compactButtonLabelClass } from "../ui/buttonLabel";
 import { Icon } from "../ui/Icon";
 
 interface PlayerControlsProps {
@@ -6,6 +7,8 @@ interface PlayerControlsProps {
   totalSteps: number;
   isPlaying: boolean;
   speed: number;
+  minSpeedMs?: number;
+  maxSpeedMs?: number;
   canGoBack: boolean;
   canGoForward: boolean;
   onNext: () => void;
@@ -15,6 +18,22 @@ interface PlayerControlsProps {
   onReset: () => void;
   onSpeedChange: (speed: number) => void;
 }
+
+const controlButtonBase = [
+  "btn-3d flex flex-col items-center justify-center rounded-xl border-b-4 p-2 transition-all",
+  compactButtonLabelClass,
+  "hover:translate-y-[-2px] active:translate-y-[2px] active:border-b-2 disabled:cursor-not-allowed cursor-pointer",
+].join(" ");
+
+const secondaryControlButtonClass = [
+  controlButtonBase,
+  "bg-surface-variant text-on-surface-variant border-surface-container-highest hover:bg-surface-container-highest disabled:opacity-40",
+].join(" ");
+
+const primaryControlButtonClass = [
+  controlButtonBase,
+  "bg-primary text-on-primary border-on-primary-fixed-variant hover:bg-primary-container hover:text-on-primary-container disabled:opacity-50",
+].join(" ");
 
 export function PlayerControls({
   currentIndex,
@@ -29,20 +48,26 @@ export function PlayerControls({
   onPause,
   onReset,
   onSpeedChange,
+  minSpeedMs = SPEED_MIN_MS,
+  maxSpeedMs = SPEED_MAX_MS,
 }: PlayerControlsProps) {
+  const invertedSpeed = maxSpeedMs + minSpeedMs - speed;
+
   return (
     <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-center gap-stack-md items-center px-gutter bg-surface-container text-primary font-label-caps text-label-caps rounded-t-2xl border-t-4 border-surface-container-highest shadow-[0_-8px_30px_rgba(0,0,0,0.1)] py-2">
       <div className="flex items-center gap-6 pr-8 border-r-2 border-surface-variant">
-        <span className="font-bold text-on-surface-variant">Speed</span>
+        <span className={`${compactButtonLabelClass} text-on-surface-variant`}>
+          Speed
+        </span>
         <input
           type="range"
-          min={SPEED_MIN_MS}
-          max={SPEED_MAX_MS}
+          min={minSpeedMs}
+          max={maxSpeedMs}
           step={25}
-          value={SPEED_MAX_MS + SPEED_MIN_MS - speed}
+          value={invertedSpeed}
           onChange={(event) =>
             onSpeedChange(
-              SPEED_MAX_MS + SPEED_MIN_MS - Number(event.target.value),
+              maxSpeedMs + minSpeedMs - Number(event.target.value),
             )
           }
           className="w-40 h-2 bg-surface-variant rounded-full appearance-none accent-primary cursor-pointer"
@@ -53,24 +78,23 @@ export function PlayerControls({
         type="button"
         onClick={onPrev}
         disabled={!canGoBack}
-        className="flex flex-col items-center justify-center bg-surface-variant text-on-surface-variant rounded-xl border-b-4 border-surface-container-highest p-2 hover:translate-y-[-2px] hover:bg-surface-container-highest transition-all active:translate-y-[2px] active:border-b-2 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+        className={secondaryControlButtonClass}
       >
         <Icon name="skip_previous" className="text-[24px]" />
-        <span className="mt-1 text-[10px]">Back</span>
+        <span className={`mt-1 text-[10px] ${compactButtonLabelClass}`}>Back</span>
       </button>
 
       <button
         type="button"
         onClick={isPlaying ? onPause : onPlay}
         disabled={totalSteps === 0}
-        className="flex flex-col items-center justify-center bg-success text-white rounded-2xl border-b-4 border-success-dark p-3 hover:translate-y-[-4px] transition-all hover:brightness-110 active:translate-y-[4px] active:border-b-2 shadow-xl mx-4 relative overflow-hidden group disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        className={primaryControlButtonClass}
       >
-        <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
         <Icon
           name={isPlaying ? "pause" : "play_arrow"}
-          className="text-[32px] relative z-10"
+          className="text-[24px]"
         />
-        <span className="mt-1 text-sm font-black tracking-widest relative z-10">
+        <span className={`mt-1 text-[10px] ${compactButtonLabelClass}`}>
           {isPlaying ? "Pause" : "Play"}
         </span>
       </button>
@@ -79,19 +103,21 @@ export function PlayerControls({
         type="button"
         onClick={onNext}
         disabled={!canGoForward}
-        className="flex flex-col items-center justify-center bg-surface-variant text-on-surface-variant rounded-xl border-b-4 border-surface-container-highest p-2 hover:translate-y-[-2px] hover:bg-surface-container-highest transition-all active:translate-y-[2px] active:border-b-2 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+        className={secondaryControlButtonClass}
       >
         <Icon name="skip_next" className="text-[24px]" />
-        <span className="mt-1 text-[10px]">Forward</span>
+        <span className={`mt-1 text-[10px] ${compactButtonLabelClass}`}>
+          Forward
+        </span>
       </button>
 
       <button
         type="button"
         onClick={onReset}
-        className="flex flex-col items-center justify-center text-error rounded-xl p-2 hover:bg-error/10 transition-colors ml-4 cursor-pointer"
+        className={[secondaryControlButtonClass, "ml-4"].join(" ")}
       >
         <Icon name="refresh" className="text-[24px]" />
-        <span className="mt-1 text-[10px]">Reset</span>
+        <span className={`mt-1 text-[10px] ${compactButtonLabelClass}`}>Reset</span>
       </button>
 
       <span className="sr-only">
