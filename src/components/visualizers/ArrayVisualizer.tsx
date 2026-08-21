@@ -3,6 +3,7 @@ import type {
   ArrayPointer,
   PointerId,
 } from "../../types/visualizer";
+import { VISUALIZER_CELL_STYLES } from "../../constants/visualizerTokens";
 import { ChevronIcon } from "../ui/ChevronIcon";
 
 interface ArrayVisualizerProps {
@@ -12,7 +13,7 @@ interface ArrayVisualizerProps {
 }
 
 export const FIRST_ROW_CAPACITY = 10;
-const POINTER_ORDER: PointerId[] = ["low", "mid", "high"];
+const POINTER_ORDER: PointerId[] = ["low", "mid", "high", "i", "j", "min"];
 
 const pointerColors: Record<
   PointerId,
@@ -33,20 +34,32 @@ const pointerColors: Record<
     arrow: "text-success",
     border: "border-success border-[3px]",
   },
+  i: {
+    label: "text-violet-700 bg-violet-50 border border-violet-200",
+    arrow: "text-violet-500",
+    border: "border-violet-500 border-[3px]",
+  },
+  j: {
+    label: "text-blue-700 bg-blue-50 border border-blue-200",
+    arrow: "text-blue-500",
+    border: "border-blue-500 border-[3px]",
+  },
+  min: {
+    label: "text-amber-700 bg-amber-50 border border-amber-200",
+    arrow: "text-amber-500",
+    border: "border-amber-500 border-[3px]",
+  },
 };
 
 const cellBase =
   "bg-surface-container border-2 border-surface-variant border-b-4 text-on-surface";
 
-const cellHighlightStyles = {
-  default: "",
-  eliminated: "opacity-40",
-  comparing:
-    "scale-105 shadow-[0_0_15px_rgba(59,130,246,0.5)] ring-4 ring-blue-400/40",
-  found: "scale-105 shadow-[0_0_24px_rgba(88,204,2,0.25)] ring-2 ring-success/30",
-} as const;
+const cellHighlightStyles = VISUALIZER_CELL_STYLES;
 
 function getPointerBorder(pointerIds: PointerId[]): string {
+  if (pointerIds.includes("min")) return pointerColors.min.border;
+  if (pointerIds.includes("j")) return pointerColors.j.border;
+  if (pointerIds.includes("i")) return pointerColors.i.border;
   if (pointerIds.includes("mid")) return pointerColors.mid.border;
   if (pointerIds.includes("low")) return pointerColors.low.border;
   if (pointerIds.includes("high")) return pointerColors.high.border;
@@ -54,6 +67,9 @@ function getPointerBorder(pointerIds: PointerId[]): string {
 }
 
 function getPrimaryPointerId(pointerIds: PointerId[]): PointerId {
+  if (pointerIds.includes("min")) return "min";
+  if (pointerIds.includes("j")) return "j";
+  if (pointerIds.includes("i")) return "i";
   if (pointerIds.includes("mid")) return "mid";
   if (pointerIds.includes("low")) return "low";
   return "high";
@@ -161,7 +177,8 @@ export function ArrayVisualizer({
             const pointerIds = columnPointers.map((pointer) => pointer.id);
             const hasPointers = columnPointers.length > 0;
 
-            const isComparing = cell.highlight === "comparing";
+            const usesFillHighlight = cell.highlight !== "default" &&
+              cell.highlight !== "eliminated";
 
             return (
               <div key={index} className="flex flex-col items-center shrink-0">
@@ -172,7 +189,7 @@ export function ArrayVisualizer({
                     className={[
                       "w-14 h-14 rounded-xl flex items-center justify-center relative transition-all",
                       cellBase,
-                      hasPointers && !isComparing
+                      hasPointers && !usesFillHighlight
                         ? getPointerBorder(pointerIds)
                         : "",
                       cellHighlightStyles[cell.highlight],

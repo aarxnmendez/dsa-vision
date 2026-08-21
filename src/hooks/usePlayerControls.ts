@@ -1,4 +1,8 @@
-import { SPEED_MAX_MS, SPEED_MIN_MS } from "../constants/player";
+import {
+  clampPlaybackSpeed,
+  SPEED_MAX_MS,
+  SPEED_MIN_MS,
+} from "../constants/player";
 import { useCallback, useEffect, useState } from "react";
 
 export const IDLE_STEP_INDEX = -1;
@@ -6,19 +10,26 @@ export const IDLE_STEP_INDEX = -1;
 interface UsePlayerControlsOptions {
   totalSteps: number;
   initialSpeed?: number;
-}
-
-function clampSpeed(speed: number) {
-  return Math.min(SPEED_MAX_MS, Math.max(SPEED_MIN_MS, speed));
+  minSpeedMs?: number;
+  maxSpeedMs?: number;
 }
 
 export function usePlayerControls({
   totalSteps,
-  initialSpeed = SPEED_MIN_MS,
+  initialSpeed,
+  minSpeedMs = SPEED_MIN_MS,
+  maxSpeedMs = SPEED_MAX_MS,
 }: UsePlayerControlsOptions) {
   const [currentIndex, setCurrentIndex] = useState(IDLE_STEP_INDEX);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [speed, setSpeed] = useState(() => clampSpeed(initialSpeed));
+  const [speed, setSpeed] = useState(() =>
+    clampPlaybackSpeed(initialSpeed ?? minSpeedMs, minSpeedMs, maxSpeedMs),
+  );
+
+  const clampSpeed = useCallback(
+    (value: number) => clampPlaybackSpeed(value, minSpeedMs, maxSpeedMs),
+    [minSpeedMs, maxSpeedMs],
+  );
 
   const onNext = useCallback(() => {
     setCurrentIndex((index) => {
@@ -51,9 +62,12 @@ export function usePlayerControls({
     setCurrentIndex(IDLE_STEP_INDEX);
   }, []);
 
-  const handleSpeedChange = useCallback((value: number) => {
-    setSpeed(clampSpeed(value));
-  }, []);
+  const handleSpeedChange = useCallback(
+    (value: number) => {
+      setSpeed(clampSpeed(value));
+    },
+    [clampSpeed],
+  );
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -86,6 +100,8 @@ export function usePlayerControls({
     setCurrentIndex,
     isPlaying,
     speed,
+    minSpeedMs,
+    maxSpeedMs,
     setSpeed: handleSpeedChange,
     onNext,
     onPrev,

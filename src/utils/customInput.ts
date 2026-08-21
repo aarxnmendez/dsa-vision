@@ -11,6 +11,7 @@ export interface CustomDatasetPayload {
 
 export function parseCustomArrayInput(
   input: string,
+  options?: { preserveOrder?: boolean },
 ): { array: number[] } | { error: string } {
   const trimmed = input.trim();
 
@@ -39,7 +40,9 @@ export function parseCustomArrayInput(
     values.push(Number(token));
   }
 
-  const array = [...values].sort((a, b) => a - b);
+  const array = options?.preserveOrder
+    ? values
+    : [...values].sort((a, b) => a - b);
 
   return { array };
 }
