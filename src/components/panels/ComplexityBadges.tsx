@@ -1,26 +1,29 @@
 import { useState } from "react";
 import { ComplexityInfoPopover } from "./ComplexityInfoPopover";
+import {
+  BINARY_SEARCH_SPACE_INFO,
+  BINARY_SEARCH_TIME_INFO,
+} from "../../constants/visualizerTokens";
+
+interface ComplexityInfo {
+  title: string;
+  text: string;
+}
 
 interface ComplexityBadgesProps {
   timeComplexity?: string;
   spaceComplexity?: string;
+  timeInfo?: ComplexityInfo;
+  spaceInfo?: ComplexityInfo;
 }
 
 type OpenPopover = "time" | "space" | null;
 
-const TIME_INFO = {
-  title: "Logarithmic Time",
-  text: "Execution time grows logarithmically relative to the input size. By halving the search space at each step, it remains exceptionally fast even for massive datasets.",
-};
-
-const SPACE_INFO = {
-  title: "Constant Space",
-  text: "The algorithm uses a fixed amount of additional memory (pointers only), regardless of the array size.",
-};
-
 export function ComplexityBadges({
   timeComplexity = "O(log n)",
   spaceComplexity = "O(1)",
+  timeInfo = BINARY_SEARCH_TIME_INFO,
+  spaceInfo = BINARY_SEARCH_SPACE_INFO,
 }: ComplexityBadgesProps) {
   const [openPopover, setOpenPopover] = useState<OpenPopover>(null);
 
@@ -29,21 +32,21 @@ export function ComplexityBadges({
   };
 
   return (
-    <div className="flex gap-3 flex-wrap justify-center">
+    <div className="flex flex-wrap justify-center gap-3">
       <ComplexityInfoPopover
-        label={`Time: ${timeComplexity}`}
+        label={`Time Complexity: ${timeComplexity}`}
         variant="time"
-        popoverTitle={TIME_INFO.title}
-        popoverText={TIME_INFO.text}
+        popoverTitle={timeInfo.title}
+        popoverText={timeInfo.text}
         isOpen={openPopover === "time"}
         onToggle={() => togglePopover("time")}
         onClose={() => setOpenPopover(null)}
       />
       <ComplexityInfoPopover
-        label={`Space: ${spaceComplexity}`}
+        label={`Space Complexity: ${spaceComplexity}`}
         variant="space"
-        popoverTitle={SPACE_INFO.title}
-        popoverText={SPACE_INFO.text}
+        popoverTitle={spaceInfo.title}
+        popoverText={spaceInfo.text}
         isOpen={openPopover === "space"}
         onToggle={() => togglePopover("space")}
         onClose={() => setOpenPopover(null)}

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { CodeLanguage } from "../../data/binarySearchCode";
 import { codeLanguageLabels } from "../../data/binarySearchCode";
+import { CODE_PANEL_TOOLBAR_CONTROL_CLASS } from "../../constants/visualizerTokens";
 import { ChevronIcon } from "../ui/ChevronIcon";
 
 const languages = Object.entries(codeLanguageLabels) as [CodeLanguage, string][];
@@ -42,13 +43,16 @@ export function LanguageSelector({ value, onChange }: LanguageSelectorProps) {
   }, [isOpen]);
 
   return (
-    <div ref={containerRef} className="relative w-full max-w-[11rem] shrink-0">
+    <div ref={containerRef} className="relative w-36 min-w-[140px] shrink-0">
       <button
         type="button"
         onClick={() => setIsOpen((open) => !open)}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
-        className="w-full flex items-center justify-between gap-2 bg-surface-container-lowest border-2 border-surface-variant rounded-xl px-4 py-2.5 font-body-md text-on-surface hover:border-primary hover:bg-surface-bright transition-colors cursor-pointer"
+        className={[
+          "w-full flex items-center justify-between gap-2",
+          CODE_PANEL_TOOLBAR_CONTROL_CLASS,
+        ].join(" ")}
       >
         <span className="font-semibold text-primary truncate">
           {codeLanguageLabels[value]}

@@ -1,20 +1,26 @@
 import { useId, useState, type ReactNode } from "react";
 import type { CodeLanguage } from "../../data/binarySearchCode";
-import { Icon } from "../ui/Icon";
+import { CODE_ACTIVE_LINE_CLASS } from "../../constants/visualizerTokens";
 import { sectionLabelClass } from "../ui/sectionLabel";
+import { CopyCodeButton } from "./CopyCodeButton";
+import { EmbeddedPanelTabBar } from "./EmbeddedPanelTabBar";
 import { LanguageSelector } from "./LanguageSelector";
+import { CodePanelStepFooter } from "./CodePanelStepFooter";
 
 export type CodePanelTab = "code" | "explanation";
+export type CodePanelVariant = "sidebar" | "embedded";
 
 interface CodePanelProps {
   codeByLanguage: Record<CodeLanguage, string[]>;
   explanation?: ReactNode;
   codeSectionLabel?: string;
   activeLine: number;
-  stepExplanation: string;
+  stepExplanation?: string;
   stepFormula?: string;
   activeTab?: CodePanelTab;
   onTabChange?: (tab: CodePanelTab) => void;
+  variant?: CodePanelVariant;
+  showStepFooter?: boolean;
 }
 
 export function CodePanel({
@@ -26,9 +32,13 @@ export function CodePanel({
   stepFormula,
   activeTab: controlledTab,
   onTabChange,
+  variant = "sidebar",
+  showStepFooter = true,
 }: CodePanelProps) {
   const [internalTab, setInternalTab] = useState<CodePanelTab>("code");
   const activeTab = controlledTab ?? internalTab;
+  const hasExplanation = explanation != null;
+  const isEmbedded = variant === "embedded";
   const tabListId = useId();
   const codeTabId = `${tabListId}-code-tab`;
   const explanationTabId = `${tabListId}-explanation-tab`;
@@ -58,12 +68,59 @@ export function CodePanel({
         : "text-on-surface-variant hover:bg-surface-variant border-transparent",
     ].join(" ");
 
+  const codeEditor = (
+    <div className="min-h-0 min-w-0 flex-1 overflow-auto bg-inverse-surface">
+      <div className="min-w-max py-4 font-mono text-sm leading-loose">
+        {lines.map((line, index) => {
+          const lineNumber = index + 1;
+          const isActive = lineNumber === activeLine;
+
+          return (
+            <div
+              key={lineNumber}
+              className={[
+                "flex whitespace-pre border-l-4 py-0.5 pl-6 pr-6",
+                isActive
+                  ? CODE_ACTIVE_LINE_CLASS
+                  : "border-transparent text-slate-400 opacity-80",
+              ].join(" ")}
+            >
+              <span className="w-8 shrink-0 select-none pr-4 text-right tabular-nums text-slate-500">
+                {lineNumber}
+              </span>
+              <span className="whitespace-pre">{line || " "}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+
+  if (isEmbedded) {
+    return (
+      <div className="flex min-h-[22rem] min-w-0 flex-col overflow-hidden rounded-2xl border-2 border-surface-variant bg-surface-container-lowest shadow-sm">
+        <EmbeddedPanelTabBar icon="code" label="Code" />
+        <div className="flex shrink-0 items-center justify-between gap-4 border-b-2 border-surface-variant bg-surface-bright px-4 py-3">
+          <LanguageSelector value={language} onChange={setLanguage} />
+          <CopyCodeButton code={lines.join("\n")} />
+        </div>
+        {codeEditor}
+        {showStepFooter && (
+          <CodePanelStepFooter
+            stepExplanation={stepExplanation}
+            stepFormula={stepFormula}
+          />
+        )}
+      </div>
+    );
+  }
+
   return (
-    <div className="flex flex-col h-full min-w-0">
+    <div className="flex h-full min-w-0 flex-col">
       <div
         role="tablist"
         aria-label="Code panel sections"
-        className="flex border-b-2 border-surface-variant bg-surface-container pt-4 px-4 pl-14 gap-2 shrink-0"
+        className="flex shrink-0 gap-2 border-b-2 border-surface-variant bg-surface-container px-4 pt-4 pl-14"
       >
         <button
           type="button"
@@ -76,86 +133,53 @@ export function CodePanel({
         >
           Code
         </button>
-        <button
-          type="button"
-          role="tab"
-          id={explanationTabId}
-          aria-selected={activeTab === "explanation"}
-          aria-controls={explanationPanelId}
-          onClick={() => setActiveTab("explanation")}
-          className={tabButtonClass("explanation")}
-        >
-          Explanation
-        </button>
+        {hasExplanation && (
+          <button
+            type="button"
+            role="tab"
+            id={explanationTabId}
+            aria-selected={activeTab === "explanation"}
+            aria-controls={explanationPanelId}
+            onClick={() => setActiveTab("explanation")}
+            className={tabButtonClass("explanation")}
+          >
+            Explanation
+          </button>
+        )}
       </div>
 
-      {activeTab === "code" ? (
+      {activeTab === "code" || !hasExplanation ? (
         <div
           id={codePanelId}
           role="tabpanel"
           aria-labelledby={codeTabId}
-          className="flex flex-col flex-1 min-h-0"
+          className="flex min-h-0 flex-1 flex-col"
         >
-          <div className="px-4 py-3 border-b-2 border-surface-variant flex items-center justify-between gap-4 bg-surface-bright shrink-0">
+          <div className="flex shrink-0 items-center justify-between gap-4 border-b-2 border-surface-variant bg-surface-bright px-4 py-3">
             <h3 className={sectionLabelClass}>{codeSectionLabel}</h3>
             <LanguageSelector value={language} onChange={setLanguage} />
           </div>
 
-          <div className="flex-1 min-h-0 min-w-0 overflow-auto bg-inverse-surface">
-            <div className="min-w-max py-4 font-mono text-sm leading-loose">
-              {lines.map((line, index) => {
-                const lineNumber = index + 1;
-                const isActive = lineNumber === activeLine;
-
-                return (
-                  <div
-                    key={lineNumber}
-                    className={[
-                      "flex whitespace-pre pl-6 pr-6 py-0.5",
-                      isActive
-                        ? "bg-primary/20 text-primary-fixed font-semibold"
-                        : "text-surface-dim opacity-50",
-                    ].join(" ")}
-                  >
-                    <span className="w-8 shrink-0 text-right pr-4 select-none tabular-nums">
-                      {lineNumber}
-                    </span>
-                    <span className="whitespace-pre">{line || " "}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+          {codeEditor}
         </div>
       ) : (
         <div
           id={explanationPanelId}
           role="tabpanel"
           aria-labelledby={explanationTabId}
-          className="flex-1 min-h-0 p-6 overflow-y-auto bg-surface-bright"
+          className="min-h-0 flex-1 overflow-y-auto bg-surface-bright p-6"
         >
           {explanation}
         </div>
       )}
 
-      <div className="p-6 bg-surface border-t-4 border-surface-variant shrink-0 pb-32">
-        <h4 className="font-bold text-primary mb-2 flex items-center gap-2">
-          <Icon name="lightbulb" />
-          Current Step
-        </h4>
-        <p className="font-body-md text-on-surface leading-relaxed">
-          {stepExplanation}
-          {stepFormula && (
-            <>
-              <br />
-              <br />
-              <code className="bg-surface-container px-2 py-1 rounded-md border border-surface-variant whitespace-pre">
-                {stepFormula}
-              </code>
-            </>
-          )}
-        </p>
-      </div>
+      {showStepFooter && (
+        <CodePanelStepFooter
+          stepExplanation={stepExplanation}
+          stepFormula={stepFormula}
+          className="pb-32"
+        />
+      )}
     </div>
   );
 }
