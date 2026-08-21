@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { COMPACT_LAYOUT_QUERY } from "../../constants/breakpoints";
 import { ComplexityBadges } from "../panels/ComplexityBadges";
+import type { ComponentProps } from "react";
 import { LeftSidebar, RightPanel } from "./Sidebars";
+
+type ComplexityBadgesProps = ComponentProps<typeof ComplexityBadges>;
 
 const DEFAULT_RIGHT_WIDTH = 448;
 const MIN_RIGHT_WIDTH = 300;
@@ -23,23 +26,31 @@ function getInitialSidebarOpenState() {
 
 interface VisualizerLayoutProps {
   title: string;
+  description?: string;
   timeComplexity?: string;
   spaceComplexity?: string;
+  timeComplexityInfo?: ComplexityBadgesProps["timeInfo"];
+  spaceComplexityInfo?: ComplexityBadgesProps["spaceInfo"];
   leftPanelSectionLabel?: string;
   leftPanelSectionIcon?: string;
   leftPanel: ReactNode;
-  rightPanel: ReactNode;
+  rightPanel?: ReactNode;
+  showRightPanel?: boolean;
   children: ReactNode;
 }
 
 export function VisualizerLayout({
   title,
+  description,
   timeComplexity,
   spaceComplexity,
+  timeComplexityInfo,
+  spaceComplexityInfo,
   leftPanelSectionLabel,
   leftPanelSectionIcon,
   leftPanel,
   rightPanel,
+  showRightPanel = true,
   children,
 }: VisualizerLayoutProps) {
   const initialSidebarState = getInitialSidebarOpenState();
@@ -102,38 +113,47 @@ export function VisualizerLayout({
 
       <main
         className={[
-          "flex-1 flex flex-col h-full min-w-0 overflow-hidden bg-surface",
+          "flex-1 flex min-h-0 flex-col overflow-y-auto bg-surface",
           isResizing ? "" : "transition-[margin] duration-300",
         ].join(" ")}
         style={{
           marginLeft: isLeftOpen ? LEFT_PANEL_WIDTH_PX : 0,
-          marginRight: isRightOpen ? rightWidth : 0,
+          marginRight: showRightPanel && isRightOpen ? rightWidth : 0,
         }}
       >
-        <header className="flex items-center justify-center w-full px-base py-3 bg-surface border-b-4 border-surface-container-highest shrink-0">
-          <div className="flex flex-col items-center text-center min-w-0 gap-2">
-            <h1 className="text-headline-lg font-black text-primary tracking-tight">
+        <header className="flex w-full shrink-0 items-center justify-center border-b-4 border-surface-container-highest bg-surface px-base py-4">
+          <div className="flex min-w-0 max-w-3xl flex-col items-center gap-3 text-center">
+            <h1 className="text-headline-lg font-black tracking-tight text-primary">
               {title}
             </h1>
             <ComplexityBadges
               timeComplexity={timeComplexity}
               spaceComplexity={spaceComplexity}
+              timeInfo={timeComplexityInfo}
+              spaceInfo={spaceComplexityInfo}
             />
+            {description && (
+              <p className="max-w-2xl text-sm leading-relaxed text-slate-500">
+                {description}
+              </p>
+            )}
           </div>
         </header>
 
         {children}
       </main>
 
-      <RightPanel
-        isOpen={isRightOpen}
-        width={rightWidth}
-        onToggle={() => setIsRightOpen((open) => !open)}
-        onResizeStart={handleResizeStart}
-        isResizing={isResizing}
-      >
-        {rightPanel}
-      </RightPanel>
+      {showRightPanel && rightPanel !== undefined && (
+        <RightPanel
+          isOpen={isRightOpen}
+          width={rightWidth}
+          onToggle={() => setIsRightOpen((open) => !open)}
+          onResizeStart={handleResizeStart}
+          isResizing={isResizing}
+        >
+          {rightPanel}
+        </RightPanel>
+      )}
     </div>
   );
 }
