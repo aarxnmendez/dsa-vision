@@ -5,12 +5,14 @@ export interface ComplexityRow {
   value: string;
 }
 
-interface AlgorithmExplanationContentProps {
+export interface AlgorithmExplanationData {
   howItWorks: string;
   keyConcepts: string[];
   complexityRows: ComplexityRow[];
   whenToUse: string[];
 }
+
+type AlgorithmExplanationContentProps = AlgorithmExplanationData;
 
 export function AlgorithmExplanationContent({
   howItWorks,
