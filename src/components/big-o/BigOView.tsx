@@ -1,5 +1,6 @@
 import { useId, useState } from "react";
 import { Link } from "react-router-dom";
+import { APP_ROUTES } from "../../constants/routes";
 import {
   auxiliaryMemoryPoints,
   spaceComplexityIntro,
@@ -120,7 +121,7 @@ export function BigOView() {
   return (
     <div className="flex flex-col gap-stack-lg">
       <Link
-        to="/binary-search"
+        to={APP_ROUTES.binarySearch}
         className="self-start inline-flex items-center gap-2 text-on-surface-variant font-bold hover:text-primary transition-colors bg-surface-container-lowest px-4 py-2 rounded-xl border-b-4 border-surface-variant btn-3d cursor-pointer"
       >
         <Icon name="arrow_back" className="text-[20px]" />

@@ -1,4 +1,5 @@
 import type { AlgorithmMeta } from "../types/algorithm";
+import { APP_ROUTES } from "../constants/routes";
 
 export const algorithms: AlgorithmMeta[] = [
   {
@@ -12,7 +13,8 @@ export const algorithms: AlgorithmMeta[] = [
     category: "arrays",
     imageUrl: "/images/binary-search-cover.jpg",
     imageBg: "bg-primary-fixed",
-    route: "/binary-search",
+    availability: "available",
+    route: APP_ROUTES.binarySearch,
   },
   {
     id: "selection-sort",
@@ -25,7 +27,8 @@ export const algorithms: AlgorithmMeta[] = [
     category: "sorting",
     imageUrl: "/images/selection-sort-cover.jpg",
     imageBg: "bg-tertiary-fixed",
-    route: "/selection-sort",
+    availability: "available",
+    route: APP_ROUTES.selectionSort,
   },
   {
     id: "merge-sort",
@@ -39,7 +42,7 @@ export const algorithms: AlgorithmMeta[] = [
     imageUrl:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuAf8GAgzvu4ElCDezZG9869ysME2kz57jRW5TcHC7cHz5fb3x2q9YWcwiL1SjiN5h29VVX_-MSIdnvDcBcmBW7jG5XHG7pBEYatL_sdkZ0RahLQfaqQaocVdD8zB2y9YbTaKzdVHbxFLwS3SdKpupr1kOjAByhWgOl1wJPt08JA49DcsVyKWOWsn_m7mOYguZnn-69ytUBEVxg0VsgxxXxks_7AlqfjTfCH5-JnGZaEzeaZ9FQsQqur",
     imageBg: "bg-error-container",
-    route: "#",
+    availability: "coming-soon",
   },
   {
     id: "dijkstra",
@@ -53,6 +56,6 @@ export const algorithms: AlgorithmMeta[] = [
     imageUrl:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuA2O89TvIijsmES-2vtltSz-YL29mbwePO7mvmRdyKinspxgcpiiLLza6VVENstGkjYZedkH4aSF3KhWuZaHksjeopispw2VSJdPk-Pz8A656Oyg1NMb6LImY2xaTCT2JEunfmZKPz6kebf0l6l5vbKUQ_fa6UWkxbYbnETaE_LPOs0gLZcGXaevbMzaHTN0Tk7MZj6aHP3VxJ7vNhfbDIEWhoJ-bE-OfmTz7Rqb6Hstk_TTMH5fG1C",
     imageBg: "bg-tertiary-fixed",
-    route: "#",
+    availability: "coming-soon",
   },
 ];

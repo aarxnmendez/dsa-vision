@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import { APP_ROUTES } from "./constants/routes";
 import { MobileNoticeOverlay } from "./components/layout/MobileNoticeOverlay";
 import { BigONotationPage } from "./pages/BigONotationPage";
 import { BinarySearchPage } from "./pages/BinarySearchPage";
@@ -9,10 +10,10 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<CatalogPage />} />
-        <Route path="/binary-search" element={<BinarySearchPage />} />
-        <Route path="/selection-sort" element={<SelectionSortPage />} />
-        <Route path="/big-o-notation" element={<BigONotationPage />} />
+        <Route path={APP_ROUTES.catalog} element={<CatalogPage />} />
+        <Route path={APP_ROUTES.binarySearch} element={<BinarySearchPage />} />
+        <Route path={APP_ROUTES.selectionSort} element={<SelectionSortPage />} />
+        <Route path={APP_ROUTES.bigONotation} element={<BigONotationPage />} />
       </Routes>
       <MobileNoticeOverlay />
     </>

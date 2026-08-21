@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef } from "react";
 import { Link } from "react-router-dom";
+import { APP_ROUTES } from "../../constants/routes";
 import { Icon } from "../ui/Icon";
 
 interface ComplexityInfoPopoverProps {
@@ -108,7 +109,7 @@ export function ComplexityInfoPopover({
             {popoverText}
           </p>
           <Link
-            to="/big-o-notation"
+            to={APP_ROUTES.bigONotation}
             onClick={onClose}
             className="mt-4 inline-flex items-center gap-1 font-body-md text-body-md text-primary hover:underline cursor-pointer transition-colors whitespace-nowrap relative"
           >

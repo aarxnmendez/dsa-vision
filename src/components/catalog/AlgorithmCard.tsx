@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
-import type { AlgorithmMeta } from "../../types/algorithm";
+import {
+  isAlgorithmAvailable,
+  type AlgorithmMeta,
+} from "../../types/algorithm";
 import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
 
@@ -34,16 +37,29 @@ const categoryLabelMap = {
 } as const;
 
 export function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
-  const isAvailable = algorithm.route !== "#";
+  const isAvailable = isAlgorithmAvailable(algorithm);
 
   return (
-    <article className="bg-surface-container-lowest rounded-2xl border-2 border-surface-variant border-b-4 flex flex-col overflow-hidden transition-all duration-300 ease-in-out hover:bg-surface-bright hover:border-primary/30 hover:shadow-[0_8px_24px_rgba(0,87,191,0.1)] group">
+    <article
+      className={[
+        "bg-surface-container-lowest rounded-2xl border-2 border-surface-variant border-b-4 flex flex-col overflow-hidden transition-all duration-300 ease-in-out",
+        isAvailable
+          ? "hover:bg-surface-bright hover:border-primary/30 hover:shadow-[0_8px_24px_rgba(0,87,191,0.1)] group"
+          : "opacity-95",
+      ].join(" ")}
+      aria-disabled={!isAvailable}
+    >
       <div
-        className={`h-48 ${algorithm.imageBg} w-full flex items-center justify-center p-4 border-b-2 border-surface-variant transition-colors duration-300 ease-in-out group-hover:border-primary/20`}
+        className={[
+          `h-48 ${algorithm.imageBg} w-full flex items-center justify-center p-4 border-b-2 border-surface-variant transition-colors duration-300 ease-in-out`,
+          isAvailable ? "group-hover:border-primary/20" : "",
+        ].join(" ")}
       >
         <img
           src={algorithm.imageUrl}
-          alt={algorithm.title}
+          alt=""
+          loading="lazy"
+          decoding="async"
           className="object-contain h-full w-full rounded-xl"
         />
       </div>
@@ -65,6 +81,9 @@ export function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
           <Badge variant="category">
             {categoryLabelMap[algorithm.category]}
           </Badge>
+          {!isAvailable && (
+            <Badge variant="category">Coming Soon</Badge>
+          )}
         </div>
 
         <p className="font-body-md text-body-md text-on-surface-variant flex-grow">
@@ -78,7 +97,12 @@ export function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
             </Button>
           </Link>
         ) : (
-          <Button fullWidth disabled className="uppercase opacity-60 cursor-not-allowed">
+          <Button
+            fullWidth
+            disabled
+            aria-disabled="true"
+            className="mt-4 uppercase opacity-60 cursor-not-allowed"
+          >
             Coming Soon
           </Button>
         )}
