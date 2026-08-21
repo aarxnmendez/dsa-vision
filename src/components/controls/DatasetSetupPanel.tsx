@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { CustomDatasetPayload } from "../../utils/customInput";
 import { sectionLabelClass } from "../ui/sectionLabel";
+import { buttonLabelClass } from "../ui/buttonLabel";
 import { Icon } from "../ui/Icon";
 import { CustomInputModal } from "./CustomInputModal";
 
@@ -78,7 +79,10 @@ export function DatasetSetupPanel({
             <button
               type="button"
               onClick={onRandomize}
-              className="bg-primary text-on-primary font-body-md py-3 px-4 rounded-xl border-b-4 border-on-primary-fixed-variant hover:bg-primary-container hover:text-on-primary-container transition-colors flex items-center justify-center gap-2 btn-3d w-full cursor-pointer"
+              className={[
+                "bg-primary text-on-primary py-3 px-4 rounded-xl border-b-4 border-on-primary-fixed-variant hover:bg-primary-container hover:text-on-primary-container transition-colors flex items-center justify-center gap-2 btn-3d w-full cursor-pointer",
+                buttonLabelClass,
+              ].join(" ")}
             >
               <Icon name="shuffle" className="text-[20px]" />
               Randomize Data
@@ -87,7 +91,10 @@ export function DatasetSetupPanel({
             <button
               type="button"
               onClick={() => setIsCustomModalOpen(true)}
-              className="bg-surface-container-low text-on-surface-variant font-body-md py-3 px-4 rounded-xl border-2 border-surface-variant hover:bg-surface-container flex items-center justify-center gap-2 btn-3d w-full cursor-pointer"
+              className={[
+                "bg-surface-container-low text-on-surface-variant py-3 px-4 rounded-xl border-2 border-surface-variant hover:bg-surface-container flex items-center justify-center gap-2 btn-3d w-full cursor-pointer",
+                buttonLabelClass,
+              ].join(" ")}
             >
               <Icon name="edit_note" className="text-[20px]" />
               Custom Input

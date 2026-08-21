@@ -6,6 +6,10 @@ import {
   parseCustomArrayInput,
 } from "../../utils/customInput";
 import { buttonLabelClass } from "../ui/buttonLabel";
+import {
+  APPLY_DATA_LABEL,
+  CUSTOM_DATA_INPUT_TITLE,
+} from "../../constants/copy";
 import { sectionLabelClass } from "../ui/sectionLabel";
 import { Icon } from "../ui/Icon";
 
@@ -93,7 +97,7 @@ function SortCustomInputModal({
               id={titleId}
               className="font-headline-md text-headline-md text-primary"
             >
-              Custom Array Input
+              {CUSTOM_DATA_INPUT_TITLE}
             </h2>
             <p className="mt-1 font-body-md text-body-md text-on-surface-variant">
               Enter values in any order. Selection Sort will sort them in place.
@@ -159,7 +163,7 @@ function SortCustomInputModal({
               buttonLabelClass,
             ].join(" ")}
           >
-            Apply Array
+            {APPLY_DATA_LABEL}
           </button>
         </div>
       </div>

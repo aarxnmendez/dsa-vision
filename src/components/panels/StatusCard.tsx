@@ -44,15 +44,11 @@ export function StatusCard({
       >
         {detail}
       </p>
-      <p
-        className={[
-          "font-body-md text-body-md font-bold leading-snug min-h-6",
-          pointerMovement ? "text-primary" : "invisible",
-        ].join(" ")}
-        aria-hidden={!pointerMovement}
-      >
-        {pointerMovement ?? "\u00A0"}
-      </p>
+      {pointerMovement && (
+        <p className="font-body-md text-body-md font-bold leading-snug text-primary">
+          {pointerMovement}
+        </p>
+      )}
     </div>
   );
 }

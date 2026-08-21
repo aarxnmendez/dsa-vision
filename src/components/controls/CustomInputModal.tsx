@@ -8,6 +8,11 @@ import {
   type CustomDatasetPayload,
 } from "../../utils/customInput";
 import { sectionLabelClass } from "../ui/sectionLabel";
+import { buttonLabelClass } from "../ui/buttonLabel";
+import {
+  APPLY_DATA_LABEL,
+  CUSTOM_DATA_INPUT_TITLE,
+} from "../../constants/copy";
 import { Icon } from "../ui/Icon";
 
 interface CustomInputModalProps {
@@ -98,7 +103,7 @@ export function CustomInputModal({
               id={titleId}
               className="font-headline-md text-headline-md text-primary"
             >
-              Custom Dataset Setup
+              {CUSTOM_DATA_INPUT_TITLE}
             </h2>
             <p className="mt-1 font-body-md text-body-md text-on-surface-variant">
               Values are automatically sorted for Binary Search.
@@ -167,16 +172,22 @@ export function CustomInputModal({
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 bg-surface text-on-surface font-body-md py-3 px-4 rounded-xl border-b-4 border-surface-variant hover:bg-surface-bright btn-3d cursor-pointer"
+            className={[
+              "flex-1 bg-surface text-on-surface py-3 px-4 rounded-xl border-b-4 border-surface-variant hover:bg-surface-bright btn-3d cursor-pointer",
+              buttonLabelClass,
+            ].join(" ")}
           >
             Cancel
           </button>
           <button
             type="button"
             onClick={handleApply}
-            className="flex-1 bg-primary text-on-primary font-body-md py-3 px-4 rounded-xl border-b-4 border-on-primary-fixed-variant hover:bg-primary-container hover:text-on-primary-container transition-colors btn-3d cursor-pointer"
+            className={[
+              "flex-1 bg-primary text-on-primary py-3 px-4 rounded-xl border-b-4 border-on-primary-fixed-variant hover:bg-primary-container hover:text-on-primary-container transition-colors btn-3d cursor-pointer",
+              buttonLabelClass,
+            ].join(" ")}
           >
-            Apply Dataset
+            {APPLY_DATA_LABEL}
           </button>
         </div>
       </div>

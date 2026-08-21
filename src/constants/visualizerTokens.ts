@@ -4,6 +4,15 @@ import type { CellHighlight } from "../types/visualizer";
 export const CODE_ACTIVE_LINE_CLASS =
   "border-blue-500 bg-blue-500/15 font-semibold text-slate-100";
 
+export const ARRAY_INDEX_LABEL_CLASS =
+  "mt-2 text-xs font-mono tabular-nums text-slate-400";
+
+export const VISUALIZER_IDLE_STATUS_CLASS =
+  "w-full min-h-28 max-w-lg mx-auto rounded-xl border border-success/30 bg-surface-container-lowest px-5 py-3 shadow-md flex flex-col items-center justify-center text-center";
+
+export const VISUALIZER_IDLE_STATUS_TEXT_CLASS =
+  "font-body-md text-body-md leading-snug text-on-surface-variant";
+
 export const CODE_PANEL_TOOLBAR_CONTROL_CLASS =
   "bg-surface-container-lowest border-2 border-surface-variant rounded-xl px-4 py-2.5 font-body-md transition-colors cursor-pointer hover:border-primary hover:bg-surface-bright";
 
@@ -56,20 +65,20 @@ export const VISUALIZER_LEGEND_ITEMS: {
   { highlight: "sorted", label: "Sorted" },
 ];
 
-export const VISUALIZER_CELL_STYLES: Record<CellHighlight, string> = {
+export const BINARY_SEARCH_CELL_STYLES: Record<CellHighlight, string> = {
   default: "",
   eliminated: "opacity-40",
   comparing:
-    "bg-blue-500 text-white border-blue-600 border-b-blue-700 scale-105 shadow-[0_0_15px_rgba(59,130,246,0.5)]",
+    "scale-105 shadow-[0_0_15px_rgba(59,130,246,0.5)] ring-4 ring-blue-400/40",
   found:
-    "bg-emerald-500 text-white border-emerald-600 border-b-emerald-700 scale-105 shadow-[0_0_24px_rgba(16,185,129,0.25)] ring-2 ring-emerald-400/30",
-  sorted:
-    "bg-emerald-500 text-white border-emerald-600 border-b-emerald-700",
-  minimum:
-    "bg-amber-500 text-white border-amber-600 border-b-amber-700 scale-105 shadow-[0_0_12px_rgba(245,158,11,0.45)]",
-  swapping:
-    "bg-rose-500 text-white border-rose-600 border-b-rose-700 scale-110 shadow-[0_0_16px_rgba(244,63,94,0.5)]",
+    "scale-105 shadow-[0_0_24px_rgba(88,204,2,0.25)] ring-2 ring-success/30",
+  sorted: "",
+  minimum: "",
+  swapping: "",
 };
+
+/** @deprecated Use BINARY_SEARCH_CELL_STYLES or sort-bar tokens per visualizer. */
+export const VISUALIZER_CELL_STYLES = BINARY_SEARCH_CELL_STYLES;
 
 export const SELECTION_SORT_TIME_INFO = {
   title: "Quadratic Time",

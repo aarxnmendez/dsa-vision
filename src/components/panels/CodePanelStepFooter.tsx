@@ -1,4 +1,5 @@
 import { Icon } from "../ui/Icon";
+import { CODE_PANEL_IDLE_FALLBACK } from "../../constants/copy";
 
 interface CodePanelStepFooterProps {
   stepExplanation?: string;
@@ -23,7 +24,7 @@ export function CodePanelStepFooter({
         Current Step
       </h4>
       <p className="font-body-md leading-relaxed text-on-surface">
-        {stepExplanation ?? "Set up your dataset, then press Play to begin."}
+        {stepExplanation ?? CODE_PANEL_IDLE_FALLBACK}
         {stepFormula && (
           <>
             <br />

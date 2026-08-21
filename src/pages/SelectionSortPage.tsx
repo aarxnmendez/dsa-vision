@@ -9,21 +9,25 @@ import { ExplanationPanelShell } from "../components/panels/ExplanationPanelShel
 import { SelectionSortExplanationPanel } from "../components/panels/SelectionSortExplanationPanel";
 import { StatusCard } from "../components/panels/StatusCard";
 import { SortBarVisualizer, SortLegendBar } from "../components/visualizers/SortBarVisualizer";
+import { VisualizerIdleStatus } from "../components/visualizers/VisualizerIdleStatus";
 import { useSelectionSortVisualizer } from "../hooks/useSelectionSortVisualizer";
 import {
   SELECTION_SORT_SPACE_INFO,
   SELECTION_SORT_TIME_INFO,
 } from "../constants/visualizerTokens";
+import {
+  CODE_PANEL_IDLE_FALLBACK,
+  DATA_SETUP_LABEL,
+  DATA_SETUP_ICON,
+  VISUALIZER_IDLE_MESSAGE,
+} from "../constants/copy";
 
 const PAGE_DESCRIPTION =
   "In-place comparison sort that selects the minimum each pass and swaps it forward.";
 
 export function SelectionSortPage() {
   const visualizer = useSelectionSortVisualizer();
-  const transitionMs = getStepTransitionMs(
-    visualizer.speed,
-    visualizer.minSpeedMs,
-  );
+  const transitionMs = getStepTransitionMs(visualizer.speed);
   const defaultHighlights = visualizer.array.map(() => "default" as const);
 
   const statusContent = visualizer.currentStep ? (
@@ -33,10 +37,7 @@ export function SelectionSortPage() {
       isSuccess={visualizer.currentStep.isComplete}
     />
   ) : (
-    <p className="font-body-md text-body-md text-on-surface-variant text-center">
-      Configure the array in the left panel, then press Play or Forward to begin
-      the step-by-step visualization.
-    </p>
+    <VisualizerIdleStatus message={VISUALIZER_IDLE_MESSAGE} />
   );
 
   return (
@@ -48,8 +49,8 @@ export function SelectionSortPage() {
       timeComplexityInfo={SELECTION_SORT_TIME_INFO}
       spaceComplexityInfo={SELECTION_SORT_SPACE_INFO}
       showRightPanel={false}
-      leftPanelSectionLabel="Array Setup"
-      leftPanelSectionIcon="sort"
+      leftPanelSectionLabel={DATA_SETUP_LABEL}
+      leftPanelSectionIcon={DATA_SETUP_ICON}
       leftPanel={
         <SortDatasetSetupPanel
           arraySize={visualizer.arraySize}
@@ -79,11 +80,9 @@ export function SelectionSortPage() {
           <CodePanel
             variant="embedded"
             codeByLanguage={selectionSortCode}
-            codeSectionLabel="Implementation"
             activeLine={visualizer.currentStep?.activeLine ?? 1}
             stepExplanation={
-              visualizer.currentStep?.stepExplanation ??
-              "Ready to start sorting."
+              visualizer.currentStep?.stepExplanation ?? CODE_PANEL_IDLE_FALLBACK
             }
             showStepFooter
           />
@@ -107,8 +106,6 @@ export function SelectionSortPage() {
             onPause={visualizer.onPause}
             onReset={visualizer.onReset}
             onSpeedChange={visualizer.setSpeed}
-            minSpeedMs={visualizer.minSpeedMs}
-            maxSpeedMs={visualizer.maxSpeedMs}
           />
         }
       />

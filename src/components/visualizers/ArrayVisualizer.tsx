@@ -3,7 +3,10 @@ import type {
   ArrayPointer,
   PointerId,
 } from "../../types/visualizer";
-import { VISUALIZER_CELL_STYLES } from "../../constants/visualizerTokens";
+import {
+  ARRAY_INDEX_LABEL_CLASS,
+  BINARY_SEARCH_CELL_STYLES,
+} from "../../constants/visualizerTokens";
 import { ChevronIcon } from "../ui/ChevronIcon";
 
 interface ArrayVisualizerProps {
@@ -54,7 +57,7 @@ const pointerColors: Record<
 const cellBase =
   "bg-surface-container border-2 border-surface-variant border-b-4 text-on-surface";
 
-const cellHighlightStyles = VISUALIZER_CELL_STYLES;
+const cellHighlightStyles = BINARY_SEARCH_CELL_STYLES;
 
 function getPointerBorder(pointerIds: PointerId[]): string {
   if (pointerIds.includes("min")) return pointerColors.min.border;
@@ -177,8 +180,7 @@ export function ArrayVisualizer({
             const pointerIds = columnPointers.map((pointer) => pointer.id);
             const hasPointers = columnPointers.length > 0;
 
-            const usesFillHighlight = cell.highlight !== "default" &&
-              cell.highlight !== "eliminated";
+            const isComparing = cell.highlight === "comparing";
 
             return (
               <div key={index} className="flex flex-col items-center shrink-0">
@@ -189,22 +191,20 @@ export function ArrayVisualizer({
                     className={[
                       "w-14 h-14 rounded-xl flex items-center justify-center relative transition-all",
                       cellBase,
-                      hasPointers && !usesFillHighlight
+                      hasPointers && !isComparing
                         ? getPointerBorder(pointerIds)
                         : "",
                       cellHighlightStyles[cell.highlight],
                     ].join(" ")}
                     style={{ transitionDuration: `${stepTransitionMs}ms` }}
                   >
-                    <span className="font-bold text-base tabular-nums">
+                    <span className="font-bold text-base tabular-nums text-slate-900">
                       {cell.value}
                     </span>
                   </div>
                 </div>
 
-                <span className="mt-2 text-sm text-outline font-bold tabular-nums">
-                  {index}
-                </span>
+                <span className={ARRAY_INDEX_LABEL_CLASS}>[{index}]</span>
               </div>
             );
           })}

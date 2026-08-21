@@ -1,11 +1,11 @@
-/** Shortest delay between steps (fastest playback) for typical visualizers. */
-export const SPEED_MIN_MS = 500;
-
-/** Fastest delay for step-heavy algorithms (e.g. Selection Sort). */
-export const FAST_SPEED_MIN_MS = 25;
+/** Shortest delay between steps (fastest playback). */
+export const SPEED_MIN_MS = 50;
 
 /** Longest delay between steps (slowest playback). */
-export const SPEED_MAX_MS = 8000;
+export const SPEED_MAX_MS = 2000;
+
+/** Default delay between steps at normal playback speed. */
+export const SPEED_DEFAULT_MS = 500;
 
 /** CSS transition length for array cells, scaled to step interval. */
 export function getStepTransitionMs(

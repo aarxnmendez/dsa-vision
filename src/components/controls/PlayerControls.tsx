@@ -23,6 +23,7 @@ const controlButtonBase = [
   "btn-3d flex flex-col items-center justify-center rounded-xl border-b-4 p-2 transition-all",
   compactButtonLabelClass,
   "hover:translate-y-[-2px] active:translate-y-[2px] active:border-b-2 disabled:cursor-not-allowed cursor-pointer",
+  "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30",
 ].join(" ");
 
 const secondaryControlButtonClass = [
@@ -65,6 +66,7 @@ export function PlayerControls({
           max={maxSpeedMs}
           step={25}
           value={invertedSpeed}
+          aria-label="Playback speed"
           onChange={(event) =>
             onSpeedChange(
               maxSpeedMs + minSpeedMs - Number(event.target.value),

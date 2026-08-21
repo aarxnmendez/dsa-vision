@@ -1,5 +1,6 @@
 import {
   clampPlaybackSpeed,
+  SPEED_DEFAULT_MS,
   SPEED_MAX_MS,
   SPEED_MIN_MS,
 } from "../constants/player";
@@ -23,7 +24,11 @@ export function usePlayerControls({
   const [currentIndex, setCurrentIndex] = useState(IDLE_STEP_INDEX);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(() =>
-    clampPlaybackSpeed(initialSpeed ?? minSpeedMs, minSpeedMs, maxSpeedMs),
+    clampPlaybackSpeed(
+      initialSpeed ?? SPEED_DEFAULT_MS,
+      minSpeedMs,
+      maxSpeedMs,
+    ),
   );
 
   const clampSpeed = useCallback(

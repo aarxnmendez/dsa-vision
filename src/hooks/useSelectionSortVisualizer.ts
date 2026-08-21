@@ -5,7 +5,6 @@ import {
   type SelectionSortStep,
 } from "../algorithms/selectionSort";
 import type { SortBarHighlight } from "../types/visualizer";
-import { FAST_SPEED_MIN_MS } from "../constants/player";
 import { usePlayerControls } from "./usePlayerControls";
 
 const DEFAULT_SIZE = 10;
@@ -57,7 +56,6 @@ export function useSelectionSortVisualizer() {
   const steps = useMemo(() => generateSelectionSortSteps(array), [array]);
   const player = usePlayerControls({
     totalSteps: steps.length,
-    minSpeedMs: FAST_SPEED_MIN_MS,
   });
   const { onReset } = player;
 
