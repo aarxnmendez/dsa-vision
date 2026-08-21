@@ -1,12 +1,13 @@
 import { getStepTransitionMs } from "../constants/player";
 import { selectionSortCode } from "../data/selectionSortCode";
-import { SortDatasetSetupPanel } from "../components/controls/SortDatasetSetupPanel";
+import { selectionSortExplanation } from "../data/selectionSortExplanation";
+import { DatasetSetupPanel } from "../components/controls/DatasetSetupPanel";
 import { PlayerControls } from "../components/controls/PlayerControls";
 import { AlgorithmPageShell } from "../components/layout/AlgorithmPageShell";
 import { VisualizerLayout } from "../components/layout/VisualizerLayout";
+import { AlgorithmExplanationContent } from "../components/panels/AlgorithmExplanationContent";
 import { CodePanel } from "../components/panels/CodePanel";
 import { ExplanationPanelShell } from "../components/panels/ExplanationPanelShell";
-import { SelectionSortExplanationPanel } from "../components/panels/SelectionSortExplanationPanel";
 import { StatusCard } from "../components/panels/StatusCard";
 import { SortBarVisualizer, SortLegendBar } from "../components/visualizers/SortBarVisualizer";
 import { VisualizerIdleStatus } from "../components/visualizers/VisualizerIdleStatus";
@@ -24,6 +25,9 @@ import {
 
 const PAGE_DESCRIPTION =
   "In-place comparison sort that selects the minimum each pass and swaps it forward.";
+
+const SELECTION_SORT_CUSTOM_INPUT_DESCRIPTION =
+  "Enter values in any order. Selection Sort will sort them in place.";
 
 export function SelectionSortPage() {
   const visualizer = useSelectionSortVisualizer();
@@ -48,15 +52,19 @@ export function SelectionSortPage() {
       spaceComplexity="O(1)"
       timeComplexityInfo={SELECTION_SORT_TIME_INFO}
       spaceComplexityInfo={SELECTION_SORT_SPACE_INFO}
-      showRightPanel={false}
       leftPanelSectionLabel={DATA_SETUP_LABEL}
       leftPanelSectionIcon={DATA_SETUP_ICON}
       leftPanel={
-        <SortDatasetSetupPanel
+        <DatasetSetupPanel
           arraySize={visualizer.arraySize}
           onArraySizeChange={visualizer.setArraySize}
           onRandomize={visualizer.randomizeData}
-          onApplyCustomDataset={visualizer.applyCustomDataset}
+          preserveArrayOrder
+          customInputDescription={SELECTION_SORT_CUSTOM_INPUT_DESCRIPTION}
+          arrayPlaceholder="64, 25, 12, 22, 11"
+          onApplyCustomDataset={({ array }) =>
+            visualizer.applyCustomDataset(array)
+          }
         />
       }
     >
@@ -78,7 +86,6 @@ export function SelectionSortPage() {
         statusSection={statusContent}
         codeColumn={
           <CodePanel
-            variant="embedded"
             codeByLanguage={selectionSortCode}
             activeLine={visualizer.currentStep?.activeLine ?? 1}
             stepExplanation={
@@ -89,7 +96,7 @@ export function SelectionSortPage() {
         }
         explanationColumn={
           <ExplanationPanelShell>
-            <SelectionSortExplanationPanel />
+            <AlgorithmExplanationContent {...selectionSortExplanation} />
           </ExplanationPanelShell>
         }
         playerControls={

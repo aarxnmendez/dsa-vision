@@ -1,11 +1,12 @@
 import { getStepTransitionMs } from "../constants/player";
 import { binarySearchCode } from "../data/binarySearchCode";
+import { binarySearchExplanation } from "../data/binarySearchExplanation";
 import { DatasetSetupPanel } from "../components/controls/DatasetSetupPanel";
 import { PlayerControls } from "../components/controls/PlayerControls";
 import { AlgorithmPageShell } from "../components/layout/AlgorithmPageShell";
 import { VisualizerLayout } from "../components/layout/VisualizerLayout";
+import { AlgorithmExplanationContent } from "../components/panels/AlgorithmExplanationContent";
 import { CodePanel } from "../components/panels/CodePanel";
-import { ExplanationPanel } from "../components/panels/ExplanationPanel";
 import { ExplanationPanelShell } from "../components/panels/ExplanationPanelShell";
 import { StatusCard } from "../components/panels/StatusCard";
 import { ArrayVisualizer } from "../components/visualizers/ArrayVisualizer";
@@ -24,6 +25,9 @@ import {
 
 const PAGE_DESCRIPTION =
   "Divide-and-conquer search on a sorted array by halving the active interval each step.";
+
+const BINARY_SEARCH_CUSTOM_INPUT_DESCRIPTION =
+  "Values are automatically sorted for Binary Search.";
 
 export function BinarySearchPage() {
   const visualizer = useBinarySearchVisualizer();
@@ -49,17 +53,18 @@ export function BinarySearchPage() {
       spaceComplexity="O(1)"
       timeComplexityInfo={BINARY_SEARCH_TIME_INFO}
       spaceComplexityInfo={BINARY_SEARCH_SPACE_INFO}
-      showRightPanel={false}
       leftPanelSectionLabel={DATA_SETUP_LABEL}
       leftPanelSectionIcon={DATA_SETUP_ICON}
       leftPanel={
         <DatasetSetupPanel
+          showTargetInput
           array={visualizer.array}
           arraySize={visualizer.arraySize}
           target={visualizer.target}
           onArraySizeChange={visualizer.setArraySize}
           onTargetChange={visualizer.setTarget}
           onRandomize={visualizer.randomizeData}
+          customInputDescription={BINARY_SEARCH_CUSTOM_INPUT_DESCRIPTION}
           onApplyCustomDataset={({ array, target }) =>
             visualizer.applyCustomDataset(array, target)
           }
@@ -80,7 +85,6 @@ export function BinarySearchPage() {
         statusSection={statusContent}
         codeColumn={
           <CodePanel
-            variant="embedded"
             codeByLanguage={binarySearchCode}
             activeLine={visualizer.currentStep?.codeLine ?? 1}
             stepExplanation={
@@ -92,7 +96,7 @@ export function BinarySearchPage() {
         }
         explanationColumn={
           <ExplanationPanelShell>
-            <ExplanationPanel />
+            <AlgorithmExplanationContent {...binarySearchExplanation} />
           </ExplanationPanelShell>
         }
         playerControls={
