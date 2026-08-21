@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import { PanelSlideShell } from "./PanelSlideShell";
-import { Icon } from "../ui/Icon";
+import { Icon, type IconName } from "../ui/Icon";
 
 interface LeftSidebarProps {
   isOpen: boolean;
   onToggle: () => void;
   sectionLabel?: string;
-  sectionIcon?: string;
+  sectionIcon?: IconName;
   children: React.ReactNode;
 }
 
@@ -57,58 +57,6 @@ export function LeftSidebar({
         )}
 
         {children}
-      </aside>
-    </PanelSlideShell>
-  );
-}
-
-interface RightPanelProps {
-  isOpen: boolean;
-  width: number;
-  isResizing: boolean;
-  onToggle: () => void;
-  onResizeStart: (event: React.MouseEvent) => void;
-  children: React.ReactNode;
-}
-
-export function RightPanel({
-  isOpen,
-  width,
-  isResizing,
-  onToggle,
-  onResizeStart,
-  children,
-}: RightPanelProps) {
-  return (
-    <PanelSlideShell
-      side="right"
-      isOpen={isOpen}
-      isResizing={isResizing}
-      onToggle={onToggle}
-      style={{ width }}
-    >
-      <aside
-        className={[
-          "relative h-full w-full flex overflow-hidden",
-          isOpen ? "pointer-events-auto" : "pointer-events-none",
-          "bg-surface-container-lowest border-l-4 border-surface-variant",
-        ].join(" ")}
-      >
-        <button
-          type="button"
-          aria-label="Resize code panel"
-          onMouseDown={onResizeStart}
-          className={[
-            "absolute left-0 top-0 h-full w-2 -translate-x-1/2 cursor-col-resize z-10 group",
-            "hover:bg-primary/20 active:bg-primary/30 transition-colors",
-          ].join(" ")}
-        >
-          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-12 rounded-full bg-surface-variant group-hover:bg-primary group-active:bg-primary transition-colors" />
-        </button>
-
-        <div className="flex flex-col h-full w-full min-w-0 overflow-hidden">
-          {children}
-        </div>
       </aside>
     </PanelSlideShell>
   );

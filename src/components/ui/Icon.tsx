@@ -25,7 +25,7 @@ import {
   X,
 } from "lucide-react";
 
-const iconMap: Record<string, LucideIcon> = {
+const iconMap = {
   arrow_back: ArrowLeft,
   check: Check,
   close: X,
@@ -49,20 +49,18 @@ const iconMap: Record<string, LucideIcon> = {
   sort: ArrowDownUp,
   sync_alt: ArrowLeftRight,
   timer: Timer,
-};
+} as const satisfies Record<string, LucideIcon>;
+
+export type IconName = keyof typeof iconMap;
 
 interface IconProps {
-  name: string;
+  name: IconName;
   className?: string;
   filled?: boolean;
 }
 
 export function Icon({ name, className = "", filled = true }: IconProps) {
   const Component = iconMap[name];
-
-  if (!Component) {
-    return null;
-  }
 
   return (
     <span

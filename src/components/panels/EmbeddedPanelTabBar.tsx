@@ -3,10 +3,10 @@ import {
   EMBEDDED_PANEL_HEADER_CLASS,
   EMBEDDED_PANEL_TAB_CLASS,
 } from "../../constants/visualizerTokens";
-import { Icon } from "../ui/Icon";
+import { Icon, type IconName } from "../ui/Icon";
 
 interface EmbeddedPanelTabBarProps {
-  icon: string;
+  icon: IconName;
   label: string;
   trailing?: ReactNode;
 }

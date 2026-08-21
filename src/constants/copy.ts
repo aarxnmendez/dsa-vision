@@ -1,6 +1,8 @@
+import type { IconName } from "../components/ui/Icon";
+
 export const DATA_SETUP_LABEL = "Data Setup";
 
-export const DATA_SETUP_ICON = "database";
+export const DATA_SETUP_ICON: IconName = "database";
 
 export const APPLY_DATA_LABEL = "Apply Data";
 
