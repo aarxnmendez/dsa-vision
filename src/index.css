@@ -100,6 +100,10 @@
 }
 
 @layer base {
+  html {
+    font-family: "Nunito Sans", system-ui, sans-serif;
+  }
+
   body {
     @apply bg-background text-on-background font-body-md antialiased;
   }
