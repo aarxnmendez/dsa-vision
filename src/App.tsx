@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { APP_ROUTES } from "./constants/routes";
 import { MobileNoticeOverlay } from "./components/layout/MobileNoticeOverlay";
+import { ArrayPage } from "./pages/ArrayPage";
 import { BigONotationPage } from "./pages/BigONotationPage";
 import { BinarySearchPage } from "./pages/BinarySearchPage";
 import { CatalogPage } from "./pages/CatalogPage";
@@ -11,6 +12,7 @@ function App() {
     <>
       <Routes>
         <Route path={APP_ROUTES.catalog} element={<CatalogPage />} />
+        <Route path={APP_ROUTES.array} element={<ArrayPage />} />
         <Route path={APP_ROUTES.binarySearch} element={<BinarySearchPage />} />
         <Route path={APP_ROUTES.selectionSort} element={<SelectionSortPage />} />
         <Route path={APP_ROUTES.bigONotation} element={<BigONotationPage />} />

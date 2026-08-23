@@ -3,6 +3,21 @@ import { APP_ROUTES } from "../constants/routes";
 
 export const algorithms: AlgorithmMeta[] = [
   {
+    id: "array",
+    title: "Array",
+    description:
+      "Contiguous memory block with O(1) index access and O(n) insert/delete shifts.",
+    complexity: "O(1) access",
+    complexityVariant: "success",
+    difficulty: "beginner",
+    category: "data-structures",
+    tags: ["array", "arrays", "data-structures", "contiguous", "memory"],
+    imageUrl: "/images/array-cover.jpg",
+    imageBg: "bg-array-cover-bg",
+    availability: "available",
+    route: APP_ROUTES.array,
+  },
+  {
     id: "binary-search",
     title: "Binary Search",
     description:
@@ -11,6 +26,7 @@ export const algorithms: AlgorithmMeta[] = [
     complexityVariant: "success",
     difficulty: "beginner",
     category: "arrays",
+    tags: ["binary-search", "arrays", "search", "sorted"],
     imageUrl: "/images/binary-search-cover.jpg",
     imageBg: "bg-primary-fixed",
     availability: "available",
@@ -25,6 +41,7 @@ export const algorithms: AlgorithmMeta[] = [
     complexityVariant: "warning",
     difficulty: "beginner",
     category: "sorting",
+    tags: ["selection-sort", "sorting", "arrays"],
     imageUrl: "/images/selection-sort-cover.jpg",
     imageBg: "bg-tertiary-fixed",
     availability: "available",
@@ -39,6 +56,7 @@ export const algorithms: AlgorithmMeta[] = [
     complexityVariant: "error",
     difficulty: "intermediate",
     category: "sorting",
+    tags: ["merge-sort", "sorting", "arrays", "divide-and-conquer"],
     imageUrl:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuAf8GAgzvu4ElCDezZG9869ysME2kz57jRW5TcHC7cHz5fb3x2q9YWcwiL1SjiN5h29VVX_-MSIdnvDcBcmBW7jG5XHG7pBEYatL_sdkZ0RahLQfaqQaocVdD8zB2y9YbTaKzdVHbxFLwS3SdKpupr1kOjAByhWgOl1wJPt08JA49DcsVyKWOWsn_m7mOYguZnn-69ytUBEVxg0VsgxxXxks_7AlqfjTfCH5-JnGZaEzeaZ9FQsQqur",
     imageBg: "bg-error-container",
@@ -53,6 +71,7 @@ export const algorithms: AlgorithmMeta[] = [
     complexityVariant: "tertiary",
     difficulty: "advanced",
     category: "graphs",
+    tags: ["dijkstra", "graphs", "shortest-path"],
     imageUrl:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuA2O89TvIijsmES-2vtltSz-YL29mbwePO7mvmRdyKinspxgcpiiLLza6VVENstGkjYZedkH4aSF3KhWuZaHksjeopispw2VSJdPk-Pz8A656Oyg1NMb6LImY2xaTCT2JEunfmZKPz6kebf0l6l5vbKUQ_fa6UWkxbYbnETaE_LPOs0gLZcGXaevbMzaHTN0Tk7MZj6aHP3VxJ7vNhfbDIEWhoJ-bE-OfmTz7Rqb6Hstk_TTMH5fG1C",
     imageBg: "bg-tertiary-fixed",

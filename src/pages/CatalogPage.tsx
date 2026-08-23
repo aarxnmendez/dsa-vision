@@ -6,6 +6,10 @@ import { SearchBar } from "../components/catalog/SearchBar";
 import { CatalogLayout } from "../components/layout/CatalogLayout";
 import { algorithms } from "../data/algorithms";
 import type { AlgorithmCategory } from "../types/algorithm";
+import {
+  algorithmMatchesCategory,
+  algorithmMatchesSearch,
+} from "../utils/catalogFilter";
 
 export function CatalogPage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -15,13 +19,11 @@ export function CatalogPage() {
     const normalizedQuery = searchQuery.trim().toLowerCase();
 
     return algorithms.filter((algorithm) => {
-      const matchesCategory =
-        activeCategory === "all" || algorithm.category === activeCategory;
-
-      const matchesSearch =
-        normalizedQuery.length === 0 ||
-        algorithm.title.toLowerCase().includes(normalizedQuery) ||
-        algorithm.description.toLowerCase().includes(normalizedQuery);
+      const matchesCategory = algorithmMatchesCategory(
+        algorithm,
+        activeCategory,
+      );
+      const matchesSearch = algorithmMatchesSearch(algorithm, normalizedQuery);
 
       return matchesCategory && matchesSearch;
     });

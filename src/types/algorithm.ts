@@ -3,6 +3,7 @@ import type { VisualizerRoute } from "../constants/routes";
 export type AlgorithmCategory =
   | "all"
   | "arrays"
+  | "data-structures"
   | "sorting"
   | "trees"
   | "graphs";
@@ -19,6 +20,7 @@ interface AlgorithmMetaBase {
   complexityVariant: "success" | "warning" | "error" | "tertiary";
   difficulty: Difficulty;
   category: Exclude<AlgorithmCategory, "all">;
+  tags: string[];
   imageUrl: string;
   imageBg: string;
 }
