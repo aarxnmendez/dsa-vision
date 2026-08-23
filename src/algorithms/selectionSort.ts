@@ -1,3 +1,5 @@
+import { generateRandomArray } from "../utils/randomArray";
+
 export interface SelectionSortStep {
   array: number[];
   sortedBoundary: number;
@@ -232,18 +234,5 @@ export function generateSelectionSortSteps(input: number[]): SelectionSortStep[]
 }
 
 export function generateUnsortedArray(size: number): number[] {
-  const values = new Set<number>();
-
-  while (values.size < size) {
-    values.add(Math.floor(Math.random() * 99) + 1);
-  }
-
-  const array = Array.from(values);
-
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-
-  return array;
+  return generateRandomArray(size);
 }
