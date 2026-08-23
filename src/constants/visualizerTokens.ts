@@ -1,6 +1,9 @@
 import type { SortBarHighlight } from "../types/visualizer";
 import type { CellHighlight } from "../types/visualizer";
 
+export const VISUALIZER_CELL_BASE_CLASS =
+  "bg-surface-container border-2 border-surface-variant border-b-4 text-on-surface shadow-sm";
+
 export const CODE_ACTIVE_LINE_CLASS =
   "border-blue-500 bg-blue-500/15 font-semibold text-slate-100";
 
@@ -77,6 +80,13 @@ export const BINARY_SEARCH_CELL_STYLES: Record<CellHighlight, string> = {
   swapping: "",
 };
 
+/** Amber glow mirroring BINARY_SEARCH_CELL_STYLES.comparing intensity. */
+export const ARRAY_STRUCTURE_SHIFT_GLOW =
+  "scale-105 shadow-[0_0_15px_rgba(245,158,11,0.5)] ring-4 ring-amber-400/40";
+
+export const ARRAY_STRUCTURE_SHIFT_SOURCE_GLOW =
+  "shadow-[0_0_15px_rgba(245,158,11,0.35)] ring-4 ring-amber-400/30";
+
 /** @deprecated Use BINARY_SEARCH_CELL_STYLES or sort-bar tokens per visualizer. */
 export const VISUALIZER_CELL_STYLES = BINARY_SEARCH_CELL_STYLES;
 
@@ -99,3 +109,145 @@ export const BINARY_SEARCH_SPACE_INFO = {
   title: "Constant Space",
   text: "The algorithm uses a fixed amount of additional memory (pointers only), regardless of the array size.",
 };
+
+export const ARRAY_STRUCTURE_TIME_INFO = {
+  title: "Mixed Complexity",
+  text: "Index access is O(1), but insertions and deletions away from the end may shift up to n elements, costing O(n) time.",
+};
+
+export const ARRAY_STRUCTURE_SPACE_INFO = {
+  title: "Contiguous Storage",
+  text: "Elements are stored in adjacent memory slots. The structure uses O(n) space for n values plus any reserved capacity.",
+};
+
+export type ArrayStructureLegendToken =
+  | "active"
+  | "shift"
+  | "success"
+  | "vacant";
+
+export const ARRAY_STRUCTURE_LEGEND_ITEMS: {
+  token: ArrayStructureLegendToken;
+  label: string;
+}[] = [
+  { token: "active", label: "Active / Accessed" },
+  { token: "shift", label: "Shift / Reorder" },
+  { token: "success", label: "Inserted / Success" },
+  { token: "vacant", label: "Vacant / Memory" },
+];
+
+export const ARRAY_STRUCTURE_LEGEND_SWATCH_CLASS: Record<
+  ArrayStructureLegendToken,
+  string
+> = {
+  active: "border border-solid border-blue-500 bg-blue-50",
+  shift: "border border-solid border-amber-500 bg-amber-50",
+  success: "border border-solid border-emerald-500 bg-emerald-50",
+  vacant: "border border-dashed border-surface-variant bg-slate-50",
+};
+
+const ARRAY_STRUCTURE_HIGHLIGHT_TOKEN: Record<
+  import("../types/arrayStructure").ArrayStructureHighlight,
+  ArrayStructureLegendToken | null
+> = {
+  default: null,
+  accessed: "active",
+  comparing: "active",
+  shifting: "shift",
+  "shift-source": "shift",
+  "shift-target": "shift",
+  deleted: "shift",
+  inserted: "success",
+  found: "success",
+  vacant: "vacant",
+};
+
+export function getArrayStructureLegendToken(
+  highlight: import("../types/arrayStructure").ArrayStructureHighlight,
+): ArrayStructureLegendToken | null {
+  return ARRAY_STRUCTURE_HIGHLIGHT_TOKEN[highlight];
+}
+
+const ARRAY_STRUCTURE_CELL_LAYOUT =
+  "relative flex h-14 w-14 items-center justify-center rounded-xl border-2 transition-all";
+
+export const ARRAY_STRUCTURE_CELL_APPEARANCE: Record<
+  import("../types/arrayStructure").ArrayStructureHighlight,
+  string
+> = {
+  default: [
+    ARRAY_STRUCTURE_CELL_LAYOUT,
+    "border-slate-200 bg-white shadow-sm shadow-slate-200/50",
+  ].join(" "),
+  accessed: [
+    ARRAY_STRUCTURE_CELL_LAYOUT,
+    "border-blue-500 bg-blue-50/60",
+    BINARY_SEARCH_CELL_STYLES.comparing,
+  ].join(" "),
+  comparing: [
+    ARRAY_STRUCTURE_CELL_LAYOUT,
+    "border-blue-500 bg-blue-50/60",
+    BINARY_SEARCH_CELL_STYLES.comparing,
+  ].join(" "),
+  shifting: [
+    ARRAY_STRUCTURE_CELL_LAYOUT,
+    "border-solid border-amber-500 bg-amber-50/60",
+    ARRAY_STRUCTURE_SHIFT_GLOW,
+  ].join(" "),
+  "shift-source": [
+    ARRAY_STRUCTURE_CELL_LAYOUT,
+    "border-dashed border-amber-500 bg-amber-50/30 opacity-80",
+    ARRAY_STRUCTURE_SHIFT_SOURCE_GLOW,
+  ].join(" "),
+  "shift-target": [
+    ARRAY_STRUCTURE_CELL_LAYOUT,
+    "border-solid border-amber-500 bg-amber-50/60",
+    ARRAY_STRUCTURE_SHIFT_GLOW,
+  ].join(" "),
+  deleted: [
+    ARRAY_STRUCTURE_CELL_LAYOUT,
+    "border-dashed border-amber-500 bg-amber-50/30 opacity-80",
+    ARRAY_STRUCTURE_SHIFT_SOURCE_GLOW,
+  ].join(" "),
+  inserted: [
+    ARRAY_STRUCTURE_CELL_LAYOUT,
+    "border-emerald-500 bg-emerald-50/60",
+    BINARY_SEARCH_CELL_STYLES.found,
+  ].join(" "),
+  found: [
+    ARRAY_STRUCTURE_CELL_LAYOUT,
+    "border-emerald-500 bg-emerald-50/60",
+    BINARY_SEARCH_CELL_STYLES.found,
+  ].join(" "),
+  vacant: [
+    ARRAY_STRUCTURE_CELL_LAYOUT,
+    "border-dashed border-slate-200 bg-slate-50 shadow-sm shadow-slate-200/50",
+  ].join(" "),
+};
+
+/** @deprecated Use ARRAY_STRUCTURE_CELL_APPEARANCE */
+export const ARRAY_STRUCTURE_CELL_STYLES = ARRAY_STRUCTURE_CELL_APPEARANCE;
+
+export const ARRAY_STRUCTURE_POINTER_CELL_APPEARANCE: Record<
+  "active" | "shift" | "success",
+  string
+> = {
+  active: [
+    ARRAY_STRUCTURE_CELL_LAYOUT,
+    "border-blue-500 bg-blue-50/60",
+    BINARY_SEARCH_CELL_STYLES.comparing,
+  ].join(" "),
+  shift: [
+    ARRAY_STRUCTURE_CELL_LAYOUT,
+    "border-solid border-amber-500 bg-amber-50/60",
+    ARRAY_STRUCTURE_SHIFT_GLOW,
+  ].join(" "),
+  success: [
+    ARRAY_STRUCTURE_CELL_LAYOUT,
+    "border-emerald-500 bg-emerald-50/60",
+    BINARY_SEARCH_CELL_STYLES.found,
+  ].join(" "),
+};
+
+export const LEFT_PANEL_SCROLL_CLASS =
+  "flex-1 min-h-0 overflow-y-auto overscroll-contain pb-28 pr-1";

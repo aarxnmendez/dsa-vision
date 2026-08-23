@@ -6,6 +6,7 @@ import type {
 import {
   ARRAY_INDEX_LABEL_CLASS,
   BINARY_SEARCH_CELL_STYLES,
+  VISUALIZER_CELL_BASE_CLASS,
 } from "../../constants/visualizerTokens";
 import { ChevronIcon } from "../ui/ChevronIcon";
 
@@ -54,8 +55,7 @@ const pointerColors: Record<
   },
 };
 
-const cellBase =
-  "bg-surface-container border-2 border-surface-variant border-b-4 text-on-surface";
+const cellBase = VISUALIZER_CELL_BASE_CLASS;
 
 const cellHighlightStyles = BINARY_SEARCH_CELL_STYLES;
 
