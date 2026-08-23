@@ -17,6 +17,7 @@ interface DatasetSetupPanelProps {
   preserveArrayOrder?: boolean;
   customInputDescription?: string;
   arrayPlaceholder?: string;
+  embedded?: boolean;
 }
 
 export function DatasetSetupPanel({
@@ -31,6 +32,7 @@ export function DatasetSetupPanel({
   preserveArrayOrder = false,
   customInputDescription,
   arrayPlaceholder,
+  embedded = false,
 }: DatasetSetupPanelProps) {
   const idPrefix = useId().replace(/:/g, "");
   const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
@@ -49,7 +51,12 @@ export function DatasetSetupPanel({
 
   return (
     <>
-      <div className="flex flex-col gap-4 overflow-y-auto pr-2">
+      <div
+        className={[
+          "flex flex-col gap-3",
+          embedded ? "" : "overflow-y-auto pr-2",
+        ].join(" ")}
+      >
         <div className="bg-surface-container-lowest p-4 rounded-2xl border-2 border-surface-variant flex flex-col gap-4">
           <div className="flex flex-col gap-3">
             <div className="flex justify-between items-center">

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { LEFT_PANEL_SCROLL_CLASS } from "../../constants/visualizerTokens";
 import { PanelSlideShell } from "./PanelSlideShell";
 import { Icon, type IconName } from "../ui/Icon";
 
@@ -28,13 +29,13 @@ export function LeftSidebar({
     >
       <aside
         className={[
-          "h-full flex flex-col p-margin-mobile gap-stack-md",
+          "h-full flex min-h-0 flex-col overflow-hidden p-margin-mobile",
           isOpen ? "pointer-events-auto" : "pointer-events-none",
           "bg-surface-container-low text-primary font-body-md text-body-md",
-          "border-r-4 border-surface-container-highest overflow-y-auto",
+          "border-r-4 border-surface-container-highest",
         ].join(" ")}
       >
-        <div className="flex flex-col gap-4 mb-2">
+        <div className="flex shrink-0 flex-col gap-3 pb-3">
           <div className="font-display text-headline-md font-black text-primary tracking-tight">
             DSAVision
           </div>
@@ -45,18 +46,16 @@ export function LeftSidebar({
             <Icon name="arrow_back" className="text-[20px]" />
             Back to Catalog
           </Link>
-        </div>
 
-        {sectionLabel && (
-          <div className="mb-2">
-            <span className="inline-flex items-center gap-2 bg-surface-container text-on-surface-variant font-label-caps text-label-caps px-3 py-2 rounded-xl border border-surface-variant">
+          {sectionLabel && (
+            <span className="inline-flex w-fit items-center gap-2 bg-surface-container text-on-surface-variant font-label-caps text-label-caps px-3 py-2 rounded-xl border border-surface-variant">
               <Icon name={sectionIcon} className="text-[18px]" />
               {sectionLabel}
             </span>
-          </div>
-        )}
+          )}
+        </div>
 
-        {children}
+        <div className={LEFT_PANEL_SCROLL_CLASS}>{children}</div>
       </aside>
     </PanelSlideShell>
   );
