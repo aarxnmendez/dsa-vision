@@ -4,6 +4,7 @@ import { MobileNoticeOverlay } from "./components/layout/MobileNoticeOverlay";
 import { ArrayPage } from "./pages/ArrayPage";
 import { BigONotationPage } from "./pages/BigONotationPage";
 import { BinarySearchPage } from "./pages/BinarySearchPage";
+import { LinkedListPage } from "./pages/LinkedListPage";
 import { CatalogPage } from "./pages/CatalogPage";
 import { SelectionSortPage } from "./pages/SelectionSortPage";
 
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path={APP_ROUTES.catalog} element={<CatalogPage />} />
         <Route path={APP_ROUTES.array} element={<ArrayPage />} />
+        <Route path={APP_ROUTES.linkedList} element={<LinkedListPage />} />
         <Route path={APP_ROUTES.binarySearch} element={<BinarySearchPage />} />
         <Route path={APP_ROUTES.selectionSort} element={<SelectionSortPage />} />
         <Route path={APP_ROUTES.bigONotation} element={<BigONotationPage />} />

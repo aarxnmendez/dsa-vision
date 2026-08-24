@@ -18,6 +18,27 @@ export const algorithms: AlgorithmMeta[] = [
     route: APP_ROUTES.array,
   },
   {
+    id: "linked-list",
+    title: "Linked List",
+    description:
+      "Pointer-based nodes supporting singly, doubly, and circular variants with O(1) head ops.",
+    complexity: "O(1)–O(n)",
+    complexityVariant: "success",
+    difficulty: "beginner",
+    category: "data-structures",
+    tags: [
+      "linked-list",
+      "linked-lists",
+      "data-structures",
+      "pointers",
+      "nodes",
+    ],
+    imageUrl: "/images/linked-list-cover.jpeg",
+    imageBg: "bg-linked-list-cover-bg",
+    availability: "available",
+    route: APP_ROUTES.linkedList,
+  },
+  {
     id: "binary-search",
     title: "Binary Search",
     description:
