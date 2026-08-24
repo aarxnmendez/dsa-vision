@@ -251,3 +251,102 @@ export const ARRAY_STRUCTURE_POINTER_CELL_APPEARANCE: Record<
 
 export const LEFT_PANEL_SCROLL_CLASS =
   "flex-1 min-h-0 overflow-y-auto overscroll-contain pb-28 pr-1";
+
+export const LINKED_LIST_TIME_INFO = {
+  title: "Pointer-Based Complexity",
+  text: "With head and tail pointers, insert at head and insert at tail are O(1). Delete at head is also O(1). Delete at tail stays O(n) in singly linked lists because you must walk to the penultimate node; doubly linked lists achieve O(1) tail deletion. Search, access by index, and reverse remain O(n).",
+};
+
+export const LINKED_LIST_SPACE_INFO = {
+  title: "Node Overhead",
+  text: "Each node stores a value plus pointer(s). Doubly linked lists use extra space for prev links but enable O(1) backward traversal.",
+};
+
+export const LINKED_LIST_CONNECTION_STYLES: Record<
+  import("../types/linkedListStructure").LinkedListConnectionState,
+  { stroke: string; strokeWidth: number; strokeDasharray?: string; className: string }
+> = {
+  idle: {
+    stroke: "#94a3b8",
+    strokeWidth: 2,
+    className: "opacity-80",
+  },
+  traversing: {
+    stroke: "#06b6d4",
+    strokeWidth: 3,
+    className: "drop-shadow-[0_0_8px_rgba(6,182,212,0.65)]",
+  },
+  relinking: {
+    stroke: "#10b981",
+    strokeWidth: 3,
+    className: "drop-shadow-[0_0_10px_rgba(16,185,129,0.55)]",
+  },
+  breaking: {
+    stroke: "#f97316",
+    strokeWidth: 3,
+    strokeDasharray: "6 4",
+    className: "drop-shadow-[0_0_8px_rgba(249,115,22,0.45)]",
+  },
+  active: {
+    stroke: "#3b82f6",
+    strokeWidth: 3,
+    className: "drop-shadow-[0_0_10px_rgba(59,130,246,0.5)]",
+  },
+};
+
+const LINKED_LIST_NODE_LAYOUT =
+  "relative flex items-stretch rounded-xl border-2 transition-all shadow-sm";
+
+export const LINKED_LIST_PORT_NULL_LABEL_CLASS =
+  "font-mono text-[10px] tracking-tight text-slate-400 dark:text-slate-500 opacity-80 select-none";
+
+export const LINKED_LIST_NODE_APPEARANCE: Record<
+  import("../types/linkedListStructure").LinkedListNodeHighlight,
+  string
+> = {
+  default: [LINKED_LIST_NODE_LAYOUT, "border-slate-200 bg-white"].join(" "),
+  active: [
+    LINKED_LIST_NODE_LAYOUT,
+    "border-blue-500 bg-blue-50/60 scale-105",
+    BINARY_SEARCH_CELL_STYLES.comparing,
+  ].join(" "),
+  accessed: [
+    LINKED_LIST_NODE_LAYOUT,
+    "border-blue-400 bg-blue-50/50",
+  ].join(" "),
+  comparing: [
+    LINKED_LIST_NODE_LAYOUT,
+    "border-blue-500 bg-blue-50/60",
+    BINARY_SEARCH_CELL_STYLES.comparing,
+  ].join(" "),
+  creating: [
+    LINKED_LIST_NODE_LAYOUT,
+    "border-amber-500 bg-white dark:bg-surface-container-lowest",
+    "text-amber-600 ring-2 ring-amber-400/30",
+  ].join(" "),
+  inserted: [
+    LINKED_LIST_NODE_LAYOUT,
+    "border-emerald-500 bg-white dark:bg-surface-container-lowest",
+    "text-emerald-600 ring-2 ring-emerald-400/20",
+    BINARY_SEARCH_CELL_STYLES.found,
+  ].join(" "),
+  deleted: [
+    LINKED_LIST_NODE_LAYOUT,
+    "border-dashed border-amber-500 bg-white dark:bg-surface-container-lowest opacity-80",
+    "text-amber-600 ring-2 ring-amber-400/20",
+  ].join(" "),
+  found: [
+    LINKED_LIST_NODE_LAYOUT,
+    "border-emerald-500 bg-white dark:bg-surface-container-lowest",
+    "text-emerald-600 ring-2 ring-emerald-400/30",
+    BINARY_SEARCH_CELL_STYLES.found,
+  ].join(" "),
+};
+
+export const LINKED_LIST_LEGEND_ITEMS = [
+  { label: "Active / Traversing", swatch: "border border-blue-500 bg-blue-50" },
+  { label: "New node (pending)", swatch: "border border-amber-500 bg-white ring-2 ring-amber-400/30" },
+  { label: "Relinking", swatch: "border border-emerald-500 bg-emerald-50" },
+  { label: "Breaking", swatch: "border border-dashed border-amber-500 bg-amber-50" },
+  { label: "Idle link", swatch: "border border-slate-300 bg-slate-50" },
+] as const;

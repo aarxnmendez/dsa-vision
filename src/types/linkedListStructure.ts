@@ -48,7 +48,8 @@ export interface LinkedListNodeState {
   isHead: boolean;
   isTail: boolean;
   showNewLabel?: boolean;
-  hideNextPort?: boolean;
+  nextIsNull?: boolean;
+  prevIsNull?: boolean;
   inlinePlacement?: LinkedListFloatingPlacement;
 }
 
