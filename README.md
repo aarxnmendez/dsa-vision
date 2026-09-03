@@ -18,7 +18,7 @@ DSAVision turns abstract pointer logic and complexity analysis into **step-by-st
 | :-- | :-- | :-- |
 | **1** | Binary Search · Big-O Notation (time & space reference) | ✅ Complete |
 | **2** | Selection Sort · Array (contiguous memory ops) · Linked List (Singly, Doubly, Circular — O(1) head/tail ops) | ✅ Complete |
-| **3** | Stacks & Queues | ⏳ Coming soon |
+| **3** | Stack (LIFO — O(1) push/pop/peek, O(n) clear) · Queues | Stack ✅ · Queues ⏳ |
 | **4** | Merge Sort · Graph algorithms (Dijkstra) | ⏳ Planned |
 
 ---
@@ -47,6 +47,7 @@ DSAVision turns abstract pointer logic and complexity analysis into **step-by-st
 | `/selection-sort` | Selection sort bar visualizer |
 | `/array` | Array insert, delete, shift & access operations |
 | `/linked-list` | Singly · Doubly · Circular — 8 operations (insert, delete, search, reverse) |
+| `/stack` | Stack — push, pop, peek, clear (O(1) push/pop/peek, O(n) clear) |
 
 ---
 
@@ -132,7 +133,7 @@ The linked list module is the most complete structure visualizer in the catalog:
 
 ## Roadmap
 
-- [ ] Stacks & Queues visualizer
+- [ ] Queue visualizer
 - [ ] Merge Sort
 - [ ] Graph visualizer (BFS, DFS, Dijkstra)
 - [ ] Tree structures (BST, traversals)

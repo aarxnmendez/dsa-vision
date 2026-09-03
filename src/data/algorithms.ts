@@ -39,6 +39,21 @@ export const algorithms: AlgorithmMeta[] = [
     route: APP_ROUTES.linkedList,
   },
   {
+    id: "stack",
+    title: "Stack",
+    description:
+      "LIFO stack with O(1) push, pop, and peek. Bounded capacity triggers overflow.",
+    complexity: "O(1) ops",
+    complexityVariant: "success",
+    difficulty: "beginner",
+    category: "data-structures",
+    tags: ["stack", "stacks", "data-structures", "lifo"],
+    imageUrl: "/images/stack-cover.jpg",
+    imageBg: "bg-stack-cover-bg",
+    availability: "available",
+    route: APP_ROUTES.stack,
+  },
+  {
     id: "binary-search",
     title: "Binary Search",
     description:

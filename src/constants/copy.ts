@@ -11,4 +11,7 @@ export const CUSTOM_DATA_INPUT_TITLE = "Custom Data Input";
 export const VISUALIZER_IDLE_MESSAGE =
   "Configure the data in the left panel, then press Play or Forward to begin.";
 
+export const STACK_IDLE_MESSAGE =
+  "Configure the stack parameters in the left panel, then press Play or Forward to step through operations.";
+
 export const CODE_PANEL_IDLE_FALLBACK = VISUALIZER_IDLE_MESSAGE;
