@@ -350,3 +350,136 @@ export const LINKED_LIST_LEGEND_ITEMS = [
   { label: "Breaking", swatch: "border border-dashed border-amber-500 bg-amber-50" },
   { label: "Idle link", swatch: "border border-slate-300 bg-slate-50" },
 ] as const;
+
+export const STACK_TIME_INFO = {
+  title: "Constant Time Operations",
+  text: "Push, pop, and peek access only the top pointer, executing in O(1) constant time regardless of element count. Operations requiring full structure traversal, such as clear, run in O(n) time.",
+};
+
+export const STACK_SPACE_INFO = {
+  title: "Linear Auxiliary Space",
+  text: "Space complexity is O(n) proportional to the maximum stored elements, plus O(1) memory for the top pointer.",
+};
+
+export const STACK_BUCKET_CLASS =
+  "transition-[filter,box-shadow] duration-300 ease-out";
+
+export const STACK_BUCKET_ERROR_CLASS =
+  "drop-shadow-[0_0_24px_rgba(239,68,68,0.55)] ring-2 ring-red-400/40";
+
+export const STACK_CAPACITY_LABEL_CLASS =
+  "mb-3 text-center text-xs font-semibold uppercase tracking-wider transition-colors duration-200";
+
+export const STACK_CAPACITY_LABEL_NEUTRAL_CLASS = "text-on-surface-variant";
+
+export const STACK_CAPACITY_LABEL_OVERFLOW_CLASS = "text-error dark:text-red-400";
+
+export interface StackBlockStyle {
+  fill: string;
+  stroke: string;
+  strokeWidth: number;
+  textFill: string;
+  textOpacity: number;
+  fontWeight: number;
+}
+
+export const STACK_BLOCK_IDLE_TOP: StackBlockStyle = {
+  fill: "#eff6ff",
+  stroke: "#3b82f6",
+  strokeWidth: 2,
+  textFill: "#1e3a8a",
+  textOpacity: 1,
+  fontWeight: 700,
+};
+
+export const STACK_BLOCK_IDLE_BODY: StackBlockStyle = {
+  fill: "#f8fafc",
+  stroke: "#cbd5e1",
+  strokeWidth: 1.5,
+  textFill: "#64748b",
+  textOpacity: 0.4,
+  fontWeight: 500,
+};
+
+export const STACK_BLOCK_HIGHLIGHT_STYLE: Record<
+  import("../types/stackStructure").StackItemHighlight,
+  StackBlockStyle | null
+> = {
+  default: null,
+  pushing: {
+    fill: "#ecfeff",
+    stroke: "#06b6d4",
+    strokeWidth: 2,
+    textFill: "#0e7490",
+    textOpacity: 1,
+    fontWeight: 700,
+  },
+  popping: {
+    fill: "#fff7ed",
+    stroke: "#f97316",
+    strokeWidth: 2,
+    textFill: "#c2410c",
+    textOpacity: 1,
+    fontWeight: 700,
+  },
+  peeking: {
+    fill: "#eff6ff",
+    stroke: "#3b82f6",
+    strokeWidth: 2,
+    textFill: "#1d4ed8",
+    textOpacity: 1,
+    fontWeight: 700,
+  },
+  found: {
+    fill: "#eff6ff",
+    stroke: "#3b82f6",
+    strokeWidth: 2,
+    textFill: "#1e3a8a",
+    textOpacity: 1,
+    fontWeight: 700,
+  },
+  clearing: {
+    fill: "#fff7ed",
+    stroke: "#f97316",
+    strokeWidth: 2,
+    textFill: "#c2410c",
+    textOpacity: 0.85,
+    fontWeight: 600,
+  },
+  removed: {
+    fill: "#f1f5f9",
+    stroke: "#94a3b8",
+    strokeWidth: 1,
+    textFill: "#94a3b8",
+    textOpacity: 0,
+    fontWeight: 500,
+  },
+};
+
+/** @deprecated Use STACK_BLOCK_* style tokens */
+export const STACK_PLATE_STROKE = {
+  default: "#0ea5e9",
+  pushing: "#38bdf8",
+  popping: "#f97316",
+  peeking: "#6366f1",
+  found: "#10b981",
+  clearing: "#f59e0b",
+  removed: "#94a3b8",
+} as const;
+
+export type StackLegendToken = "active" | "incoming" | "delete";
+
+export const STACK_LEGEND_ITEMS: {
+  token: StackLegendToken;
+  label: string;
+}[] = [
+  { token: "active", label: "TOP / Active" },
+  { token: "incoming", label: "Push / Incoming" },
+  { token: "delete", label: "Pop / Error" },
+];
+
+export const STACK_LEGEND_SWATCH_CLASS: Record<StackLegendToken, string> = {
+  active: "border border-solid border-blue-500 bg-blue-50",
+  incoming: "border border-solid border-cyan-500 bg-cyan-50",
+  delete: "border border-solid border-orange-500 bg-orange-50",
+};

@@ -18,6 +18,9 @@ interface DatasetSetupPanelProps {
   customInputDescription?: string;
   arrayPlaceholder?: string;
   embedded?: boolean;
+  sizeMin?: number;
+  sizeMax?: number;
+  sizeLabel?: string;
 }
 
 export function DatasetSetupPanel({
@@ -33,6 +36,9 @@ export function DatasetSetupPanel({
   customInputDescription,
   arrayPlaceholder,
   embedded = false,
+  sizeMin = 5,
+  sizeMax = 20,
+  sizeLabel = "Array Size",
 }: DatasetSetupPanelProps) {
   const idPrefix = useId().replace(/:/g, "");
   const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
@@ -64,7 +70,7 @@ export function DatasetSetupPanel({
                 htmlFor={`${idPrefix}-array-size-slider`}
                 className={sectionLabelClass}
               >
-                Array Size
+                {sizeLabel}
               </label>
               <span className="bg-primary-container text-on-primary-container font-bold px-3 py-1 rounded-xl text-sm">
                 {arraySize}
@@ -73,8 +79,8 @@ export function DatasetSetupPanel({
             <input
               id={`${idPrefix}-array-size-slider`}
               type="range"
-              min={5}
-              max={20}
+              min={sizeMin}
+              max={sizeMax}
               value={arraySize}
               onChange={(event) => onArraySizeChange(Number(event.target.value))}
               className="w-full h-3 bg-surface-variant rounded-full appearance-none cursor-pointer accent-primary border-2 border-surface-variant"
