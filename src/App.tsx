@@ -7,6 +7,7 @@ import { BinarySearchPage } from "./pages/BinarySearchPage";
 import { LinkedListPage } from "./pages/LinkedListPage";
 import { StackPage } from "./pages/StackPage";
 import { CatalogPage } from "./pages/CatalogPage";
+import { QuickSortPage } from "./pages/QuickSortPage";
 import { SelectionSortPage } from "./pages/SelectionSortPage";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path={APP_ROUTES.stack} element={<StackPage />} />
         <Route path={APP_ROUTES.binarySearch} element={<BinarySearchPage />} />
         <Route path={APP_ROUTES.selectionSort} element={<SelectionSortPage />} />
+        <Route path={APP_ROUTES.quickSort} element={<QuickSortPage />} />
         <Route path={APP_ROUTES.bigONotation} element={<BigONotationPage />} />
       </Routes>
       <MobileNoticeOverlay />

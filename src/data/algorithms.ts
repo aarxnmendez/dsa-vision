@@ -84,6 +84,21 @@ export const algorithms: AlgorithmMeta[] = [
     route: APP_ROUTES.selectionSort,
   },
   {
+    id: "quick-sort",
+    title: "Quicksort",
+    description:
+      "Partition around a pivot and recursively sort sub-arrays using divide-and-conquer.",
+    complexity: "O(n log n) avg",
+    complexityVariant: "success",
+    difficulty: "intermediate",
+    category: "sorting",
+    tags: ["quick-sort", "quicksort", "sorting", "arrays", "divide-and-conquer"],
+    imageUrl: "/images/quick-sort-cover.jpeg",
+    imageBg: "bg-quick-sort-cover-bg",
+    availability: "available",
+    route: APP_ROUTES.quickSort,
+  },
+  {
     id: "merge-sort",
     title: "Merge Sort",
     description:

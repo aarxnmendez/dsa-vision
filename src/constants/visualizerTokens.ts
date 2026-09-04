@@ -100,6 +100,16 @@ export const SELECTION_SORT_SPACE_INFO = {
   text: "The algorithm sorts in place using only a constant amount of extra memory for indices and swaps.",
 };
 
+export const QUICKSORT_TIME_INFO = {
+  title: "Logarithmic Average Time",
+  text: "Randomized Quicksort picks a random pivot each partition, keeping expected recursion depth at O(log n). Average and best cases run in O(n log n) time; a rare unlucky pivot sequence can still reach O(n²).",
+};
+
+export const QUICKSORT_SPACE_INFO = {
+  title: "Logarithmic Recursion Stack",
+  text: "The in-place partition uses O(1) auxiliary memory, but recursive calls consume O(log n) stack space on average and O(n) in the worst case.",
+};
+
 export const BINARY_SEARCH_TIME_INFO = {
   title: "Logarithmic Time",
   text: "Execution time grows logarithmically relative to the input size. By halving the search space at each step, it remains exceptionally fast even for massive datasets.",
