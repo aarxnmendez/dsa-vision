@@ -61,8 +61,8 @@ export const algorithms: AlgorithmMeta[] = [
     complexity: "O(log n)",
     complexityVariant: "success",
     difficulty: "beginner",
-    category: "arrays",
-    tags: ["binary-search", "arrays", "search", "sorted"],
+    category: "searching",
+    tags: ["binary-search", "arrays", "search", "searching", "sorted"],
     imageUrl: "/images/binary-search-cover.jpg",
     imageBg: "bg-primary-fixed",
     availability: "available",
@@ -97,35 +97,5 @@ export const algorithms: AlgorithmMeta[] = [
     imageBg: "bg-quick-sort-cover-bg",
     availability: "available",
     route: APP_ROUTES.quickSort,
-  },
-  {
-    id: "merge-sort",
-    title: "Merge Sort",
-    description:
-      "Divide array into halves, sort them recursively, and then merge the sorted halves.",
-    complexity: "O(n log n)",
-    complexityVariant: "error",
-    difficulty: "intermediate",
-    category: "sorting",
-    tags: ["merge-sort", "sorting", "arrays", "divide-and-conquer"],
-    imageUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAf8GAgzvu4ElCDezZG9869ysME2kz57jRW5TcHC7cHz5fb3x2q9YWcwiL1SjiN5h29VVX_-MSIdnvDcBcmBW7jG5XHG7pBEYatL_sdkZ0RahLQfaqQaocVdD8zB2y9YbTaKzdVHbxFLwS3SdKpupr1kOjAByhWgOl1wJPt08JA49DcsVyKWOWsn_m7mOYguZnn-69ytUBEVxg0VsgxxXxks_7AlqfjTfCH5-JnGZaEzeaZ9FQsQqur",
-    imageBg: "bg-error-container",
-    availability: "coming-soon",
-  },
-  {
-    id: "dijkstra",
-    title: "Dijkstra's",
-    description:
-      "Find the shortest paths between nodes in a graph, which may represent, for example, road networks.",
-    complexity: "O(V^2)",
-    complexityVariant: "tertiary",
-    difficulty: "advanced",
-    category: "graphs",
-    tags: ["dijkstra", "graphs", "shortest-path"],
-    imageUrl:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuA2O89TvIijsmES-2vtltSz-YL29mbwePO7mvmRdyKinspxgcpiiLLza6VVENstGkjYZedkH4aSF3KhWuZaHksjeopispw2VSJdPk-Pz8A656Oyg1NMb6LImY2xaTCT2JEunfmZKPz6kebf0l6l5vbKUQ_fa6UWkxbYbnETaE_LPOs0gLZcGXaevbMzaHTN0Tk7MZj6aHP3VxJ7vNhfbDIEWhoJ-bE-OfmTz7Rqb6Hstk_TTMH5fG1C",
-    imageBg: "bg-tertiary-fixed",
-    availability: "coming-soon",
   },
 ];
