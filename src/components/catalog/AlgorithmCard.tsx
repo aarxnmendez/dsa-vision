@@ -53,10 +53,9 @@ export function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
     >
       <div
         className={[
-          `max-h-48 ${algorithm.imageBg} w-full flex items-center justify-center p-4 border-b-2 border-surface-variant transition-colors duration-300 ease-in-out`,
+          `relative w-full aspect-[16/9] overflow-hidden rounded-t-xl p-3 ${algorithm.imageBg} border-b-2 border-surface-variant transition-colors duration-300 ease-in-out`,
           isAvailable ? "group-hover:border-primary/20" : "",
         ].join(" ")}
-        style={{ aspectRatio: `${algorithm.imageWidth} / ${algorithm.imageHeight}` }}
       >
         <img
           src={algorithm.imageUrl}
@@ -65,7 +64,7 @@ export function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
           height={algorithm.imageHeight}
           loading="lazy"
           decoding="async"
-          className="object-contain h-full w-full max-h-48 rounded-xl"
+          className="block h-full w-full rounded-lg object-cover"
         />
       </div>
 
