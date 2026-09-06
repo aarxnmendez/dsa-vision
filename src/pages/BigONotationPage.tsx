@@ -4,7 +4,9 @@ import { CatalogLayout } from "../components/layout/CatalogLayout";
 export function BigONotationPage() {
   return (
     <CatalogLayout>
-      <BigOView />
+      <div className="pb-stack-lg">
+        <BigOView />
+      </div>
     </CatalogLayout>
   );
 }

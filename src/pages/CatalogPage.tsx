@@ -4,6 +4,7 @@ import { FilterBar } from "../components/catalog/FilterBar";
 import { Hero } from "../components/catalog/Hero";
 import { SearchBar } from "../components/catalog/SearchBar";
 import { CatalogLayout } from "../components/layout/CatalogLayout";
+import { Footer } from "../components/layout/Footer";
 import { algorithms } from "../data/algorithms";
 import type { AlgorithmCategory } from "../types/algorithm";
 import {
@@ -30,7 +31,7 @@ export function CatalogPage() {
   }, [activeCategory, searchQuery]);
 
   return (
-    <CatalogLayout>
+    <CatalogLayout footer={<Footer />}>
       <Hero />
       <SearchBar value={searchQuery} onChange={setSearchQuery} />
       <FilterBar
