@@ -691,28 +691,36 @@ export function generateInsertAtIndexSteps(
 
   const working = cloneList(list);
   let prevId = working.headId!;
+  let trackedPrevId: string | null = null;
 
   for (let i = 0; i < index; i += 1) {
     const nodeId = getNodeAtIndex(working, i)!;
     prevId = nodeId;
     const nextId = working.nodes.get(nodeId)!.next;
+    const isPredecessor = i === index - 1;
     steps.push(
       createStep(working, {
         phase: "traverse",
         operation: "insert-at-index",
-        statusTitle: `Reach predecessor at index ${i}`,
+        statusTitle: isPredecessor
+          ? `Reach predecessor at index ${i}`
+          : `Traverse to index ${i}`,
         statusDetail: `curr at node with value ${working.nodes.get(nodeId)!.value}.`,
         stepMessage: "Advance until the insertion gap is found.",
         stepExplanation: "Insertion at index i requires i pointer hops from the head.",
         codeLine: 9,
-        pointers: [pointerAt("curr", nodeId), pointerAt("prev", nodeId)],
-        nodeHighlights: { [nodeId]: i === index - 1 ? "active" : "accessed" },
+        pointers: [
+          pointerAt("curr", nodeId),
+          ...(trackedPrevId ? [pointerAt("prev", trackedPrevId)] : []),
+        ],
+        nodeHighlights: { [nodeId]: isPredecessor ? "active" : "accessed" },
         connectionStates:
           nextId && i < index - 1
             ? { [connectionKey(nodeId, nextId, "next")]: "traversing" }
             : {},
       }),
     );
+    trackedPrevId = nodeId;
   }
 
   const newId = createNodeId();
@@ -1088,7 +1096,10 @@ function generateDeleteTailSinglySteps(list: InternalList): LinkedListOperationS
       operation: "delete-tail",
       statusTitle: "Break tail link",
       statusDetail: `Set penultimate.next = ${working.type === "circular" ? "head" : "null"}.`,
-      stepMessage: `Unlink ${working.nodes.get(tailId)!.value} — penultimate.next becomes null.`,
+      stepMessage:
+        working.type === "circular"
+          ? `Unlink ${working.nodes.get(tailId)!.value} — penultimate.next points to head.`
+          : `Unlink ${working.nodes.get(tailId)!.value} — penultimate.next becomes null.`,
       stepExplanation:
         working.type === "circular"
           ? "Circular singly lists reconnect the penultimate node to head instead of null."

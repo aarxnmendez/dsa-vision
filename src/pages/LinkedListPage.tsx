@@ -28,7 +28,7 @@ import {
 } from "../constants/copy";
 
 const PAGE_DESCRIPTION =
-  "Pointer-based nodes with O(1) head insert and O(n) traversal for tail access, search, and in-place reversal.";
+  "Pointer-based nodes with O(1) head and tail ops when pointers are maintained, plus O(n) search and in-place reversal.";
 
 function formatPointerMovement(
   pointers: { id: string; nodeId: string }[],

@@ -31,11 +31,15 @@ function createStep(
   return { found: false, ...partial };
 }
 
-function createNotFoundStep(target: number): BinarySearchStep {
+function createNotFoundStep(
+  target: number,
+  low: number,
+  high: number,
+): BinarySearchStep {
   return createStep({
     phase: "not-found",
-    low: 0,
-    high: 0,
+    low,
+    high,
     mid: null,
     showMid: false,
     compareMid: false,
@@ -54,7 +58,7 @@ export function binarySearch(
   target: number,
 ): BinarySearchStep[] {
   if (array.length === 0) {
-    return [createNotFoundStep(target)];
+    return [createNotFoundStep(target, 0, -1)];
   }
 
   const steps: BinarySearchStep[] = [];
@@ -153,7 +157,7 @@ export function binarySearch(
       low = mid + 1;
 
       if (low > high) {
-        steps.push(createNotFoundStep(target));
+        steps.push(createNotFoundStep(target, low, high));
         return steps;
       }
 
@@ -181,7 +185,7 @@ export function binarySearch(
       high = mid - 1;
 
       if (low > high) {
-        steps.push(createNotFoundStep(target));
+        steps.push(createNotFoundStep(target, low, high));
         return steps;
       }
 
@@ -207,15 +211,20 @@ export function binarySearch(
     }
   }
 
-  steps.push(createNotFoundStep(target));
+  steps.push(createNotFoundStep(target, low, high));
   return steps;
 }
 
 export function generateSortedArray(size: number): number[] {
+  if (size <= 0) {
+    return [];
+  }
+
   const values = new Set<number>();
+  const upperBound = Math.max(99, size * 3);
 
   while (values.size < size) {
-    values.add(Math.floor(Math.random() * 99) + 1);
+    values.add(Math.floor(Math.random() * upperBound) + 1);
   }
 
   return Array.from(values).sort((a, b) => a - b);

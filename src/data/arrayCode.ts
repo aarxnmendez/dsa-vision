@@ -1,4 +1,4 @@
-export type CodeLanguage = "python" | "javascript" | "java" | "pseudocode";
+import type { CodeLanguage } from "./binarySearchCode";
 
 export const arrayCode: Record<CodeLanguage, string[]> = {
   python: [

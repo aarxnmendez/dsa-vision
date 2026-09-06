@@ -40,7 +40,7 @@ export const timeComplexityRows: ComplexityReferenceRow[] = [
     notation: "O(n log n)",
     name: "Linearithmic",
     description: "Slightly worse than linear, but still scalable for large data.",
-    examples: "Merge sort, heap sort",
+    examples: "Merge sort, Quicksort (average), heap sort",
     color: "text-on-tertiary-fixed-variant",
   },
   {

@@ -1,8 +1,13 @@
 export function generateRandomArray(size: number): number[] {
+  if (size <= 0) {
+    return [];
+  }
+
   const values = new Set<number>();
+  const upperBound = Math.max(99, size * 3);
 
   while (values.size < size) {
-    values.add(Math.floor(Math.random() * 99) + 1);
+    values.add(Math.floor(Math.random() * upperBound) + 1);
   }
 
   const array = Array.from(values);

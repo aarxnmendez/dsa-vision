@@ -243,7 +243,7 @@ export function generateLinearSearchSteps(
           deletedValue: null,
           found: true,
           statusTitle: `Target found at index ${index}`,
-          statusDetail: "Worst case still scans the entire array: O(n).",
+          statusDetail: `Found ${target} at index ${index} after ${index + 1} comparison${index === 0 ? "" : "s"}.`,
           stepExplanation:
             "Linear search is simple but scales linearly because every element may need to be checked.",
           codeLine: 5,

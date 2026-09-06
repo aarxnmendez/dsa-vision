@@ -7,7 +7,7 @@ export const algorithms: AlgorithmMeta[] = [
     title: "Array",
     description:
       "Contiguous memory block with O(1) index access and O(n) insert/delete shifts.",
-    complexity: "O(1) access",
+    complexity: "O(1)–O(n)",
     complexityVariant: "success",
     difficulty: "beginner",
     category: "data-structures",
@@ -43,7 +43,7 @@ export const algorithms: AlgorithmMeta[] = [
     title: "Stack",
     description:
       "LIFO stack with O(1) push, pop, and peek. Bounded capacity triggers overflow.",
-    complexity: "O(1) ops",
+    complexity: "O(1)–O(n)",
     complexityVariant: "success",
     difficulty: "beginner",
     category: "data-structures",
