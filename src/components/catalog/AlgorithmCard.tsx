@@ -53,16 +53,19 @@ export function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
     >
       <div
         className={[
-          `h-48 ${algorithm.imageBg} w-full flex items-center justify-center p-4 border-b-2 border-surface-variant transition-colors duration-300 ease-in-out`,
+          `max-h-48 ${algorithm.imageBg} w-full flex items-center justify-center p-4 border-b-2 border-surface-variant transition-colors duration-300 ease-in-out`,
           isAvailable ? "group-hover:border-primary/20" : "",
         ].join(" ")}
+        style={{ aspectRatio: `${algorithm.imageWidth} / ${algorithm.imageHeight}` }}
       >
         <img
           src={algorithm.imageUrl}
           alt=""
+          width={algorithm.imageWidth}
+          height={algorithm.imageHeight}
           loading="lazy"
           decoding="async"
-          className="object-contain h-full w-full rounded-xl"
+          className="object-contain h-full w-full max-h-48 rounded-xl"
         />
       </div>
 

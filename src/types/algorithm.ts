@@ -23,6 +23,8 @@ interface AlgorithmMetaBase {
   category: Exclude<AlgorithmCategory, "all">;
   tags: string[];
   imageUrl: string;
+  imageWidth: number;
+  imageHeight: number;
   imageBg: string;
 }
 
