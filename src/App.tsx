@@ -1,29 +1,69 @@
+import { lazy, Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { Route, Routes } from "react-router-dom";
 import { APP_ROUTES } from "./constants/routes";
 import { MobileNoticeOverlay } from "./components/layout/MobileNoticeOverlay";
-import { ArrayPage } from "./pages/ArrayPage";
-import { BigONotationPage } from "./pages/BigONotationPage";
-import { BinarySearchPage } from "./pages/BinarySearchPage";
-import { LinkedListPage } from "./pages/LinkedListPage";
-import { StackPage } from "./pages/StackPage";
 import { CatalogPage } from "./pages/CatalogPage";
-import { QuickSortPage } from "./pages/QuickSortPage";
-import { SelectionSortPage } from "./pages/SelectionSortPage";
+
+const ArrayPage = lazy(() =>
+  import("./pages/ArrayPage").then((module) => ({ default: module.ArrayPage })),
+);
+const BigONotationPage = lazy(() =>
+  import("./pages/BigONotationPage").then((module) => ({
+    default: module.BigONotationPage,
+  })),
+);
+const BinarySearchPage = lazy(() =>
+  import("./pages/BinarySearchPage").then((module) => ({
+    default: module.BinarySearchPage,
+  })),
+);
+const LinkedListPage = lazy(() =>
+  import("./pages/LinkedListPage").then((module) => ({
+    default: module.LinkedListPage,
+  })),
+);
+const StackPage = lazy(() =>
+  import("./pages/StackPage").then((module) => ({ default: module.StackPage })),
+);
+const QuickSortPage = lazy(() =>
+  import("./pages/QuickSortPage").then((module) => ({
+    default: module.QuickSortPage,
+  })),
+);
+const SelectionSortPage = lazy(() =>
+  import("./pages/SelectionSortPage").then((module) => ({
+    default: module.SelectionSortPage,
+  })),
+);
+
+function RouteLoadingFallback() {
+  return (
+    <div
+      className="flex min-h-screen items-center justify-center bg-background text-on-surface-variant"
+      role="status"
+      aria-live="polite"
+    >
+      Loading module...
+    </div>
+  );
+}
 
 function App() {
   return (
     <>
-      <Routes>
-        <Route path={APP_ROUTES.catalog} element={<CatalogPage />} />
-        <Route path={APP_ROUTES.array} element={<ArrayPage />} />
-        <Route path={APP_ROUTES.linkedList} element={<LinkedListPage />} />
-        <Route path={APP_ROUTES.stack} element={<StackPage />} />
-        <Route path={APP_ROUTES.binarySearch} element={<BinarySearchPage />} />
-        <Route path={APP_ROUTES.selectionSort} element={<SelectionSortPage />} />
-        <Route path={APP_ROUTES.quickSort} element={<QuickSortPage />} />
-        <Route path={APP_ROUTES.bigONotation} element={<BigONotationPage />} />
-      </Routes>
+      <Suspense fallback={<RouteLoadingFallback />}>
+        <Routes>
+          <Route path={APP_ROUTES.catalog} element={<CatalogPage />} />
+          <Route path={APP_ROUTES.array} element={<ArrayPage />} />
+          <Route path={APP_ROUTES.linkedList} element={<LinkedListPage />} />
+          <Route path={APP_ROUTES.stack} element={<StackPage />} />
+          <Route path={APP_ROUTES.binarySearch} element={<BinarySearchPage />} />
+          <Route path={APP_ROUTES.selectionSort} element={<SelectionSortPage />} />
+          <Route path={APP_ROUTES.quickSort} element={<QuickSortPage />} />
+          <Route path={APP_ROUTES.bigONotation} element={<BigONotationPage />} />
+        </Routes>
+      </Suspense>
       <MobileNoticeOverlay />
       <Analytics />
     </>
