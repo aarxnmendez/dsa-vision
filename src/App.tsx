@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import { Route, Routes } from "react-router-dom";
 import { APP_ROUTES } from "./constants/routes";
 import { MobileNoticeOverlay } from "./components/layout/MobileNoticeOverlay";
@@ -24,6 +25,7 @@ function App() {
         <Route path={APP_ROUTES.bigONotation} element={<BigONotationPage />} />
       </Routes>
       <MobileNoticeOverlay />
+      <Analytics />
     </>
   );
 }
