@@ -4,6 +4,7 @@ export type AlgorithmCategory =
   | "all"
   | "arrays"
   | "data-structures"
+  | "searching"
   | "sorting"
   | "trees"
   | "graphs";

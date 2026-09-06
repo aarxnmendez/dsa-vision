@@ -4,6 +4,7 @@ const categories: { id: AlgorithmCategory; label: string }[] = [
   { id: "all", label: "All" },
   { id: "data-structures", label: "Data Structures" },
   { id: "arrays", label: "Arrays" },
+  { id: "searching", label: "Searching" },
   { id: "sorting", label: "Sorting" },
   { id: "trees", label: "Trees" },
   { id: "graphs", label: "Graphs" },

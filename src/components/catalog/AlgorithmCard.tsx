@@ -32,6 +32,7 @@ const difficultyLabelMap = {
 const categoryLabelMap = {
   arrays: "Array",
   "data-structures": "Data Structure",
+  searching: "Searching",
   sorting: "Sorting",
   trees: "Trees",
   graphs: "Graphs",
