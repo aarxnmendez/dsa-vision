@@ -1,6 +1,5 @@
 import { useId, useState } from "react";
-import { Link } from "react-router-dom";
-import { APP_ROUTES } from "../../constants/routes";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   auxiliaryMemoryPoints,
   spaceComplexityIntro,
@@ -97,7 +96,13 @@ function ComplexityReferenceTable({ rows }: { rows: ComplexityReferenceRow[] }) 
   );
 }
 
+type BigONavigationState = {
+  from?: string;
+};
+
 export function BigOView() {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [dimension, setDimension] = useState<ComplexityDimension>("time");
   const tabListId = useId();
   const timeTabId = `${tabListId}-time-tab`;
@@ -106,6 +111,16 @@ export function BigOView() {
   const spacePanelId = `${tabListId}-space-panel`;
 
   const activeConfig = dimensionConfig[dimension];
+
+  const handleBack = () => {
+    const from = (location.state as BigONavigationState | null)?.from;
+    if (from) {
+      navigate(from);
+      return;
+    }
+
+    navigate(-1);
+  };
 
   const tabButtonBase =
     "px-6 py-3 font-bold rounded-t-xl border-2 border-b-0 transition-colors cursor-pointer focus:outline-none focus:ring-0 focus-visible:outline-none";
@@ -120,13 +135,14 @@ export function BigOView() {
 
   return (
     <div className="flex flex-col gap-stack-lg">
-      <Link
-        to={APP_ROUTES.binarySearch}
+      <button
+        type="button"
+        onClick={handleBack}
         className="self-start inline-flex items-center gap-2 text-on-surface-variant font-bold hover:text-primary transition-colors bg-surface-container-lowest px-4 py-2 rounded-xl border-b-4 border-surface-variant btn-3d cursor-pointer"
       >
         <Icon name="arrow_back" className="text-[20px]" />
         Back to Visualizer
-      </Link>
+      </button>
 
       <header className="text-center flex flex-col gap-stack-md items-center">
         <h1 className="font-display text-display text-primary max-w-3xl">
