@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Route, Routes } from "react-router-dom";
 import { APP_ROUTES } from "./constants/routes";
 import { MobileNoticeOverlay } from "./components/layout/MobileNoticeOverlay";
@@ -66,6 +67,7 @@ function App() {
       </Suspense>
       <MobileNoticeOverlay />
       <Analytics />
+      <SpeedInsights />
     </>
   );
 }
