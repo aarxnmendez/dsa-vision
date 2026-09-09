@@ -1,6 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { getStepTransitionMs } from "../constants/player";
 import { quickSortCode } from "../data/quickSortCode";
-import { quickSortExplanation } from "../data/quickSortExplanation";
 import { QuickSortSetupPanel } from "../components/controls/QuickSortSetupPanel";
 import { PlayerControls } from "../components/controls/PlayerControls";
 import { AlgorithmPageShell } from "../components/layout/AlgorithmPageShell";
@@ -13,20 +13,15 @@ import { SortBarVisualizer, SortLegendBar } from "../components/visualizers/Sort
 import { VisualizerIdleStatus } from "../components/visualizers/VisualizerIdleStatus";
 import { useQuickSortVisualizer } from "../hooks/useQuickSortVisualizer";
 import {
-  QUICKSORT_SPACE_INFO,
-  QUICKSORT_TIME_INFO,
-} from "../constants/visualizerTokens";
-import {
-  CODE_PANEL_IDLE_FALLBACK,
-  DATA_SETUP_LABEL,
-  DATA_SETUP_ICON,
-  VISUALIZER_IDLE_MESSAGE,
-} from "../constants/copy";
-
-const PAGE_DESCRIPTION =
-  "Divide-and-conquer sort that partitions around a pivot and recurses on each side.";
+  useAlgorithmExplanation,
+  usePageMeta,
+} from "../hooks/useAlgorithmExplanation";
+import { DATA_SETUP_ICON } from "../constants/copy";
 
 export function QuickSortPage() {
+  const { t } = useTranslation("common");
+  const pageMeta = usePageMeta("quickSort");
+  const explanation = useAlgorithmExplanation("quickSort");
   const visualizer = useQuickSortVisualizer();
   const transitionMs = getStepTransitionMs(visualizer.speed);
   const defaultHighlights = visualizer.array.map(() => "default" as const);
@@ -43,23 +38,24 @@ export function QuickSortPage() {
       isSuccess={visualizer.currentStep.isComplete}
     />
   ) : (
-    <VisualizerIdleStatus message={VISUALIZER_IDLE_MESSAGE} />
+    <VisualizerIdleStatus message={t("idle.visualizer")} />
   );
 
   return (
     <VisualizerLayout
-      title="Quicksort"
-      description={PAGE_DESCRIPTION}
+      title={pageMeta.title}
+      description={pageMeta.description}
       timeComplexity="O(n log n) avg"
       spaceComplexity="O(log n)"
-      timeComplexityInfo={QUICKSORT_TIME_INFO}
-      spaceComplexityInfo={QUICKSORT_SPACE_INFO}
-      leftPanelSectionLabel={DATA_SETUP_LABEL}
+      timeComplexityInfo={pageMeta.timeComplexityInfo}
+      spaceComplexityInfo={pageMeta.spaceComplexityInfo}
+      leftPanelSectionLabel={t("dataSetup.label")}
       leftPanelSectionIcon={DATA_SETUP_ICON}
       leftPanel={
         <QuickSortSetupPanel
           arraySize={visualizer.arraySize}
           pivotStrategy={visualizer.pivotStrategy}
+          customInputDescription={pageMeta.customInputHint}
           onArraySizeChange={visualizer.setArraySize}
           onRandomize={visualizer.randomizeData}
           onApplyCustomDataset={visualizer.applyCustomDataset}
@@ -87,15 +83,13 @@ export function QuickSortPage() {
           <CodePanel
             codeByLanguage={quickSortCode}
             activeLine={visualizer.currentStep?.activeLine ?? 1}
-            stepExplanation={
-              visualizer.currentStep?.stepExplanation ?? CODE_PANEL_IDLE_FALLBACK
-            }
+            stepExplanation={visualizer.currentStep?.stepExplanation}
             showStepFooter
           />
         }
         explanationColumn={
           <ExplanationPanelShell>
-            <AlgorithmExplanationContent {...quickSortExplanation} />
+            <AlgorithmExplanationContent {...explanation} />
           </ExplanationPanelShell>
         }
         playerControls={

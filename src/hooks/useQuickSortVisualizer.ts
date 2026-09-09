@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   generateQuickSortSteps,
   generateUnsortedArray,
@@ -50,13 +51,15 @@ function buildBarHighlights(step: QuickSortStep | undefined): SortBarHighlight[]
 }
 
 export function useQuickSortVisualizer() {
+  const { i18n } = useTranslation();
   const [arraySize, setArraySize] = useState(DEFAULT_SIZE);
   const [array, setArray] = useState(() => generateUnsortedArray(DEFAULT_SIZE));
   const [pivotStrategy, setPivotStrategy] = useState<PivotStrategy>("random");
 
   const steps = useMemo(
     () => generateQuickSortSteps(array, pivotStrategy),
-    [array, pivotStrategy],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- locale drives getAlgorithmT()
+    [array, pivotStrategy, i18n.language],
   );
   const player = usePlayerControls({
     totalSteps: steps.length,

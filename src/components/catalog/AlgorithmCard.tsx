@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   isAlgorithmAvailable,
   type AlgorithmMeta,
@@ -23,23 +24,40 @@ const difficultyVariantMap = {
   advanced: "difficulty-advanced",
 } as const;
 
-const difficultyLabelMap = {
-  beginner: "Beginner",
-  intermediate: "Intermediate",
-  advanced: "Advanced",
-} as const;
+type CategoryLabelKey =
+  | "categories.array"
+  | "categories.data-structures"
+  | "categories.searching"
+  | "categories.sorting"
+  | "categories.trees"
+  | "categories.graphs";
 
-const categoryLabelMap = {
-  arrays: "Array",
-  "data-structures": "Data Structure",
-  searching: "Searching",
-  sorting: "Sorting",
-  trees: "Trees",
-  graphs: "Graphs",
-} as const;
+const categoryLabelKeys: Record<
+  Exclude<AlgorithmMeta["category"], "all">,
+  CategoryLabelKey
+> = {
+  arrays: "categories.array",
+  "data-structures": "categories.data-structures",
+  searching: "categories.searching",
+  sorting: "categories.sorting",
+  trees: "categories.trees",
+  graphs: "categories.graphs",
+};
 
 export function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
+  const { t: tCatalog } = useTranslation("catalog");
+  const { t: tCommon } = useTranslation("common");
   const isAvailable = isAlgorithmAvailable(algorithm);
+
+  const title = tCatalog(`algorithms.${algorithm.id}.title`, {
+    defaultValue: algorithm.title,
+  });
+  const description = tCatalog(`algorithms.${algorithm.id}.description`, {
+    defaultValue: algorithm.description,
+  });
+  const complexity = tCatalog(`algorithms.${algorithm.id}.complexity`, {
+    defaultValue: algorithm.complexity,
+  });
 
   return (
     <article
@@ -69,35 +87,35 @@ export function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
       </div>
 
       <div className="p-6 flex flex-col gap-4 flex-grow">
-        <div className="flex justify-between items-start gap-3">
-          <h2 className="font-headline-md text-headline-md text-on-surface">
-            {algorithm.title}
-          </h2>
+        <div className="flex flex-col items-start gap-2">
           <Badge variant={complexityVariantMap[algorithm.complexityVariant]}>
-            {algorithm.complexity}
+            {complexity}
           </Badge>
+          <h2 className="font-headline-md text-headline-md text-on-surface">
+            {title}
+          </h2>
         </div>
 
         <div className="flex gap-2 flex-wrap">
           <Badge variant={difficultyVariantMap[algorithm.difficulty]}>
-            {difficultyLabelMap[algorithm.difficulty]}
+            {tCommon(`difficulty.${algorithm.difficulty}`)}
           </Badge>
           <Badge variant="category">
-            {categoryLabelMap[algorithm.category]}
+            {tCatalog(categoryLabelKeys[algorithm.category])}
           </Badge>
           {!isAvailable && (
-            <Badge variant="category">Coming Soon</Badge>
+            <Badge variant="category">{tCommon("comingSoon")}</Badge>
           )}
         </div>
 
         <p className="font-body-md text-body-md text-on-surface-variant flex-grow">
-          {algorithm.description}
+          {description}
         </p>
 
         {isAvailable ? (
           <Link to={algorithm.route} className="mt-4 cursor-pointer">
             <Button fullWidth className="uppercase">
-              Explore
+              {tCommon("explore")}
             </Button>
           </Link>
         ) : (
@@ -107,7 +125,7 @@ export function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
             aria-disabled="true"
             className="mt-4 uppercase opacity-60 cursor-not-allowed"
           >
-            Coming Soon
+            {tCommon("comingSoon")}
           </Button>
         )}
       </div>

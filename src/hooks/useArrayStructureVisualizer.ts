@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   generateArrayOperationSteps,
   getDefaultOperationIndex,
@@ -16,6 +17,7 @@ import { usePlayerControls } from "./usePlayerControls";
 const DEFAULT_SIZE = 8;
 
 export function useArrayStructureVisualizer() {
+  const { i18n } = useTranslation();
   const [arraySize, setArraySize] = useState(DEFAULT_SIZE);
   const [dataset, setDataset] = useState<RandomArrayDataset>(() =>
     createRandomArrayDataset(DEFAULT_SIZE),
@@ -38,7 +40,8 @@ export function useArrayStructureVisualizer() {
         value: operationValue,
         searchTarget,
       }),
-    [array, operation, operationValue, resolvedIndex, searchTarget],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- locale drives getAlgorithmT()
+    [array, operation, operationValue, resolvedIndex, searchTarget, i18n.language],
   );
 
   const player = usePlayerControls({ totalSteps: steps.length });

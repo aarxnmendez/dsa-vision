@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   generateInsertionSortSteps,
   generateUnsortedArray,
@@ -47,10 +48,15 @@ function buildBarHighlights(step: InsertionSortStep | undefined): SortBarHighlig
 }
 
 export function useInsertionSortVisualizer() {
+  const { i18n } = useTranslation();
   const [arraySize, setArraySize] = useState(DEFAULT_SIZE);
   const [array, setArray] = useState(() => generateUnsortedArray(DEFAULT_SIZE));
 
-  const steps = useMemo(() => generateInsertionSortSteps(array), [array]);
+  const steps = useMemo(
+    () => generateInsertionSortSteps(array),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- locale drives getAlgorithmT()
+    [array, i18n.language],
+  );
   const player = usePlayerControls({
     totalSteps: steps.length,
   });

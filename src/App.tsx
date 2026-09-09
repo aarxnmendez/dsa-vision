@@ -1,7 +1,10 @@
 import { lazy, Suspense } from "react";
+import { useTranslation } from "react-i18next";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Route, Routes } from "react-router-dom";
+import { DocumentMeta } from "./components/i18n/DocumentMeta";
+import { LegacyEsRouteRedirect } from "./components/i18n/LegacyEsRouteRedirect";
 import { APP_ROUTES } from "./constants/routes";
 import { MobileNoticeOverlay } from "./components/layout/MobileNoticeOverlay";
 import { CatalogPage } from "./pages/CatalogPage";
@@ -44,13 +47,15 @@ const SelectionSortPage = lazy(() =>
 );
 
 function RouteLoadingFallback() {
+  const { t } = useTranslation("common");
+
   return (
     <div
       className="flex min-h-screen items-center justify-center bg-background text-on-surface-variant"
       role="status"
       aria-live="polite"
     >
-      Loading module...
+      {t("loadingModule")}
     </div>
   );
 }
@@ -58,6 +63,8 @@ function RouteLoadingFallback() {
 function App() {
   return (
     <>
+      <LegacyEsRouteRedirect />
+      <DocumentMeta />
       <Suspense fallback={<RouteLoadingFallback />}>
         <Routes>
           <Route path={APP_ROUTES.catalog} element={<CatalogPage />} />

@@ -1,6 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { getStepTransitionMs } from "../constants/player";
 import { binarySearchCode } from "../data/binarySearchCode";
-import { binarySearchExplanation } from "../data/binarySearchExplanation";
 import { DatasetSetupPanel } from "../components/controls/DatasetSetupPanel";
 import { PlayerControls } from "../components/controls/PlayerControls";
 import { AlgorithmPageShell } from "../components/layout/AlgorithmPageShell";
@@ -13,23 +13,15 @@ import { ArrayVisualizer } from "../components/visualizers/ArrayVisualizer";
 import { VisualizerIdleStatus } from "../components/visualizers/VisualizerIdleStatus";
 import { useBinarySearchVisualizer } from "../hooks/useBinarySearchVisualizer";
 import {
-  BINARY_SEARCH_SPACE_INFO,
-  BINARY_SEARCH_TIME_INFO,
-} from "../constants/visualizerTokens";
-import {
-  CODE_PANEL_IDLE_FALLBACK,
-  DATA_SETUP_LABEL,
-  DATA_SETUP_ICON,
-  VISUALIZER_IDLE_MESSAGE,
-} from "../constants/copy";
-
-const PAGE_DESCRIPTION =
-  "Divide-and-conquer search on a sorted array by halving the active interval each step.";
-
-const BINARY_SEARCH_CUSTOM_INPUT_DESCRIPTION =
-  "Values are automatically sorted for Binary Search.";
+  useAlgorithmExplanation,
+  usePageMeta,
+} from "../hooks/useAlgorithmExplanation";
+import { DATA_SETUP_ICON } from "../constants/copy";
 
 export function BinarySearchPage() {
+  const { t } = useTranslation("common");
+  const pageMeta = usePageMeta("binarySearch");
+  const explanation = useAlgorithmExplanation("binarySearch");
   const visualizer = useBinarySearchVisualizer();
   const transitionMs = getStepTransitionMs(visualizer.speed);
 
@@ -42,18 +34,18 @@ export function BinarySearchPage() {
       isError={visualizer.currentStep.phase === "not-found"}
     />
   ) : (
-    <VisualizerIdleStatus message={VISUALIZER_IDLE_MESSAGE} />
+    <VisualizerIdleStatus message={t("idle.visualizer")} />
   );
 
   return (
     <VisualizerLayout
-      title="Binary Search"
-      description={PAGE_DESCRIPTION}
+      title={pageMeta.title}
+      description={pageMeta.description}
       timeComplexity="O(log n)"
       spaceComplexity="O(1)"
-      timeComplexityInfo={BINARY_SEARCH_TIME_INFO}
-      spaceComplexityInfo={BINARY_SEARCH_SPACE_INFO}
-      leftPanelSectionLabel={DATA_SETUP_LABEL}
+      timeComplexityInfo={pageMeta.timeComplexityInfo}
+      spaceComplexityInfo={pageMeta.spaceComplexityInfo}
+      leftPanelSectionLabel={t("dataSetup.label")}
       leftPanelSectionIcon={DATA_SETUP_ICON}
       leftPanel={
         <DatasetSetupPanel
@@ -64,7 +56,7 @@ export function BinarySearchPage() {
           onArraySizeChange={visualizer.setArraySize}
           onTargetChange={visualizer.setTarget}
           onRandomize={visualizer.randomizeData}
-          customInputDescription={BINARY_SEARCH_CUSTOM_INPUT_DESCRIPTION}
+          customInputDescription={pageMeta.customInputHint}
           onApplyCustomDataset={({ array, target }) =>
             visualizer.applyCustomDataset(array, target)
           }
@@ -87,16 +79,14 @@ export function BinarySearchPage() {
           <CodePanel
             codeByLanguage={binarySearchCode}
             activeLine={visualizer.currentStep?.codeLine ?? 1}
-            stepExplanation={
-              visualizer.currentStep?.stepExplanation ?? CODE_PANEL_IDLE_FALLBACK
-            }
+            stepExplanation={visualizer.currentStep?.stepExplanation}
             stepFormula={visualizer.currentStep?.stepFormula}
             showStepFooter
           />
         }
         explanationColumn={
           <ExplanationPanelShell>
-            <AlgorithmExplanationContent {...binarySearchExplanation} />
+            <AlgorithmExplanationContent {...explanation} />
           </ExplanationPanelShell>
         }
         playerControls={

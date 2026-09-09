@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
 import { MOBILE_NOTICE_QUERY } from "../../constants/breakpoints";
 import { useMediaQuery } from "../../hooks/useMediaQuery";
-import { sectionLabelClass } from "../ui/sectionLabel";
 import { Icon } from "../ui/Icon";
 
 export function MobileNoticeOverlay() {
+  const { t } = useTranslation("common");
   const isSmallScreen = useMediaQuery(MOBILE_NOTICE_QUERY);
 
   useEffect(() => {
@@ -31,8 +32,6 @@ export function MobileNoticeOverlay() {
         aria-describedby="mobile-notice-description"
         className="w-full max-w-md bg-surface-container-lowest border-2 border-surface-variant border-b-4 rounded-3xl shadow-[0_16px_0_0_#dfe3e7] p-6 flex flex-col items-center text-center gap-5 pointer-events-auto"
       >
-        <span className={sectionLabelClass}>Desktop experience required</span>
-
         <div className="w-24 h-24 rounded-2xl bg-primary/10 border-2 border-primary/20 flex items-center justify-center">
           <div className="flex items-center gap-1.5 text-primary">
             <Icon name="smartphone" className="text-[30px]" />
@@ -46,15 +45,13 @@ export function MobileNoticeOverlay() {
             id="mobile-notice-title"
             className="font-headline-md text-headline-md text-primary"
           >
-            Screen size too small
+            {t("mobileNotice.title")}
           </h2>
           <p
             id="mobile-notice-description"
             className="font-body-md text-body-md text-on-surface-variant leading-relaxed"
           >
-            This interactive visualizer is designed for larger desktop displays.
-            To properly view algorithms, animations, and code panels simultaneously,
-            please expand your browser window or switch to a desktop device.
+            {t("mobileNotice.body")}
           </p>
         </div>
       </div>

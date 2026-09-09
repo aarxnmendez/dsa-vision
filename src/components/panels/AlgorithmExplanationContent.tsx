@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { sectionLabelClass } from "../ui/sectionLabel";
 
 export interface ComplexityRow {
@@ -20,17 +21,19 @@ export function AlgorithmExplanationContent({
   complexityRows,
   whenToUse,
 }: AlgorithmExplanationContentProps) {
+  const { t } = useTranslation("common");
+
   return (
     <div className="flex flex-col gap-6">
       <section>
-        <h3 className={sectionLabelClass}>How it works</h3>
+        <h3 className={sectionLabelClass}>{t("explanation.howItWorks")}</h3>
         <p className="mt-2 font-body-md text-body-md text-on-surface leading-relaxed">
           {howItWorks}
         </p>
       </section>
 
       <section>
-        <h3 className={sectionLabelClass}>Key concepts</h3>
+        <h3 className={sectionLabelClass}>{t("explanation.keyConcepts")}</h3>
         <ul className="mt-2 flex flex-col gap-2">
           {keyConcepts.map((concept) => (
             <li
@@ -45,7 +48,9 @@ export function AlgorithmExplanationContent({
       </section>
 
       <section>
-        <h3 className={sectionLabelClass}>Complexity breakdown</h3>
+        <h3 className={sectionLabelClass}>
+          {t("explanation.complexityBreakdown")}
+        </h3>
         <div className="mt-2 overflow-hidden rounded-xl border-2 border-surface-variant">
           <table className="w-full text-left">
             <tbody>
@@ -75,7 +80,7 @@ export function AlgorithmExplanationContent({
       </section>
 
       <section>
-        <h3 className={sectionLabelClass}>When to use</h3>
+        <h3 className={sectionLabelClass}>{t("explanation.whenToUse")}</h3>
         <ul className="mt-2 flex flex-col gap-2">
           {whenToUse.map((item) => (
             <li

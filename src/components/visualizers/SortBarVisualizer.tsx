@@ -1,8 +1,6 @@
+import { useTranslation } from "react-i18next";
 import type { SortBarHighlight } from "../../types/visualizer";
-import {
-  VISUALIZER_BAR_STYLES,
-  VISUALIZER_LEGEND_ITEMS,
-} from "../../constants/visualizerTokens";
+import { VISUALIZER_BAR_STYLES } from "../../constants/visualizerTokens";
 import { ArrayIndexLabels } from "./ArrayIndexLabels";
 
 interface SortBarVisualizerProps {
@@ -14,13 +12,28 @@ interface SortBarVisualizerProps {
   showLegend?: boolean;
 }
 
+type LegendLabelKey =
+  | "legend.unsorted"
+  | "legend.outerIndex"
+  | "legend.comparingMin"
+  | "legend.sorted";
+
+const LEGEND_ITEMS: { highlight: SortBarHighlight; labelKey: LegendLabelKey }[] = [
+  { highlight: "default", labelKey: "legend.unsorted" },
+  { highlight: "active", labelKey: "legend.outerIndex" },
+  { highlight: "comparing", labelKey: "legend.comparingMin" },
+  { highlight: "sorted", labelKey: "legend.sorted" },
+];
+
 export function SortLegendBar() {
+  const { t } = useTranslation("common");
+
   return (
     <div
       className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 rounded-xl border-2 border-surface-variant bg-surface-container-lowest px-4 py-3"
       aria-label="Color legend"
     >
-      {VISUALIZER_LEGEND_ITEMS.map(({ highlight, label }) => (
+      {LEGEND_ITEMS.map(({ highlight, labelKey }) => (
         <span
           key={highlight}
           className="inline-flex items-center gap-2 text-xs font-semibold text-slate-700"
@@ -32,7 +45,7 @@ export function SortLegendBar() {
             ].join(" ")}
             aria-hidden="true"
           />
-          {label}
+          {t(labelKey)}
         </span>
       ))}
     </div>
@@ -46,6 +59,7 @@ export function SortBarVisualizer({
   stepTransitionMs = 300,
   showLegend = false,
 }: SortBarVisualizerProps) {
+  const { t } = useTranslation("common");
   const count = currentArray.length;
   const maxValue = Math.max(...currentArray, 1);
   const slotWidth = count > 0 ? 100 / count : 0;
@@ -85,7 +99,7 @@ export function SortBarVisualizer({
                       styles.badgeClass,
                     ].join(" ")}
                   >
-                    {styles.badge}
+                    {highlight === "minimum" ? t("legend.min") : styles.badge}
                   </span>
                 )}
 

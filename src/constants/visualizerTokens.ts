@@ -148,12 +148,11 @@ export type ArrayStructureLegendToken =
 
 export const ARRAY_STRUCTURE_LEGEND_ITEMS: {
   token: ArrayStructureLegendToken;
-  label: string;
 }[] = [
-  { token: "active", label: "Active / Accessed" },
-  { token: "shift", label: "Shift / Reorder" },
-  { token: "success", label: "Inserted / Success" },
-  { token: "vacant", label: "Vacant / Memory" },
+  { token: "active" },
+  { token: "shift" },
+  { token: "success" },
+  { token: "vacant" },
 ];
 
 export const ARRAY_STRUCTURE_LEGEND_SWATCH_CLASS: Record<
@@ -364,11 +363,17 @@ export const LINKED_LIST_NODE_APPEARANCE: Record<
 };
 
 export const LINKED_LIST_LEGEND_ITEMS = [
-  { label: "Active / Traversing", swatch: "border border-blue-500 bg-blue-50" },
-  { label: "New node (pending)", swatch: "border border-amber-500 bg-white ring-2 ring-amber-400/30" },
-  { label: "Relinking", swatch: "border border-emerald-500 bg-emerald-50" },
-  { label: "Breaking", swatch: "border border-dashed border-amber-500 bg-amber-50" },
-  { label: "Idle link", swatch: "border border-slate-300 bg-slate-50" },
+  { id: "active", swatch: "border border-blue-500 bg-blue-50" },
+  {
+    id: "newNode",
+    swatch: "border border-amber-500 bg-white ring-2 ring-amber-400/30",
+  },
+  { id: "relinking", swatch: "border border-emerald-500 bg-emerald-50" },
+  {
+    id: "breaking",
+    swatch: "border border-dashed border-amber-500 bg-amber-50",
+  },
+  { id: "idleLink", swatch: "border border-slate-300 bg-slate-50" },
 ] as const;
 
 export const STACK_TIME_INFO = {
@@ -491,11 +496,10 @@ export type StackLegendToken = "active" | "incoming" | "delete";
 
 export const STACK_LEGEND_ITEMS: {
   token: StackLegendToken;
-  label: string;
 }[] = [
-  { token: "active", label: "TOP / Active" },
-  { token: "incoming", label: "Push / Incoming" },
-  { token: "delete", label: "Pop / Error" },
+  { token: "active" },
+  { token: "incoming" },
+  { token: "delete" },
 ];
 
 export const STACK_LEGEND_SWATCH_CLASS: Record<StackLegendToken, string> = {

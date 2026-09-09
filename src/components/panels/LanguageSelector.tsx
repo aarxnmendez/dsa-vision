@@ -1,10 +1,15 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { CodeLanguage } from "../../data/binarySearchCode";
-import { codeLanguageLabels } from "../../data/binarySearchCode";
 import { CODE_PANEL_TOOLBAR_CONTROL_CLASS } from "../../constants/visualizerTokens";
 import { ChevronIcon } from "../ui/ChevronIcon";
 
-const languages = Object.entries(codeLanguageLabels) as [CodeLanguage, string][];
+const languages: CodeLanguage[] = [
+  "python",
+  "javascript",
+  "java",
+  "pseudocode",
+];
 
 interface LanguageSelectorProps {
   value: CodeLanguage;
@@ -12,6 +17,7 @@ interface LanguageSelectorProps {
 }
 
 export function LanguageSelector({ value, onChange }: LanguageSelectorProps) {
+  const { t } = useTranslation("pages");
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -55,7 +61,7 @@ export function LanguageSelector({ value, onChange }: LanguageSelectorProps) {
         ].join(" ")}
       >
         <span className="font-semibold text-primary truncate">
-          {codeLanguageLabels[value]}
+          {t(`codeLanguages.${value}`)}
         </span>
         <ChevronIcon
           direction="right"
@@ -69,10 +75,10 @@ export function LanguageSelector({ value, onChange }: LanguageSelectorProps) {
       {isOpen && (
         <ul
           role="listbox"
-          aria-label="Programming language"
+          aria-label={t("codeLanguages.python")}
           className="absolute z-50 top-full left-0 right-0 mt-1.5 bg-surface-container-lowest border-2 border-surface-variant rounded-xl shadow-[0_4px_0_0_#dfe3e7] overflow-hidden py-1"
         >
-          {languages.map(([lang, label]) => {
+          {languages.map((lang) => {
             const isSelected = value === lang;
 
             return (
@@ -92,7 +98,7 @@ export function LanguageSelector({ value, onChange }: LanguageSelectorProps) {
                       : "text-on-surface-variant hover:bg-surface-container-low hover:text-primary",
                   ].join(" ")}
                 >
-                  {label}
+                  {t(`codeLanguages.${lang}`)}
                 </button>
               </li>
             );

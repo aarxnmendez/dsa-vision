@@ -1,3 +1,5 @@
+import { getAlgorithmT } from "../i18n/index";
+
 export type BinarySearchPhase =
   | "initial"
   | "calculate-mid"
@@ -36,6 +38,8 @@ function createNotFoundStep(
   low: number,
   high: number,
 ): BinarySearchStep {
+  const t = getAlgorithmT();
+
   return createStep({
     phase: "not-found",
     low,
@@ -45,10 +49,9 @@ function createNotFoundStep(
     compareMid: false,
     target,
     arrayValue: -1,
-    statusTitle: `Target ${target} not found in the array`,
-    statusDetail: "The element does not exist in this sorted array.",
-    stepExplanation:
-      "The search space is empty. No element matches the target.",
+    statusTitle: t("binarySearch.notFound.statusTitle", { target }),
+    statusDetail: t("binarySearch.notFound.statusDetail"),
+    stepExplanation: t("binarySearch.notFound.stepExplanation"),
     codeLine: 17,
   });
 }
@@ -57,6 +60,8 @@ export function binarySearch(
   array: number[],
   target: number,
 ): BinarySearchStep[] {
+  const t = getAlgorithmT();
+
   if (array.length === 0) {
     return [createNotFoundStep(target, 0, -1)];
   }
@@ -75,10 +80,9 @@ export function binarySearch(
       compareMid: false,
       target,
       arrayValue: -1,
-      statusTitle: "Initializing search range",
-      statusDetail: `low = ${low}, high = ${high}`,
-      stepExplanation:
-        "Set low to the first index and high to the last index of the array.",
+      statusTitle: t("binarySearch.initial.statusTitle"),
+      statusDetail: t("binarySearch.initial.statusDetail", { low, high }),
+      stepExplanation: t("binarySearch.initial.stepExplanation"),
       codeLine: 2,
     }),
   );
@@ -97,11 +101,18 @@ export function binarySearch(
         compareMid: false,
         target,
         arrayValue,
-        statusTitle: "Calculate mid",
-        statusDetail: `mid = (${low} + ${high}) // 2 = ${mid}`,
-        stepExplanation:
-          "Calculate the middle index to divide the search space in half.",
-        stepFormula: `mid = (${low} + ${high}) // 2 = ${mid}`,
+        statusTitle: t("binarySearch.calculateMid.statusTitle"),
+        statusDetail: t("binarySearch.calculateMid.statusDetail", {
+          low,
+          high,
+          mid,
+        }),
+        stepExplanation: t("binarySearch.calculateMid.stepExplanation"),
+        stepFormula: t("binarySearch.calculateMid.stepFormula", {
+          low,
+          high,
+          mid,
+        }),
         codeLine: 6,
       }),
     );
@@ -116,14 +127,26 @@ export function binarySearch(
         compareMid: true,
         target,
         arrayValue,
-        statusTitle: `${arrayValue} == ${target}?`,
+        statusTitle: t("binarySearch.compare.statusTitle", {
+          arrayValue,
+          target,
+        }),
         statusDetail:
           arrayValue === target
-            ? `Yes! ${arrayValue} equals ${target}.`
+            ? t("binarySearch.compare.statusDetail.equal", {
+                arrayValue,
+                target,
+              })
             : arrayValue < target
-              ? `No. ${arrayValue} is less than ${target}.`
-              : `No. ${arrayValue} is greater than ${target}.`,
-        stepExplanation: "Compare the middle element with the target value.",
+              ? t("binarySearch.compare.statusDetail.less", {
+                  arrayValue,
+                  target,
+                })
+              : t("binarySearch.compare.statusDetail.greater", {
+                  arrayValue,
+                  target,
+                }),
+        stepExplanation: t("binarySearch.compare.stepExplanation"),
         codeLine: 7,
       }),
     );
@@ -140,12 +163,14 @@ export function binarySearch(
           found: true,
           target,
           arrayValue,
-          statusTitle: `${arrayValue} == ${target}?`,
-          statusDetail: `Found ${target} at index ${mid}.`,
-          pointerMovement: `Target confirmed at index ${mid}.`,
-          stepExplanation:
-            "The middle element matches the target. Search complete.",
-          stepFormula: `return ${mid}`,
+          statusTitle: t("binarySearch.found.statusTitle", {
+            arrayValue,
+            target,
+          }),
+          statusDetail: t("binarySearch.found.statusDetail", { target, mid }),
+          pointerMovement: t("binarySearch.found.pointerMovement", { mid }),
+          stepExplanation: t("binarySearch.found.stepExplanation"),
+          stepFormula: t("binarySearch.found.stepFormula", { mid }),
           codeLine: 8,
         }),
       );
@@ -171,11 +196,16 @@ export function binarySearch(
           compareMid: false,
           target,
           arrayValue,
-          statusTitle: "Move low pointer",
-          statusDetail: `Discard the left half. Search continues from index ${low} to ${high}.`,
-          pointerMovement: `low moves from index ${previousLow} to index ${low}.`,
-          stepExplanation:
-            "The middle value is smaller than the target, so search the right half.",
+          statusTitle: t("binarySearch.moveLowPointer.statusTitle"),
+          statusDetail: t("binarySearch.moveLowPointer.statusDetail", {
+            low,
+            high,
+          }),
+          pointerMovement: t("binarySearch.moveLowPointer.pointerMovement", {
+            previousLow,
+            low,
+          }),
+          stepExplanation: t("binarySearch.moveLowPointer.stepExplanation"),
           movedPointer: "low",
           codeLine: 10,
         }),
@@ -199,11 +229,16 @@ export function binarySearch(
           compareMid: false,
           target,
           arrayValue,
-          statusTitle: "Move high pointer",
-          statusDetail: `Discard the right half. Search continues from index ${low} to ${high}.`,
-          pointerMovement: `high moves from index ${previousHigh} to index ${high}.`,
-          stepExplanation:
-            "The middle value is larger than the target, so search the left half.",
+          statusTitle: t("binarySearch.moveHighPointer.statusTitle"),
+          statusDetail: t("binarySearch.moveHighPointer.statusDetail", {
+            low,
+            high,
+          }),
+          pointerMovement: t("binarySearch.moveHighPointer.pointerMovement", {
+            previousHigh,
+            high,
+          }),
+          stepExplanation: t("binarySearch.moveHighPointer.stepExplanation"),
           movedPointer: "high",
           codeLine: 12,
         }),

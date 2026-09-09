@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type {
   LinkedListConnection,
   LinkedListNodeState,
@@ -345,6 +346,12 @@ function PointerPort({
   isNull: boolean;
   borderSide: "left" | "right";
 }) {
+  const { t } = useTranslation("structures");
+  const portLabel =
+    label === "prev"
+      ? t("visualizer.linkedList.portPrev")
+      : t("visualizer.linkedList.portNext");
+
   return (
     <div
       className={[
@@ -354,9 +361,11 @@ function PointerPort({
       ].join(" ")}
     >
       {isNull ? (
-        <span className={LINKED_LIST_PORT_NULL_LABEL_CLASS}>null</span>
+        <span className={LINKED_LIST_PORT_NULL_LABEL_CLASS}>
+          {t("visualizer.linkedList.portNull")}
+        </span>
       ) : (
-        <span className="text-[10px] font-bold leading-none text-slate-500">{label}</span>
+        <span className="text-[10px] font-bold leading-none text-slate-500">{portLabel}</span>
       )}
     </div>
   );
@@ -373,6 +382,7 @@ function LinkedListNode({
   position: NodeLayoutEntry;
   stepTransitionMs: number;
 }) {
+  const { t } = useTranslation("structures");
   const showPrev = listType === "doubly";
 
   return (
@@ -399,13 +409,19 @@ function LinkedListNode({
       )}
       <div className="flex min-w-0 flex-1 flex-col items-center justify-center px-2">
         {node.showNewLabel && (
-          <span className="text-[9px] font-bold uppercase tracking-wide text-amber-600">NEW</span>
+          <span className="text-[9px] font-bold uppercase tracking-wide text-amber-600">
+            {t("visualizer.linkedList.nodeNew")}
+          </span>
         )}
         {!node.showNewLabel && node.isHead && (
-          <span className="text-[9px] font-bold uppercase tracking-wide text-blue-600">head</span>
+          <span className="text-[9px] font-bold uppercase tracking-wide text-blue-600">
+            {t("visualizer.linkedList.nodeHead")}
+          </span>
         )}
         {!node.showNewLabel && node.isTail && !node.isHead && (
-          <span className="text-[9px] font-bold uppercase tracking-wide text-emerald-600">tail</span>
+          <span className="text-[9px] font-bold uppercase tracking-wide text-emerald-600">
+            {t("visualizer.linkedList.nodeTail")}
+          </span>
         )}
         <span className="text-base font-bold tabular-nums text-slate-900">{node.value}</span>
       </div>
@@ -424,6 +440,7 @@ export function LinkedListStructureVisualizer({
   connections,
   stepTransitionMs = 200,
 }: LinkedListStructureVisualizerProps) {
+  const { t } = useTranslation("structures");
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(640);
 
@@ -469,9 +486,9 @@ export function LinkedListStructureVisualizer({
     <div className="flex w-full min-w-0 flex-col items-center gap-4">
       <div className="w-full max-w-5xl rounded-2xl border-2 border-dashed border-primary/20 bg-surface-container-low/60 px-4 py-6">
         <p className="mb-4 text-center text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
-          {listType === "singly" && "Singly linked nodes (value + next)"}
-          {listType === "doubly" && "Doubly linked nodes (prev + value + next)"}
-          {listType === "circular" && "Circular linked list (tail → head)"}
+          {listType === "singly" && t("visualizer.linkedList.singlyTitle")}
+          {listType === "doubly" && t("visualizer.linkedList.doublyTitle")}
+          {listType === "circular" && t("visualizer.linkedList.circularTitle")}
         </p>
 
         <div
@@ -556,7 +573,7 @@ export function LinkedListStructureVisualizer({
 
       {listType === "circular" && (
         <p className="mt-1 text-center text-xs text-on-surface-variant">
-          The orthogonal back-edge routes tail.next around the list exterior back to head
+          {t("visualizer.linkedList.circularBackEdgeHint")}
         </p>
       )}
     </div>
@@ -564,18 +581,20 @@ export function LinkedListStructureVisualizer({
 }
 
 export function LinkedListStructureLegendBar() {
+  const { t } = useTranslation("structures");
+
   return (
     <div
       className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 rounded-xl border-2 border-surface-variant bg-surface-container-lowest px-4 py-3"
       aria-label="Color legend"
     >
-      {LINKED_LIST_LEGEND_ITEMS.map(({ label, swatch }) => (
+      {LINKED_LIST_LEGEND_ITEMS.map(({ id, swatch }) => (
         <span
-          key={label}
+          key={id}
           className="inline-flex items-center gap-2 text-xs font-semibold text-slate-700"
         >
           <span className={["h-4 w-4 shrink-0 rounded", swatch].join(" ")} aria-hidden="true" />
-          {label}
+          {t(`legends.linkedList.${id}`)}
         </span>
       ))}
     </div>

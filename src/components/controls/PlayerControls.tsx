@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { SPEED_MAX_MS, SPEED_MIN_MS } from "../../constants/player";
 import { compactButtonLabelClass } from "../ui/buttonLabel";
 import { Icon } from "../ui/Icon";
@@ -52,13 +53,14 @@ export function PlayerControls({
   minSpeedMs = SPEED_MIN_MS,
   maxSpeedMs = SPEED_MAX_MS,
 }: PlayerControlsProps) {
+  const { t } = useTranslation("common");
   const invertedSpeed = maxSpeedMs + minSpeedMs - speed;
 
   return (
     <nav className="fixed bottom-0 left-0 w-full z-50 flex justify-center gap-stack-md items-center px-gutter bg-surface-container text-primary font-label-caps text-label-caps rounded-t-2xl border-t-4 border-surface-container-highest shadow-[0_-8px_30px_rgba(0,0,0,0.1)] py-2">
       <div className="flex items-center gap-6 pr-8 border-r-2 border-surface-variant">
         <span className={`${compactButtonLabelClass} text-on-surface-variant`}>
-          Speed
+          {t("player.speed")}
         </span>
         <input
           type="range"
@@ -66,7 +68,7 @@ export function PlayerControls({
           max={maxSpeedMs}
           step={25}
           value={invertedSpeed}
-          aria-label="Playback speed"
+          aria-label={t("player.playbackSpeedAria")}
           onChange={(event) =>
             onSpeedChange(
               maxSpeedMs + minSpeedMs - Number(event.target.value),
@@ -83,7 +85,9 @@ export function PlayerControls({
         className={secondaryControlButtonClass}
       >
         <Icon name="skip_previous" className="text-[24px]" />
-        <span className={`mt-1 text-[10px] ${compactButtonLabelClass}`}>Back</span>
+        <span className={`mt-1 text-[10px] ${compactButtonLabelClass}`}>
+          {t("player.back")}
+        </span>
       </button>
 
       <button
@@ -97,7 +101,7 @@ export function PlayerControls({
           className="text-[24px]"
         />
         <span className={`mt-1 text-[10px] ${compactButtonLabelClass}`}>
-          {isPlaying ? "Pause" : "Play"}
+          {isPlaying ? t("player.pause") : t("player.play")}
         </span>
       </button>
 
@@ -109,7 +113,7 @@ export function PlayerControls({
       >
         <Icon name="skip_next" className="text-[24px]" />
         <span className={`mt-1 text-[10px] ${compactButtonLabelClass}`}>
-          Forward
+          {t("player.forward")}
         </span>
       </button>
 
@@ -119,11 +123,16 @@ export function PlayerControls({
         className={[secondaryControlButtonClass, "ml-4"].join(" ")}
       >
         <Icon name="refresh" className="text-[24px]" />
-        <span className={`mt-1 text-[10px] ${compactButtonLabelClass}`}>Reset</span>
+        <span className={`mt-1 text-[10px] ${compactButtonLabelClass}`}>
+          {t("player.reset")}
+        </span>
       </button>
 
       <span className="sr-only">
-        Step {currentIndex + 1} of {totalSteps}
+        {t("player.stepProgress", {
+          current: currentIndex + 1,
+          total: totalSteps,
+        })}
       </span>
     </nav>
   );

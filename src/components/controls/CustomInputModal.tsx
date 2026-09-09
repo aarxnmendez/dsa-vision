@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
 import {
   MAX_CUSTOM_ARRAY_ELEMENTS,
   MIN_CUSTOM_ARRAY_ELEMENTS,
@@ -9,10 +10,6 @@ import {
 } from "../../utils/customInput";
 import { sectionLabelClass } from "../ui/sectionLabel";
 import { buttonLabelClass } from "../ui/buttonLabel";
-import {
-  APPLY_DATA_LABEL,
-  CUSTOM_DATA_INPUT_TITLE,
-} from "../../constants/copy";
 import { Icon } from "../ui/Icon";
 
 interface CustomInputModalProps {
@@ -36,6 +33,7 @@ export function CustomInputModal({
   onClose,
   onApply,
 }: CustomInputModalProps) {
+  const { t } = useTranslation("common");
   const titleId = useId();
   const valuesInputRef = useRef<HTMLInputElement>(null);
   const [valuesInput, setValuesInput] = useState(initialValues);
@@ -117,7 +115,7 @@ export function CustomInputModal({
               id={titleId}
               className="font-headline-md text-headline-md text-primary"
             >
-              {CUSTOM_DATA_INPUT_TITLE}
+              {t("dataSetup.customInputTitle")}
             </h2>
             {description && (
               <p className="mt-1 font-body-md text-body-md text-on-surface-variant">
@@ -128,7 +126,7 @@ export function CustomInputModal({
           <button
             type="button"
             onClick={onClose}
-            aria-label="Close modal"
+            aria-label={t("dataSetup.closeModalAria")}
             className="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container hover:text-primary transition-colors cursor-pointer"
           >
             <Icon name="close" />
@@ -137,7 +135,7 @@ export function CustomInputModal({
 
         <div className="flex flex-col gap-2">
           <label htmlFor="custom-array-values" className={sectionLabelClass}>
-            Array Values
+            {t("dataSetup.arrayValues")}
           </label>
           <input
             id="custom-array-values"
@@ -152,15 +150,17 @@ export function CustomInputModal({
             className="w-full bg-surface text-on-surface border-2 border-surface-variant rounded-xl py-3 px-4 font-body-md focus:outline-none focus:border-primary focus:ring-0 transition-colors"
           />
           <p className="font-body-md text-body-md text-on-surface-variant text-sm">
-            Enter {MIN_CUSTOM_ARRAY_ELEMENTS} to {MAX_CUSTOM_ARRAY_ELEMENTS}{" "}
-            numbers separated by commas.
+            {t("dataSetup.arrayValuesHint", {
+              min: MIN_CUSTOM_ARRAY_ELEMENTS,
+              max: MAX_CUSTOM_ARRAY_ELEMENTS,
+            })}
           </p>
         </div>
 
         {showTargetInput && (
           <div className="flex flex-col gap-2">
             <label htmlFor="custom-target-value" className={sectionLabelClass}>
-              Target Value (optional)
+              {t("dataSetup.targetOptional")}
             </label>
             <input
               id="custom-target-value"
@@ -171,7 +171,7 @@ export function CustomInputModal({
                 setTargetInput(event.target.value);
                 setError(null);
               }}
-              placeholder="e.g. 23"
+              placeholder={t("dataSetup.targetPlaceholder")}
               className="w-full bg-surface text-on-surface border-2 border-surface-variant rounded-xl py-3 px-4 font-body-md focus:outline-none focus:border-primary focus:ring-0 transition-colors no-spinner"
             />
           </div>
@@ -195,7 +195,7 @@ export function CustomInputModal({
               buttonLabelClass,
             ].join(" ")}
           >
-            Cancel
+            {t("dataSetup.cancel")}
           </button>
           <button
             type="button"
@@ -205,7 +205,7 @@ export function CustomInputModal({
               buttonLabelClass,
             ].join(" ")}
           >
-            {APPLY_DATA_LABEL}
+            {t("dataSetup.apply")}
           </button>
         </div>
       </div>

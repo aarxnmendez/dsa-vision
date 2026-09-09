@@ -1,5 +1,5 @@
+import { useTranslation } from "react-i18next";
 import { Icon } from "../ui/Icon";
-import { CODE_PANEL_IDLE_FALLBACK } from "../../constants/copy";
 
 interface CodePanelStepFooterProps {
   stepExplanation?: string;
@@ -12,6 +12,8 @@ export function CodePanelStepFooter({
   stepFormula,
   className = "",
 }: CodePanelStepFooterProps) {
+  const { t } = useTranslation("common");
+
   return (
     <div
       className={[
@@ -21,10 +23,10 @@ export function CodePanelStepFooter({
     >
       <h4 className="mb-2 flex items-center gap-2 font-bold text-primary">
         <Icon name="lightbulb" />
-        Current Step
+        {t("codePanel.currentStep")}
       </h4>
       <p className="font-body-md leading-relaxed text-on-surface">
-        {stepExplanation ?? CODE_PANEL_IDLE_FALLBACK}
+        {stepExplanation ?? t("idle.visualizer")}
         {stepFormula && (
           <>
             <br />

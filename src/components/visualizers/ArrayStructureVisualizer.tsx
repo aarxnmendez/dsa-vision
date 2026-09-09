@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type {
   ArrayStructureCellState,
   ArrayStructureHighlight,
@@ -124,6 +125,7 @@ export function ArrayStructureVisualizer({
   pointers,
   stepTransitionMs = 200,
 }: ArrayStructureVisualizerProps) {
+  const { t } = useTranslation("structures");
   const pointersByIndex = pointers.reduce<Record<number, ArrayPointer[]>>(
     (acc, pointer) => {
       acc[pointer.index] = [...(acc[pointer.index] ?? []), pointer];
@@ -147,7 +149,7 @@ export function ArrayStructureVisualizer({
     <div className="flex w-full min-w-0 flex-col items-center gap-4">
       <div className="w-full max-w-4xl rounded-2xl border-2 border-dashed border-primary/25 bg-surface-container-low/60 px-4 py-5 sm:px-6">
         <p className="mb-4 text-center text-xs font-semibold uppercase tracking-wider text-on-surface-variant">
-          Contiguous memory block
+          {t("visualizer.array.memoryBlockTitle")}
         </p>
 
         <div className="flex flex-wrap justify-center gap-3 md:gap-4 overflow-x-auto pt-12 pb-2">
@@ -182,20 +184,21 @@ export function ArrayStructureVisualizer({
       </div>
 
       <p className="text-center text-xs text-on-surface-variant">
-        Capacity: {capacity} slot{capacity === 1 ? "" : "s"} — indices are fixed
-        addresses in the block
+        {t("visualizer.array.capacityHint", { count: capacity })}
       </p>
     </div>
   );
 }
 
 export function ArrayStructureLegendBar() {
+  const { t } = useTranslation("structures");
+
   return (
     <div
       className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 rounded-xl border-2 border-surface-variant bg-surface-container-lowest px-4 py-3"
       aria-label="Color legend"
     >
-      {ARRAY_STRUCTURE_LEGEND_ITEMS.map(({ token, label }) => (
+      {ARRAY_STRUCTURE_LEGEND_ITEMS.map(({ token }) => (
         <span
           key={token}
           className="inline-flex items-center gap-2 text-xs font-semibold text-slate-700"
@@ -207,7 +210,7 @@ export function ArrayStructureLegendBar() {
             ].join(" ")}
             aria-hidden="true"
           />
-          {label}
+          {t(`legends.array.${token}`)}
         </span>
       ))}
     </div>

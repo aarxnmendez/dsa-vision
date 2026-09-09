@@ -1,4 +1,5 @@
 import { Heart } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import {
   AUTHOR_GITHUB_URL,
   AUTHOR_LINKEDIN_URL,
@@ -39,24 +40,26 @@ function LinkedInIcon({ className }: { className?: string }) {
 }
 
 export function Footer() {
+  const { t } = useTranslation("common");
+
   return (
     <footer className="w-full border-t border-surface-variant/60 bg-surface/80 px-base py-6">
       <div className="mx-auto flex max-w-container-max flex-col items-center justify-center gap-3 text-center sm:flex-row sm:gap-4">
         <p className="inline-flex items-center text-sm text-on-surface-variant">
-          Made with
+          {t("footer.madeWith")}
           <Heart
             className="mx-1 inline-block size-4 fill-none text-blue-600 stroke-blue-600"
             strokeWidth={2}
             aria-hidden="true"
           />
-          by Aaron
+          {t("footer.byAaron")}
         </p>
         <div className="flex items-center gap-3">
           <a
             href={AUTHOR_GITHUB_URL}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Aaron Mendez on GitHub"
+            aria-label={t("footer.githubAria")}
             className="inline-flex items-center justify-center rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
           >
             <GitHubIcon className="size-5" />
@@ -65,7 +68,7 @@ export function Footer() {
             href={AUTHOR_LINKEDIN_URL}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Aaron Mendez on LinkedIn"
+            aria-label={t("footer.linkedinAria")}
             className="inline-flex items-center justify-center rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
           >
             <LinkedInIcon className="size-5" />

@@ -1,0 +1,104 @@
+export const common = {
+  brand: "DSAVision",
+  loadingModule: "Cargando módulo...",
+  language: {
+    en: "EN",
+    es: "ES",
+    switchAria: "Seleccionar idioma",
+  },
+  dataSetup: {
+    label: "Configuración de datos",
+    apply: "Aplicar datos",
+    customInputTitle: "Entrada de datos personalizada",
+    arraySize: "Tamaño del array",
+    targetValue: "Valor objetivo",
+    randomize: "Aleatorizar",
+    customInput: "Entrada personalizada",
+    cancel: "Cancelar",
+    arrayValues: "Valores del array",
+    autoSort: "Ordenar array automáticamente",
+    autoSortHint:
+      "La búsqueda binaria requiere un array ordenado. Los valores se ordenarán de forma ascendente antes de comenzar.",
+    targetOptional: "Objetivo (opcional)",
+    arrayValuesHint:
+      "Introduce entre {{min}} y {{max}} números separados por comas.",
+    targetPlaceholder: "ej. 23",
+    closeModalAria: "Cerrar modal",
+  },
+  idle: {
+    visualizer:
+      "Configura los datos en el panel izquierdo y pulsa Reproducir o Adelante para comenzar.",
+    stack:
+      "Configura los parámetros de la pila en el panel izquierdo y pulsa Reproducir o Adelante para recorrer las operaciones.",
+  },
+  player: {
+    speed: "Velocidad",
+    back: "Atrás",
+    play: "Reproducir",
+    pause: "Pausa",
+    forward: "Adelante",
+    reset: "Reiniciar",
+    playbackSpeedAria: "Velocidad de reproducción",
+    stepProgress: "Paso {{current}} de {{total}}",
+  },
+  codePanel: {
+    code: "Código",
+    explanation: "Explicación",
+    currentStep: "Paso actual",
+    copy: "Copiar",
+    copied: "¡Copiado!",
+  },
+  explanation: {
+    howItWorks: "Cómo funciona",
+    keyConcepts: "Conceptos clave",
+    complexityBreakdown: "Desglose de complejidad",
+    whenToUse: "Cuándo usarlo",
+  },
+  footer: {
+    madeWith: "Hecho con",
+    byAaron: "por Aaron",
+    githubAria: "Aaron Mendez en GitHub",
+    linkedinAria: "Aaron Mendez en LinkedIn",
+  },
+  mobileNotice: {
+    title: "Se requiere pantalla grande",
+    body: "Esta plataforma interactiva necesita más espacio en pantalla para mostrar visualizadores, animaciones y paneles de código cómodamente. Abre DSAVision en una tablet en horizontal o en un navegador de escritorio.",
+  },
+  panel: {
+    collapseLeft: "Contraer panel izquierdo",
+    expandLeft: "Expandir panel izquierdo",
+    collapseCode: "Contraer panel de código",
+    expandCode: "Expandir panel de código",
+    backToCatalog: "Volver al catálogo",
+  },
+  validation: {
+    invalidCharacters: "Solo se permiten números, comas y espacios.",
+    maxElements: "Máximo {{max}} elementos permitidos.",
+    emptyArray: "Introduce al menos un valor.",
+    arrayCountRange: "Introduce entre {{min}} y {{max}} números.",
+    invalidNumeric:
+      "Solo se permiten valores numéricos separados por comas.",
+    invalidTarget: "El objetivo debe ser un número válido.",
+  },
+  difficulty: {
+    beginner: "Principiante",
+    intermediate: "Intermedio",
+    advanced: "Avanzado",
+  },
+  complexity: {
+    timeLabel: "Complejidad temporal",
+    spaceLabel: "Complejidad espacial",
+    learnMore: "Aprende sobre notación Big-O →",
+  },
+  legend: {
+    unsorted: "Sin ordenar",
+    outerIndex: "Índice externo (i)",
+    comparingMin: "Comparando / Mín",
+    sorted: "Ordenado",
+    min: "Mín",
+  },
+  explore: "Explorar",
+  comingSoon: "Próximamente",
+  copy: "Copiar",
+  copied: "¡Copiado!",
+} as const;

@@ -1,3 +1,4 @@
+import { getAlgorithmT } from "../i18n/index";
 import type {
   LinkedListConnection,
   LinkedListConnectionLabel,
@@ -436,17 +437,8 @@ function pointerAt(
 }
 
 function operationLabel(operation: LinkedListOperationId): string {
-  const labels: Record<LinkedListOperationId, string> = {
-    "insert-at-head": "Insert at Head",
-    "insert-at-tail": "Insert at Tail",
-    "insert-at-index": "Insert at Index",
-    "delete-head": "Delete Head",
-    "delete-tail": "Delete Tail",
-    "delete-value": "Delete by Value",
-    search: "Search",
-    reverse: "Reverse",
-  };
-  return labels[operation];
+  const t = getAlgorithmT();
+  return t(`linkedListOperations.operations.${operation}`);
 }
 
 function introStep(
@@ -473,13 +465,14 @@ export function generateInsertAtHeadSteps(
   values: number[],
   value: number,
 ): LinkedListOperationStep[] {
+  const t = getAlgorithmT();
   const list = buildListFromValues(values, listType);
   const steps: LinkedListOperationStep[] = [
     introStep(
       list,
       "insert-at-head",
-      `Insert ${value} before the current head.`,
-      "Creating a new node and pointing it to the former head takes O(1) time.",
+      t("linkedListOperations.insertAtHead.intro.statusDetail", { value }),
+      t("linkedListOperations.insertAtHead.intro.stepExplanation"),
       2,
     ),
   ];
@@ -498,10 +491,16 @@ export function generateInsertAtHeadSteps(
     createStep(working, {
       phase: "insert",
       operation: "insert-at-head",
-      statusTitle: "Allocate new node",
-      statusDetail: `Created node(${value}) in memory.`,
-      stepMessage: `New node (${value}) sits inline before the current head — not linked yet.`,
-      stepExplanation: "Node allocation is O(1). Pointers are assigned in the next step.",
+      statusTitle: t("linkedListOperations.insertAtHead.allocate.statusTitle"),
+      statusDetail: t("linkedListOperations.insertAtHead.allocate.statusDetail", {
+        value,
+      }),
+      stepMessage: t("linkedListOperations.insertAtHead.allocate.stepMessage", {
+        value,
+      }),
+      stepExplanation: t(
+        "linkedListOperations.insertAtHead.allocate.stepExplanation",
+      ),
       codeLine: 2,
       pointers: formerHeadId ? [pointerAt("head", formerHeadId)] : [],
       nodeHighlights: { [newId]: "creating" },
@@ -521,10 +520,15 @@ export function generateInsertAtHeadSteps(
       createStep(working, {
         phase: "relink",
         operation: "insert-at-head",
-        statusTitle: "Link new node",
-        statusDetail: `node.next = formerHead`,
-        stepMessage: `Connect ${value} → ${working.nodes.get(formerHeadId)!.value}.`,
-        stepExplanation: "The new node points to the previous head. Head pointer updates next.",
+        statusTitle: t("linkedListOperations.insertAtHead.link.statusTitle"),
+        statusDetail: t("linkedListOperations.insertAtHead.link.statusDetail"),
+        stepMessage: t("linkedListOperations.insertAtHead.link.stepMessage", {
+          value,
+          formerHeadValue: working.nodes.get(formerHeadId)!.value,
+        }),
+        stepExplanation: t(
+          "linkedListOperations.insertAtHead.link.stepExplanation",
+        ),
         codeLine: 3,
         pointers: formerHeadId ? [pointerAt("head", formerHeadId)] : [],
         nodeHighlights: { [newId]: "inserted" },
@@ -555,10 +559,14 @@ export function generateInsertAtHeadSteps(
     createStep(working, {
       phase: "complete",
       operation: "insert-at-head",
-      statusTitle: "Update head pointer",
-      statusDetail: "Head pointer updated. Operation finished in O(1).",
-      stepMessage: `${value} is now the head of the list.`,
-      stepExplanation: "Head insertion is constant time for all three list variants.",
+      statusTitle: t("linkedListOperations.insertAtHead.complete.statusTitle"),
+      statusDetail: t("linkedListOperations.insertAtHead.complete.statusDetail"),
+      stepMessage: t("linkedListOperations.insertAtHead.complete.stepMessage", {
+        value,
+      }),
+      stepExplanation: t(
+        "linkedListOperations.insertAtHead.complete.stepExplanation",
+      ),
       codeLine: 4,
       pointers: [pointerAt("head", newId)],
       nodeHighlights: { [newId]: "found" },
@@ -574,15 +582,16 @@ export function generateInsertAtTailSteps(
   values: number[],
   value: number,
 ): LinkedListOperationStep[] {
+  const t = getAlgorithmT();
   const list = buildListFromValues(values, listType);
   const steps: LinkedListOperationStep[] = [
     introStep(
       list,
       "insert-at-tail",
-      `Append ${value} after the current tail.`,
+      t("linkedListOperations.insertAtTail.intro.statusDetail", { value }),
       listType === "circular"
-        ? "Tail pointer gives O(1) access — append, then reconnect tail.next to head."
-        : "An explicit tail pointer makes append O(1) without walking from head.",
+        ? t("linkedListOperations.insertAtTail.intro.stepExplanation.circular")
+        : t("linkedListOperations.insertAtTail.intro.stepExplanation.default"),
       14,
     ),
   ];
@@ -600,10 +609,16 @@ export function generateInsertAtTailSteps(
     createStep(working, {
       phase: "insert",
       operation: "insert-at-tail",
-      statusTitle: "Allocate new node",
-      statusDetail: `Created node(${value}) in memory.`,
-      stepMessage: `New node (${value}) sits inline to the right of the tail — not linked yet.`,
-      stepExplanation: "Node allocation is O(1). The tail pointer targets the current last node directly.",
+      statusTitle: t("linkedListOperations.insertAtTail.allocate.statusTitle"),
+      statusDetail: t("linkedListOperations.insertAtTail.allocate.statusDetail", {
+        value,
+      }),
+      stepMessage: t("linkedListOperations.insertAtTail.allocate.stepMessage", {
+        value,
+      }),
+      stepExplanation: t(
+        "linkedListOperations.insertAtTail.allocate.stepExplanation",
+      ),
       codeLine: 14,
       pointers: [pointerAt("tail", tailId)],
       nodeHighlights: { [newId]: "creating", [tailId]: "accessed" },
@@ -623,10 +638,13 @@ export function generateInsertAtTailSteps(
     createStep(working, {
       phase: "relink",
       operation: "insert-at-tail",
-      statusTitle: "Link new node",
-      statusDetail: `tail.next = newNode`,
-      stepMessage: `Connect ${working.nodes.get(tailId)!.value} → ${value}.`,
-      stepExplanation: "Only the tail's next pointer changes — still O(1), no traversal.",
+      statusTitle: t("linkedListOperations.insertAtTail.link.statusTitle"),
+      statusDetail: t("linkedListOperations.insertAtTail.link.statusDetail"),
+      stepMessage: t("linkedListOperations.insertAtTail.link.stepMessage", {
+        tailValue: working.nodes.get(tailId)!.value,
+        value,
+      }),
+      stepExplanation: t("linkedListOperations.insertAtTail.link.stepExplanation"),
       codeLine: 15,
       pointers: [pointerAt("tail", tailId)],
       nodeHighlights: { [newId]: "inserted", [tailId]: "accessed" },
@@ -643,16 +661,20 @@ export function generateInsertAtTailSteps(
     createStep(working, {
       phase: "complete",
       operation: "insert-at-tail",
-      statusTitle: "Update tail pointer",
-      statusDetail: "Tail pointer now references the new last node.",
+      statusTitle: t("linkedListOperations.insertAtTail.complete.statusTitle"),
+      statusDetail: t("linkedListOperations.insertAtTail.complete.statusDetail"),
       stepMessage:
         listType === "circular"
-          ? `${value} is the new tail — next reconnects to head.`
-          : `${value} is the new tail — next is null.`,
+          ? t("linkedListOperations.insertAtTail.complete.stepMessage.circular", {
+              value,
+            })
+          : t("linkedListOperations.insertAtTail.complete.stepMessage.default", {
+              value,
+            }),
       stepExplanation:
         listType === "circular"
-          ? "Circular lists set newTail.next = head after advancing the tail pointer."
-          : "null on the new tail's next port marks the end of the list.",
+          ? t("linkedListOperations.insertAtTail.complete.stepExplanation.circular")
+          : t("linkedListOperations.insertAtTail.complete.stepExplanation.default"),
       codeLine: 16,
       pointers: [pointerAt("tail", newId)],
       nodeHighlights: { [newId]: "found" },
@@ -679,12 +701,16 @@ export function generateInsertAtIndexSteps(
     return generateInsertAtTailSteps(listType, values, value);
   }
 
+  const t = getAlgorithmT();
   const steps: LinkedListOperationStep[] = [
     introStep(
       list,
       "insert-at-index",
-      `Insert ${value} at index ${index}.`,
-      "Walk to the node before the insertion point, then relink pointers.",
+      t("linkedListOperations.insertAtIndex.intro.statusDetail", {
+        value,
+        index,
+      }),
+      t("linkedListOperations.insertAtIndex.intro.stepExplanation"),
       8,
     ),
   ];
@@ -698,16 +724,23 @@ export function generateInsertAtIndexSteps(
     prevId = nodeId;
     const nextId = working.nodes.get(nodeId)!.next;
     const isPredecessor = i === index - 1;
+    const nodeValue = working.nodes.get(nodeId)!.value;
     steps.push(
       createStep(working, {
         phase: "traverse",
         operation: "insert-at-index",
         statusTitle: isPredecessor
-          ? `Reach predecessor at index ${i}`
-          : `Traverse to index ${i}`,
-        statusDetail: `curr at node with value ${working.nodes.get(nodeId)!.value}.`,
-        stepMessage: "Advance until the insertion gap is found.",
-        stepExplanation: "Insertion at index i requires i pointer hops from the head.",
+          ? t("linkedListOperations.insertAtIndex.reachPredecessor.statusTitle", {
+              index: i,
+            })
+          : t("linkedListOperations.insertAtIndex.traverse.statusTitle", {
+              index: i,
+            }),
+        statusDetail: t("linkedListOperations.insertAtIndex.traverse.statusDetail", {
+          value: nodeValue,
+        }),
+        stepMessage: t("linkedListOperations.insertAtIndex.traverseMessage"),
+        stepExplanation: t("linkedListOperations.insertAtIndex.traverseExplanation"),
         codeLine: 9,
         pointers: [
           pointerAt("curr", nodeId),
@@ -741,10 +774,13 @@ export function generateInsertAtIndexSteps(
     createStep(working, {
       phase: "relink",
       operation: "insert-at-index",
-      statusTitle: "Splice new node",
-      statusDetail: "prev.next = newNode; newNode.next = next",
-      stepMessage: `Inserted ${value} between ${working.nodes.get(prevId)!.value} and the successor.`,
-      stepExplanation: "Two or three pointer updates splice the node in O(1) after traversal.",
+      statusTitle: t("linkedListOperations.insertAtIndex.splice.statusTitle"),
+      statusDetail: t("linkedListOperations.insertAtIndex.splice.statusDetail"),
+      stepMessage: t("linkedListOperations.insertAtIndex.splice.stepMessage", {
+        value,
+        prevValue: working.nodes.get(prevId)!.value,
+      }),
+      stepExplanation: t("linkedListOperations.insertAtIndex.splice.stepExplanation"),
       codeLine: 10,
       pointers: [pointerAt("prev", prevId), pointerAt("temp", newId)],
       nodeHighlights: { [newId]: "inserted", [prevId]: "active" },
@@ -758,10 +794,13 @@ export function generateInsertAtIndexSteps(
     createStep(working, {
       phase: "complete",
       operation: "insert-at-index",
-      statusTitle: "Insert complete",
-      statusDetail: `Value ${value} now sits at index ${index}.`,
-      stepMessage: "Middle insertion finished.",
-      stepExplanation: "Overall time is O(n) due to traversal to the index.",
+      statusTitle: t("linkedListOperations.insertAtIndex.complete.statusTitle"),
+      statusDetail: t("linkedListOperations.insertAtIndex.complete.statusDetail", {
+        value,
+        index,
+      }),
+      stepMessage: t("linkedListOperations.insertAtIndex.complete.stepMessage"),
+      stepExplanation: t("linkedListOperations.insertAtIndex.complete.stepExplanation"),
       codeLine: 11,
       pointers: [pointerAt("temp", newId)],
       nodeHighlights: { [newId]: "found" },
@@ -776,16 +815,17 @@ export function generateDeleteHeadSteps(
   listType: LinkedListType,
   values: number[],
 ): LinkedListOperationStep[] {
+  const t = getAlgorithmT();
   const list = buildListFromValues(values, listType);
   if (!list.headId) {
     return [
       createStep(list, {
         phase: "not-found",
         operation: "delete-head",
-        statusTitle: "List is empty",
-        statusDetail: "Nothing to delete.",
-        stepMessage: "Head deletion requires at least one node.",
-        stepExplanation: "Guard against empty lists before deleting the head.",
+        statusTitle: t("linkedListOperations.deleteHead.empty.statusTitle"),
+        statusDetail: t("linkedListOperations.deleteHead.empty.statusDetail"),
+        stepMessage: t("linkedListOperations.deleteHead.empty.stepMessage"),
+        stepExplanation: t("linkedListOperations.deleteHead.empty.stepExplanation"),
         codeLine: 18,
       }),
     ];
@@ -797,8 +837,8 @@ export function generateDeleteHeadSteps(
     introStep(
       list,
       "delete-head",
-      `Remove head node (${headValue}).`,
-      "Advance head to head.next and discard the old node.",
+      t("linkedListOperations.deleteHead.intro.statusDetail", { value: headValue }),
+      t("linkedListOperations.deleteHead.intro.stepExplanation"),
       18,
     ),
   ];
@@ -817,20 +857,25 @@ export function generateDeleteHeadSteps(
     createStep(working, {
       phase: "delete",
       operation: "delete-head",
-      statusTitle: "Unlink head",
-      statusDetail:
-        isCircularSingle
-          ? "Break the self-loop — head and tail become null."
-          : "head = head.next",
+      statusTitle: t("linkedListOperations.deleteHead.unlink.statusTitle"),
+      statusDetail: isCircularSingle
+        ? t("linkedListOperations.deleteHead.unlink.statusDetail.circularSingle")
+        : t("linkedListOperations.deleteHead.unlink.statusDetail.default"),
       stepMessage: isCircularSingle
-        ? `Breaking the circular self-link on ${headValue}.`
-        : `Breaking link from ${headValue} to the successor.`,
+        ? t("linkedListOperations.deleteHead.unlink.stepMessage.circularSingle", {
+            value: headValue,
+          })
+        : t("linkedListOperations.deleteHead.unlink.stepMessage.default", {
+            value: headValue,
+          }),
       stepExplanation:
         working.type === "circular"
           ? isCircularSingle
-            ? "A one-node circular list clears both head and tail when the loop breaks."
-            : "Advance head first, then reconnect tail.next to the new head."
-          : "Head deletion is O(1) once the next pointer is read.",
+            ? t(
+                "linkedListOperations.deleteHead.unlink.stepExplanation.circularSingle",
+              )
+            : t("linkedListOperations.deleteHead.unlink.stepExplanation.circular")
+          : t("linkedListOperations.deleteHead.unlink.stepExplanation.default"),
       codeLine: 19,
       pointers:
         isCircularSingle || !nextId
@@ -857,11 +902,15 @@ export function generateDeleteHeadSteps(
           createStep(working, {
             phase: "relink",
             operation: "delete-head",
-            statusTitle: "Relink tail → head",
-            statusDetail: "tail.next must target the new head in a circular list.",
-            stepMessage: `Point tail (${working.nodes.get(tailId)!.value}) to new head (${working.nodes.get(working.headId)!.value}).`,
-            stepExplanation:
-              "Without this update, tail.next would still reference the removed head node.",
+            statusTitle: t("linkedListOperations.deleteHead.relinkTail.statusTitle"),
+            statusDetail: t("linkedListOperations.deleteHead.relinkTail.statusDetail"),
+            stepMessage: t("linkedListOperations.deleteHead.relinkTail.stepMessage", {
+              tailValue: working.nodes.get(tailId)!.value,
+              headValue: working.nodes.get(working.headId)!.value,
+            }),
+            stepExplanation: t(
+              "linkedListOperations.deleteHead.relinkTail.stepExplanation",
+            ),
             codeLine: 20,
             pointers: [
               pointerAt("tail", tailId),
@@ -901,26 +950,28 @@ export function generateDeleteHeadSteps(
     createStep(working, {
       phase: "complete",
       operation: "delete-head",
-      statusTitle: "Delete complete",
+      statusTitle: t("linkedListOperations.deleteHead.complete.statusTitle"),
       statusDetail: isCircularSingle
-        ? `Removed ${headValue}. List is now empty.`
-        : `Removed ${headValue}. Head advanced in O(1).`,
-      stepMessage:
-        isCircularSingle
-          ? "Head and tail are null — circular list cleared."
-          : working.type === "circular"
-            ? "Head advanced and tail.next points to the new head."
-            : working.type === "doubly" && working.headId
-              ? "New head prev is null — forward link intact."
-              : "Head advanced to the next node.",
-      stepExplanation:
-        isCircularSingle
-          ? "Single-node circular lists require clearing both entry points."
-          : working.type === "circular"
-            ? "Tail.next must follow the head pointer after every head removal."
-            : working.type === "doubly"
-              ? "Doubly lists also clear the new head's prev pointer to null."
-              : "Only pointer updates — no traversal required.",
+        ? t("linkedListOperations.deleteHead.complete.statusDetail.circularSingle", {
+            value: headValue,
+          })
+        : t("linkedListOperations.deleteHead.complete.statusDetail.default", {
+            value: headValue,
+          }),
+      stepMessage: isCircularSingle
+        ? t("linkedListOperations.deleteHead.complete.stepMessage.circularSingle")
+        : working.type === "circular"
+          ? t("linkedListOperations.deleteHead.complete.stepMessage.circular")
+          : working.type === "doubly" && working.headId
+            ? t("linkedListOperations.deleteHead.complete.stepMessage.doubly")
+            : t("linkedListOperations.deleteHead.complete.stepMessage.default"),
+      stepExplanation: isCircularSingle
+        ? t("linkedListOperations.deleteHead.complete.stepExplanation.circularSingle")
+        : working.type === "circular"
+          ? t("linkedListOperations.deleteHead.complete.stepExplanation.circular")
+          : working.type === "doubly"
+            ? t("linkedListOperations.deleteHead.complete.stepExplanation.doubly")
+            : t("linkedListOperations.deleteHead.complete.stepExplanation.default"),
       codeLine: working.type === "circular" && !isCircularSingle ? 21 : 20,
       pointers: working.headId ? [pointerAt("head", working.headId)] : [],
       nodeHighlights: working.headId ? { [working.headId]: "found" } : {},
@@ -957,6 +1008,7 @@ export function generateDeleteTailSteps(
 }
 
 function generateDeleteTailDoublySteps(list: InternalList): LinkedListOperationStep[] {
+  const t = getAlgorithmT();
   const ordered = getOrderedNodeIds(list);
   const tailId = ordered[ordered.length - 1]!;
   const prevId = list.nodes.get(tailId)!.prev;
@@ -965,8 +1017,8 @@ function generateDeleteTailDoublySteps(list: InternalList): LinkedListOperationS
     introStep(
       list,
       "delete-tail",
-      "Remove the last node using tail.prev — O(1).",
-      "Doubly linked lists expose the predecessor directly from the tail node.",
+      t("linkedListOperations.deleteTail.doublyIntro.statusDetail"),
+      t("linkedListOperations.deleteTail.doublyIntro.stepExplanation"),
       22,
     ),
   ];
@@ -981,11 +1033,12 @@ function generateDeleteTailDoublySteps(list: InternalList): LinkedListOperationS
     createStep(working, {
       phase: "delete",
       operation: "delete-tail",
-      statusTitle: "Access tail and predecessor",
-      statusDetail: `tail.prev points to ${working.nodes.get(prevId)!.value}.`,
-      stepMessage: "No traversal needed — jump to tail and follow prev in O(1).",
-      stepExplanation:
-        "Doubly linked lists store a prev pointer on each node, enabling O(1) tail deletion.",
+      statusTitle: t("linkedListOperations.deleteTail.accessTail.statusTitle"),
+      statusDetail: t("linkedListOperations.deleteTail.accessTail.statusDetail", {
+        value: working.nodes.get(prevId)!.value,
+      }),
+      stepMessage: t("linkedListOperations.deleteTail.accessTail.stepMessage"),
+      stepExplanation: t("linkedListOperations.deleteTail.accessTail.stepExplanation"),
       codeLine: 23,
       pointers: [pointerAt("tail", tailId), pointerAt("prev", prevId)],
       nodeHighlights: { [tailId]: "active", [prevId]: "accessed" },
@@ -999,10 +1052,12 @@ function generateDeleteTailDoublySteps(list: InternalList): LinkedListOperationS
     createStep(working, {
       phase: "delete",
       operation: "delete-tail",
-      statusTitle: "Break tail link",
-      statusDetail: "Set penultimate.next = null.",
-      stepMessage: `Unlink ${working.nodes.get(tailId)!.value} — penultimate.next becomes null.`,
-      stepExplanation: "The predecessor's next port shows null as the tail node is detached.",
+      statusTitle: t("linkedListOperations.deleteTail.breakLink.statusTitle"),
+      statusDetail: t("linkedListOperations.deleteTail.breakLink.statusDetail.doubly"),
+      stepMessage: t("linkedListOperations.deleteTail.breakLink.stepMessage.doubly", {
+        tailValue: working.nodes.get(tailId)!.value,
+      }),
+      stepExplanation: t("linkedListOperations.deleteTail.breakLink.stepExplanation.default"),
       codeLine: 24,
       pointers: [pointerAt("tail", tailId), pointerAt("prev", prevId)],
       nodeHighlights: { [tailId]: "deleted", [prevId]: "active" },
@@ -1023,10 +1078,10 @@ function generateDeleteTailDoublySteps(list: InternalList): LinkedListOperationS
     createStep(working, {
       phase: "complete",
       operation: "delete-tail",
-      statusTitle: "Delete complete",
-      statusDetail: "Tail removed in O(1) time.",
-      stepMessage: "Penultimate.next is null — tail node freed.",
-      stepExplanation: "Doubly linked tail deletion avoids the O(n) walk required in singly lists.",
+      statusTitle: t("linkedListOperations.deleteTail.complete.statusTitle"),
+      statusDetail: t("linkedListOperations.deleteTail.complete.statusDetail.doubly"),
+      stepMessage: t("linkedListOperations.deleteTail.complete.stepMessage.doubly"),
+      stepExplanation: t("linkedListOperations.deleteTail.complete.stepExplanation.doubly"),
       codeLine: 25,
       pointers: [pointerAt("tail", prevId)],
       nodeHighlights: { [prevId]: "found" },
@@ -1038,6 +1093,7 @@ function generateDeleteTailDoublySteps(list: InternalList): LinkedListOperationS
 }
 
 function generateDeleteTailSinglySteps(list: InternalList): LinkedListOperationStep[] {
+  const t = getAlgorithmT();
   const ordered = getOrderedNodeIds(list);
   const tailId = ordered[ordered.length - 1]!;
   const prevId = ordered[ordered.length - 2]!;
@@ -1047,9 +1103,9 @@ function generateDeleteTailSinglySteps(list: InternalList): LinkedListOperationS
       list,
       "delete-tail",
       list.type === "circular"
-        ? "Remove the last node in the circular chain."
-        : "Remove the last node in the chain.",
-      "Singly linked lists must walk from head to the penultimate node — O(n) time.",
+        ? t("linkedListOperations.deleteTail.singlyIntro.statusDetail.circular")
+        : t("linkedListOperations.deleteTail.singlyIntro.statusDetail.default"),
+      t("linkedListOperations.deleteTail.singlyIntro.stepExplanation"),
       22,
     ),
   ];
@@ -1061,20 +1117,27 @@ function generateDeleteTailSinglySteps(list: InternalList): LinkedListOperationS
     const nextId = working.nodes.get(nodeId)!.next!;
     const isPenultimate = index === ordered.length - 2;
 
+    const nodeValue = working.nodes.get(nodeId)!.value;
     steps.push(
       createStep(working, {
         phase: isPenultimate ? "compare" : "traverse",
         operation: "delete-tail",
-        statusTitle: isPenultimate ? "Penultimate node reached" : "Walk from head",
+        statusTitle: isPenultimate
+          ? t("linkedListOperations.deleteTail.penultimate.statusTitle")
+          : t("linkedListOperations.deleteTail.walk.statusTitle"),
         statusDetail: isPenultimate
-          ? `Node ${working.nodes.get(nodeId)!.value} is before the tail.`
-          : `curr at node ${working.nodes.get(nodeId)!.value}.`,
+          ? t("linkedListOperations.deleteTail.penultimate.statusDetail", {
+              value: nodeValue,
+            })
+          : t("linkedListOperations.deleteTail.walk.statusDetail", {
+              value: nodeValue,
+            }),
         stepMessage: isPenultimate
-          ? "Stop here — this is the node whose next pointer must be updated."
-          : "Advance curr toward the tail one node at a time.",
+          ? t("linkedListOperations.deleteTail.penultimate.stepMessage")
+          : t("linkedListOperations.deleteTail.walkMessage"),
         stepExplanation: isPenultimate
-          ? "Singly lists cannot delete the tail in O(1) without a tail pointer and backward links."
-          : "Each hop costs O(1), but finding the penultimate node requires O(n) hops.",
+          ? t("linkedListOperations.deleteTail.penultimate.stepExplanation")
+          : t("linkedListOperations.deleteTail.walk.stepExplanation"),
         codeLine: 23,
         pointers: [pointerAt("curr", nodeId)],
         nodeHighlights: {
@@ -1090,20 +1153,28 @@ function generateDeleteTailSinglySteps(list: InternalList): LinkedListOperationS
 
   const penultimateNextKey = connectionKey(prevId, tailId, "next");
 
+  const tailValue = working.nodes.get(tailId)!.value;
   steps.push(
     createStep(working, {
       phase: "delete",
       operation: "delete-tail",
-      statusTitle: "Break tail link",
-      statusDetail: `Set penultimate.next = ${working.type === "circular" ? "head" : "null"}.`,
+      statusTitle: t("linkedListOperations.deleteTail.breakLink.statusTitle"),
+      statusDetail:
+        working.type === "circular"
+          ? t("linkedListOperations.deleteTail.breakLink.statusDetail.circular")
+          : t("linkedListOperations.deleteTail.breakLink.statusDetail.default"),
       stepMessage:
         working.type === "circular"
-          ? `Unlink ${working.nodes.get(tailId)!.value} — penultimate.next points to head.`
-          : `Unlink ${working.nodes.get(tailId)!.value} — penultimate.next becomes null.`,
+          ? t("linkedListOperations.deleteTail.breakLink.stepMessage.circular", {
+              tailValue,
+            })
+          : t("linkedListOperations.deleteTail.breakLink.stepMessage.default", {
+              tailValue,
+            }),
       stepExplanation:
         working.type === "circular"
-          ? "Circular singly lists reconnect the penultimate node to head instead of null."
-          : "The last node is removed when its predecessor's next pointer becomes null.",
+          ? t("linkedListOperations.deleteTail.breakLink.stepExplanation.circular")
+          : t("linkedListOperations.deleteTail.breakLink.stepExplanation.default"),
       codeLine: 24,
       pointers: [pointerAt("prev", prevId), pointerAt("tail", tailId)],
       nodeHighlights: { [prevId]: "active", [tailId]: "deleted" },
@@ -1125,16 +1196,16 @@ function generateDeleteTailSinglySteps(list: InternalList): LinkedListOperationS
     createStep(working, {
       phase: "complete",
       operation: "delete-tail",
-      statusTitle: "Delete complete",
-      statusDetail: "Tail removed and predecessor relinked.",
+      statusTitle: t("linkedListOperations.deleteTail.complete.statusTitle"),
+      statusDetail: t("linkedListOperations.deleteTail.complete.statusDetail.default"),
       stepMessage:
         working.type === "circular"
-          ? "Penultimate now points to head — tail node freed."
-          : "Penultimate.next is null — tail node freed.",
+          ? t("linkedListOperations.deleteTail.complete.stepMessage.circular")
+          : t("linkedListOperations.deleteTail.complete.stepMessage.default"),
       stepExplanation:
         working.type === "circular"
-          ? "Circular lists reconnect the penultimate node to head."
-          : "null on the penultimate next port marks the new list termination.",
+          ? t("linkedListOperations.deleteTail.complete.stepExplanation.circular")
+          : t("linkedListOperations.deleteTail.complete.stepExplanation.default"),
       codeLine: 25,
       pointers: [pointerAt("tail", prevId)],
       nodeHighlights: { [prevId]: "found" },
@@ -1150,13 +1221,14 @@ export function generateDeleteValueSteps(
   values: number[],
   target: number,
 ): LinkedListOperationStep[] {
+  const t = getAlgorithmT();
   const list = buildListFromValues(values, listType);
   const steps: LinkedListOperationStep[] = [
     introStep(
       list,
       "delete-value",
-      `Delete the first node with value ${target}.`,
-      "Traverse while tracking prev to splice out the matching node.",
+      t("linkedListOperations.deleteValue.intro.statusDetail", { target }),
+      t("linkedListOperations.deleteValue.intro.stepExplanation"),
       26,
     ),
   ];
@@ -1166,10 +1238,12 @@ export function generateDeleteValueSteps(
       createStep(list, {
         phase: "not-found",
         operation: "delete-value",
-        statusTitle: "Value not found",
-        statusDetail: "Empty list.",
-        stepMessage: `Cannot delete ${target} from an empty list.`,
-        stepExplanation: "Search and delete require at least one node.",
+        statusTitle: t("linkedListOperations.deleteValue.empty.statusTitle"),
+        statusDetail: t("linkedListOperations.deleteValue.empty.statusDetail"),
+        stepMessage: t("linkedListOperations.deleteValue.empty.stepMessage", {
+          target,
+        }),
+        stepExplanation: t("linkedListOperations.deleteValue.empty.stepExplanation"),
         codeLine: 26,
       }),
     );
@@ -1193,14 +1267,18 @@ export function generateDeleteValueSteps(
       createStep(working, {
         phase: isMatch ? "delete" : "traverse",
         operation: "delete-value",
-        statusTitle: isMatch ? "Match found" : "Scanning nodes",
-        statusDetail: `curr.value = ${node.value}`,
+        statusTitle: isMatch
+          ? t("linkedListOperations.deleteValue.match.statusTitle")
+          : t("linkedListOperations.deleteValue.scanning.statusTitle"),
+        statusDetail: t("linkedListOperations.deleteValue.scanning.statusDetail", {
+          value: node.value,
+        }),
         stepMessage: isMatch
-          ? `Splice out node with value ${target}.`
-          : "Advance curr (and prev) until the target appears.",
+          ? t("linkedListOperations.deleteValue.match.stepMessage", { target })
+          : t("linkedListOperations.deleteValue.scanning.stepMessage"),
         stepExplanation: isMatch
-          ? "Rewire prev.next to skip the deleted node."
-          : "Deletion by value requires O(n) search in the worst case.",
+          ? t("linkedListOperations.deleteValue.match.stepExplanation")
+          : t("linkedListOperations.deleteValue.scanning.stepExplanation"),
         codeLine: isMatch ? 28 : 27,
         pointers: [
           ...(prevId ? [pointerAt("prev", prevId)] : []),
@@ -1247,10 +1325,12 @@ export function generateDeleteValueSteps(
         createStep(working, {
           phase: "complete",
           operation: "delete-value",
-          statusTitle: "Delete complete",
-          statusDetail: `Removed first occurrence of ${target}.`,
-          stepMessage: "Pointers rewired around the deleted node.",
-          stepExplanation: "Time is O(n) for search plus O(1) splice.",
+          statusTitle: t("linkedListOperations.deleteValue.complete.statusTitle"),
+          statusDetail: t("linkedListOperations.deleteValue.complete.statusDetail", {
+            target,
+          }),
+          stepMessage: t("linkedListOperations.deleteValue.complete.stepMessage"),
+          stepExplanation: t("linkedListOperations.deleteValue.complete.stepExplanation"),
           codeLine: 29,
           pointers: working.headId ? [pointerAt("head", working.headId)] : [],
           found: true,
@@ -1270,10 +1350,12 @@ export function generateDeleteValueSteps(
     createStep(working, {
       phase: "not-found",
       operation: "delete-value",
-      statusTitle: "Value not found",
-      statusDetail: `No node stores ${target}.`,
-      stepMessage: "Traversal finished without a match.",
-      stepExplanation: "Every node was inspected — target absent.",
+      statusTitle: t("linkedListOperations.deleteValue.notFound.statusTitle"),
+      statusDetail: t("linkedListOperations.deleteValue.notFound.statusDetail", {
+        target,
+      }),
+      stepMessage: t("linkedListOperations.deleteValue.notFound.stepMessage"),
+      stepExplanation: t("linkedListOperations.deleteValue.notFound.stepExplanation"),
       codeLine: 29,
     }),
   );
@@ -1285,13 +1367,14 @@ export function generateSearchSteps(
   values: number[],
   target: number,
 ): LinkedListOperationStep[] {
+  const t = getAlgorithmT();
   const list = buildListFromValues(values, listType);
   const steps: LinkedListOperationStep[] = [
     introStep(
       list,
       "search",
-      `Search for value ${target}.`,
-      "Walk node by node — there is no random access by index.",
+      t("linkedListOperations.search.intro.statusDetail", { target }),
+      t("linkedListOperations.search.intro.stepExplanation"),
       5,
     ),
   ];
@@ -1312,14 +1395,18 @@ export function generateSearchSteps(
       createStep(list, {
         phase: isMatch ? "complete" : "compare",
         operation: "search",
-        statusTitle: isMatch ? "Target found" : `Compare at node ${index}`,
-        statusDetail: `curr.value = ${node.value}`,
+        statusTitle: isMatch
+          ? t("linkedListOperations.search.found.statusTitle")
+          : t("linkedListOperations.search.compare.statusTitle", { index }),
+        statusDetail: t("linkedListOperations.search.compare.statusDetail", {
+          value: node.value,
+        }),
         stepMessage: isMatch
-          ? `Match at node index ${index}.`
-          : "Advance curr along next pointers.",
+          ? t("linkedListOperations.search.found.stepMessage", { index })
+          : t("linkedListOperations.search.compare.stepMessage"),
         stepExplanation: isMatch
-          ? "Search stops at the first matching node."
-          : "Linear scan — O(n) worst case.",
+          ? t("linkedListOperations.search.found.stepExplanation")
+          : t("linkedListOperations.search.compare.stepExplanation"),
         codeLine: isMatch ? 7 : 6,
         pointers: [pointerAt("curr", currId)],
         nodeHighlights: { [currId]: isMatch ? "found" : "comparing" },
@@ -1342,10 +1429,12 @@ export function generateSearchSteps(
     createStep(list, {
       phase: "not-found",
       operation: "search",
-      statusTitle: "Target not found",
-      statusDetail: `${target} is not in the list.`,
-      stepMessage: "Every node was visited.",
-      stepExplanation: "Search cost is O(n) when the value is absent.",
+      statusTitle: t("linkedListOperations.search.notFound.statusTitle"),
+      statusDetail: t("linkedListOperations.search.notFound.statusDetail", {
+        target,
+      }),
+      stepMessage: t("linkedListOperations.search.notFound.stepMessage"),
+      stepExplanation: t("linkedListOperations.search.notFound.stepExplanation"),
       codeLine: 7,
     }),
   );
@@ -1359,22 +1448,24 @@ export function generateReverseSteps(
   const list = buildListFromValues(values, listType);
   const displayOrder = getOrderedNodeIds(list);
 
+  const t = getAlgorithmT();
+
   if (!list.headId || displayOrder.length <= 1) {
     return [
       introStep(
         list,
         "reverse",
-        "Reverse pointer direction for every node.",
-        "Lists with zero or one node are already reversed.",
+        t("linkedListOperations.reverse.intro.statusDetail.trivial"),
+        t("linkedListOperations.reverse.intro.stepExplanation.trivial"),
         30,
       ),
       createStep(list, {
         phase: "complete",
         operation: "reverse",
-        statusTitle: "Nothing to reverse",
-        statusDetail: "List unchanged.",
-        stepMessage: "Reversal complete trivially.",
-        stepExplanation: "Iterate only when at least two nodes exist.",
+        statusTitle: t("linkedListOperations.reverse.trivialComplete.statusTitle"),
+        statusDetail: t("linkedListOperations.reverse.trivialComplete.statusDetail"),
+        stepMessage: t("linkedListOperations.reverse.trivialComplete.stepMessage"),
+        stepExplanation: t("linkedListOperations.reverse.trivialComplete.stepExplanation"),
         codeLine: 30,
         found: true,
       }),
@@ -1385,8 +1476,8 @@ export function generateReverseSteps(
     introStep(
       list,
       "reverse",
-      "Reverse the linked list in place.",
-      "Track prev, curr, and temp while flipping each next pointer one node at a time.",
+      t("linkedListOperations.reverse.intro.statusDetail.default"),
+      t("linkedListOperations.reverse.intro.stepExplanation.default"),
       30,
     ),
   ];
@@ -1412,13 +1503,18 @@ export function generateReverseSteps(
         phase: "relink",
         operation: "reverse",
         displayOrder,
-        statusTitle: `Step ${stepIndex + 1}: break curr → next`,
+        statusTitle: t("linkedListOperations.reverse.breakLink.statusTitle", {
+          step: stepIndex + 1,
+        }),
         statusDetail: prevId
-          ? `Disconnect ${node.value} from its successor — next becomes null.`
-          : "Disconnect head from its successor — next becomes null.",
-        stepMessage: `curr at ${node.value}. The forward link is severed before relinking to prev.`,
-        stepExplanation:
-          "Explicit null marks termination while the old forward edge breaks.",
+          ? t("linkedListOperations.reverse.breakLink.statusDetail.withPrev", {
+              value: node.value,
+            })
+          : t("linkedListOperations.reverse.breakLink.statusDetail.head"),
+        stepMessage: t("linkedListOperations.reverse.breakLink.stepMessage", {
+          value: node.value,
+        }),
+        stepExplanation: t("linkedListOperations.reverse.breakLink.stepExplanation"),
         codeLine: 31,
         pointers: [
           ...(prevId ? [pointerAt("prev", prevId)] : []),
@@ -1451,12 +1547,17 @@ export function generateReverseSteps(
         phase: "relink",
         operation: "reverse",
         displayOrder,
-        statusTitle: `Step ${stepIndex + 1}: relink ${node.value} backward`,
+        statusTitle: t("linkedListOperations.reverse.relink.statusTitle", {
+          step: stepIndex + 1,
+          value: node.value,
+        }),
         statusDetail: prevId
-          ? `curr.next now targets ${working.nodes.get(prevId)!.value}.`
-          : "Head now points to null — former first link reversed.",
-        stepMessage: "Forward edge removed; backward edge established.",
-        stepExplanation: "Advance prev ← curr and curr ← temp after each flip.",
+          ? t("linkedListOperations.reverse.relink.statusDetail.withPrev", {
+              prevValue: working.nodes.get(prevId)!.value,
+            })
+          : t("linkedListOperations.reverse.relink.statusDetail.head"),
+        stepMessage: t("linkedListOperations.reverse.relink.stepMessage"),
+        stepExplanation: t("linkedListOperations.reverse.relink.stepExplanation"),
         codeLine: 32,
         pointers: [
           ...(prevId ? [pointerAt("prev", prevId)] : []),
@@ -1501,19 +1602,19 @@ export function generateReverseSteps(
       phase: "complete",
       operation: "reverse",
       displayOrder: reversedDisplayOrder,
-      statusTitle: "Reverse complete",
+      statusTitle: t("linkedListOperations.reverse.complete.statusTitle"),
       statusDetail:
         working.type === "circular"
-          ? "Visual order flipped — head → successor and tail → head restored."
-          : "Visual order flipped — new head at the start.",
+          ? t("linkedListOperations.reverse.complete.statusDetail.circular")
+          : t("linkedListOperations.reverse.complete.statusDetail.default"),
       stepMessage:
         working.type === "circular"
-          ? "Every node links forward; the tail closes the loop back to head."
-          : "Nodes reorder left-to-right to match the reversed pointer chain.",
+          ? t("linkedListOperations.reverse.complete.stepMessage.circular")
+          : t("linkedListOperations.reverse.complete.stepMessage.default"),
       stepExplanation:
         working.type === "circular"
-          ? "Circular lists never terminate in null — tail.next must target the new head."
-          : "The old tail becomes head; the grid now reflects natural traversal order.",
+          ? t("linkedListOperations.reverse.complete.stepExplanation.circular")
+          : t("linkedListOperations.reverse.complete.stepExplanation.default"),
       codeLine: 33,
       pointers: working.headId ? [pointerAt("head", working.headId)] : [],
       nodeHighlights: working.headId ? { [working.headId]: "found" } : {},

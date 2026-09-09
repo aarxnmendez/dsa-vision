@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { APP_ROUTES } from "../../constants/routes";
 import { LEFT_PANEL_SCROLL_CLASS } from "../../constants/visualizerTokens";
 import { PanelSlideShell } from "./PanelSlideShell";
 import { Icon, type IconName } from "../ui/Icon";
@@ -20,6 +22,8 @@ export function LeftSidebar({
   sectionIcon = "database",
   children,
 }: LeftSidebarProps) {
+  const { t } = useTranslation("common");
+
   return (
     <PanelSlideShell
       side="left"
@@ -37,14 +41,14 @@ export function LeftSidebar({
       >
         <div className="flex shrink-0 flex-col gap-3 pb-3">
           <div className="font-display text-headline-md font-black text-primary tracking-tight">
-            DSAVision
+            {t("brand")}
           </div>
           <Link
-            to="/"
+            to={APP_ROUTES.catalog}
             className="self-start flex items-center gap-2 text-on-surface-variant font-bold hover:text-primary transition-colors bg-surface-container-lowest px-4 py-2 rounded-xl border-b-4 border-surface-variant btn-3d cursor-pointer"
           >
             <Icon name="arrow_back" className="text-[20px]" />
-            Back to Catalog
+            {t("panel.backToCatalog")}
           </Link>
 
           {sectionLabel && (

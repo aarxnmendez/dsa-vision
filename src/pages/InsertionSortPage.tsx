@@ -1,6 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { getStepTransitionMs } from "../constants/player";
 import { insertionSortCode } from "../data/insertionSortCode";
-import { insertionSortExplanation } from "../data/insertionSortExplanation";
 import { DatasetSetupPanel } from "../components/controls/DatasetSetupPanel";
 import { PlayerControls } from "../components/controls/PlayerControls";
 import { AlgorithmPageShell } from "../components/layout/AlgorithmPageShell";
@@ -13,23 +13,15 @@ import { SortBarVisualizer, SortLegendBar } from "../components/visualizers/Sort
 import { VisualizerIdleStatus } from "../components/visualizers/VisualizerIdleStatus";
 import { useInsertionSortVisualizer } from "../hooks/useInsertionSortVisualizer";
 import {
-  INSERTION_SORT_SPACE_INFO,
-  INSERTION_SORT_TIME_INFO,
-} from "../constants/visualizerTokens";
-import {
-  CODE_PANEL_IDLE_FALLBACK,
-  DATA_SETUP_LABEL,
-  DATA_SETUP_ICON,
-  VISUALIZER_IDLE_MESSAGE,
-} from "../constants/copy";
-
-const PAGE_DESCRIPTION =
-  "In-place comparison sort that inserts each element into the growing sorted prefix on the left.";
-
-const INSERTION_SORT_CUSTOM_INPUT_DESCRIPTION =
-  "Enter values in any order. Insertion Sort will sort them in place.";
+  useAlgorithmExplanation,
+  usePageMeta,
+} from "../hooks/useAlgorithmExplanation";
+import { DATA_SETUP_ICON } from "../constants/copy";
 
 export function InsertionSortPage() {
+  const { t } = useTranslation("common");
+  const pageMeta = usePageMeta("insertionSort");
+  const explanation = useAlgorithmExplanation("insertionSort");
   const visualizer = useInsertionSortVisualizer();
   const transitionMs = getStepTransitionMs(visualizer.speed);
   const defaultHighlights = visualizer.array.map(() => "default" as const);
@@ -41,18 +33,18 @@ export function InsertionSortPage() {
       isSuccess={visualizer.currentStep.isComplete}
     />
   ) : (
-    <VisualizerIdleStatus message={VISUALIZER_IDLE_MESSAGE} />
+    <VisualizerIdleStatus message={t("idle.visualizer")} />
   );
 
   return (
     <VisualizerLayout
-      title="Insertion Sort"
-      description={PAGE_DESCRIPTION}
+      title={pageMeta.title}
+      description={pageMeta.description}
       timeComplexity="O(n²)"
       spaceComplexity="O(1)"
-      timeComplexityInfo={INSERTION_SORT_TIME_INFO}
-      spaceComplexityInfo={INSERTION_SORT_SPACE_INFO}
-      leftPanelSectionLabel={DATA_SETUP_LABEL}
+      timeComplexityInfo={pageMeta.timeComplexityInfo}
+      spaceComplexityInfo={pageMeta.spaceComplexityInfo}
+      leftPanelSectionLabel={t("dataSetup.label")}
       leftPanelSectionIcon={DATA_SETUP_ICON}
       leftPanel={
         <DatasetSetupPanel
@@ -60,7 +52,7 @@ export function InsertionSortPage() {
           onArraySizeChange={visualizer.setArraySize}
           onRandomize={visualizer.randomizeData}
           preserveArrayOrder
-          customInputDescription={INSERTION_SORT_CUSTOM_INPUT_DESCRIPTION}
+          customInputDescription={pageMeta.customInputHint}
           arrayPlaceholder="64, 25, 12, 22, 11"
           onApplyCustomDataset={({ array }) =>
             visualizer.applyCustomDataset(array)
@@ -88,15 +80,13 @@ export function InsertionSortPage() {
           <CodePanel
             codeByLanguage={insertionSortCode}
             activeLine={visualizer.currentStep?.activeLine ?? 1}
-            stepExplanation={
-              visualizer.currentStep?.stepExplanation ?? CODE_PANEL_IDLE_FALLBACK
-            }
+            stepExplanation={visualizer.currentStep?.stepExplanation}
             showStepFooter
           />
         }
         explanationColumn={
           <ExplanationPanelShell>
-            <AlgorithmExplanationContent {...insertionSortExplanation} />
+            <AlgorithmExplanationContent {...explanation} />
           </ExplanationPanelShell>
         }
         playerControls={

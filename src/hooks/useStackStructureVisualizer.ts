@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   generateStackOperationSteps,
   operationNeedsValueInput,
@@ -14,6 +15,7 @@ import { usePlayerControls } from "./usePlayerControls";
 const DEFAULT_SIZE = 3;
 
 export function useStackStructureVisualizer() {
+  const { i18n } = useTranslation();
   const [stackSize, setStackSize] = useState(DEFAULT_SIZE);
   const [dataset, setDataset] = useState(createDefaultStackDataset);
   const { values, pushValue } = dataset;
@@ -22,7 +24,8 @@ export function useStackStructureVisualizer() {
   const steps = useMemo(
     () =>
       generateStackOperationSteps(operation, values, { value: pushValue }),
-    [operation, values, pushValue],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- locale drives getAlgorithmT()
+    [operation, values, pushValue, i18n.language],
   );
 
   const player = usePlayerControls({ totalSteps: steps.length });

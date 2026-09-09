@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation } from "react-router-dom";
 import { APP_ROUTES } from "../../constants/routes";
 import { Icon } from "../ui/Icon";
@@ -33,6 +34,7 @@ export function ComplexityInfoPopover({
   onToggle,
   onClose,
 }: ComplexityInfoPopoverProps) {
+  const { t } = useTranslation("common");
   const location = useLocation();
   const popoverId = useId();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -115,8 +117,7 @@ export function ComplexityInfoPopover({
             onClick={onClose}
             className="mt-4 inline-flex items-center gap-1 font-body-md text-body-md text-primary hover:underline cursor-pointer transition-colors whitespace-nowrap relative"
           >
-            Learn about Big-O Notation
-            <span aria-hidden="true">→</span>
+            {t("complexity.learnMore")}
           </Link>
         </div>
       )}

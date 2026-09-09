@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { CODE_PANEL_TOOLBAR_CONTROL_CLASS } from "../../constants/visualizerTokens";
 import { Icon } from "../ui/Icon";
 
@@ -10,6 +11,7 @@ const iconClassName =
   "text-[18px] [font-variation-settings:'FILL'_0,'wght'_400,'GRAD'_0,'opsz'_20]";
 
 export function CopyCodeButton({ code }: CopyCodeButtonProps) {
+  const { t } = useTranslation("common");
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -26,7 +28,7 @@ export function CopyCodeButton({ code }: CopyCodeButtonProps) {
     <button
       type="button"
       onClick={handleCopy}
-      aria-label={copied ? "Code copied" : "Copy code to clipboard"}
+      aria-label={copied ? t("codePanel.copied") : t("codePanel.copy")}
       className={[
         "inline-flex shrink-0 items-center gap-2 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30",
         copied
@@ -39,7 +41,7 @@ export function CopyCodeButton({ code }: CopyCodeButtonProps) {
         className={iconClassName}
         filled={false}
       />
-      {copied ? "Copied!" : "Copy"}
+      {copied ? t("codePanel.copied") : t("codePanel.copy")}
     </button>
   );
 }

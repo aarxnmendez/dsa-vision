@@ -1,4 +1,5 @@
 import { useId, useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { CustomDatasetPayload } from "../../utils/customInput";
 import { sectionLabelClass } from "../ui/sectionLabel";
 import { buttonLabelClass } from "../ui/buttonLabel";
@@ -38,8 +39,9 @@ export function DatasetSetupPanel({
   embedded = false,
   sizeMin = 5,
   sizeMax = 20,
-  sizeLabel = "Array Size",
+  sizeLabel,
 }: DatasetSetupPanelProps) {
+  const { t } = useTranslation("common");
   const idPrefix = useId().replace(/:/g, "");
   const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
   const [customModalKey, setCustomModalKey] = useState(0);
@@ -70,7 +72,7 @@ export function DatasetSetupPanel({
                 htmlFor={`${idPrefix}-array-size-slider`}
                 className={sectionLabelClass}
               >
-                {sizeLabel}
+                {sizeLabel ?? t("dataSetup.arraySize")}
               </label>
               <span className="bg-primary-container text-on-primary-container font-bold px-3 py-1 rounded-xl text-sm">
                 {arraySize}
@@ -93,7 +95,7 @@ export function DatasetSetupPanel({
                 htmlFor={`${idPrefix}-target-value-input`}
                 className={sectionLabelClass}
               >
-                Target Value
+                {t("dataSetup.targetValue")}
               </label>
               <div className="relative">
                 <input
@@ -127,7 +129,7 @@ export function DatasetSetupPanel({
               ].join(" ")}
             >
               <Icon name="shuffle" className="text-[20px]" />
-              Randomize Data
+              {t("dataSetup.randomize")}
             </button>
 
             <button
@@ -139,7 +141,7 @@ export function DatasetSetupPanel({
               ].join(" ")}
             >
               <Icon name="edit_note" className="text-[20px]" />
-              Custom Input
+              {t("dataSetup.customInput")}
             </button>
           </div>
         </div>

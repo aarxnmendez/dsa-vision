@@ -1,3 +1,4 @@
+import { getAlgorithmT } from "../i18n/index";
 import type { ArrayPointer } from "../types/visualizer";
 import type {
   ArrayOperationId,
@@ -56,23 +57,16 @@ function resolveDeleteIndex(
 }
 
 function operationLabel(operation: ArrayOperationId): string {
-  const labels: Record<ArrayOperationId, string> = {
-    access: "Index Access",
-    "linear-search": "Linear Search",
-    "insert-start": "Insert at Start",
-    "insert-middle": "Insert at Middle",
-    "insert-end": "Insert at End",
-    "delete-start": "Delete at Start",
-    "delete-middle": "Delete at Middle",
-    "delete-end": "Delete at End",
-  };
-  return labels[operation];
+  const t = getAlgorithmT();
+  return t(`arrayOperations.operations.${operation}`);
 }
 
 export function generateAccessSteps(
   array: number[],
   index: number,
 ): ArrayOperationStep[] {
+  const t = getAlgorithmT();
+
   if (array.length === 0) {
     return [
       createStep({
@@ -85,9 +79,9 @@ export function generateAccessSteps(
         shiftToIndex: null,
         insertedValue: null,
         deletedValue: null,
-        statusTitle: "Empty array",
-        statusDetail: "There are no elements to access.",
-        stepExplanation: "Index access requires at least one stored element.",
+        statusTitle: t("arrayOperations.access.empty.statusTitle"),
+        statusDetail: t("arrayOperations.access.empty.statusDetail"),
+        stepExplanation: t("arrayOperations.access.empty.stepExplanation"),
         codeLine: 1,
         pointers: [],
       }),
@@ -107,10 +101,11 @@ export function generateAccessSteps(
       shiftToIndex: null,
       insertedValue: null,
       deletedValue: null,
-      statusTitle: "Direct index access",
-      statusDetail: `Requesting element at index ${safeIndex}.`,
-      stepExplanation:
-        "Arrays store elements in contiguous memory. The CPU jumps directly to base + index.",
+      statusTitle: t("arrayOperations.access.intro.statusTitle"),
+      statusDetail: t("arrayOperations.access.intro.statusDetail", {
+        index: safeIndex,
+      }),
+      stepExplanation: t("arrayOperations.access.intro.stepExplanation"),
       codeLine: 1,
       pointers: pointerAt("i", safeIndex),
     }),
@@ -127,10 +122,17 @@ export function generateAccessSteps(
       insertedValue: null,
       deletedValue: null,
       found: true,
-      statusTitle: `arr[${safeIndex}] = ${array[safeIndex]}`,
-      statusDetail: "O(1) time — no scanning or shifting required.",
-      pointerMovement: `Memory address = base + ${safeIndex}`,
-      stepExplanation: `Reading arr[${safeIndex}] takes constant time because the offset is computed in one step.`,
+      statusTitle: t("arrayOperations.access.read.statusTitle", {
+        index: safeIndex,
+        value: array[safeIndex],
+      }),
+      statusDetail: t("arrayOperations.access.read.statusDetail"),
+      pointerMovement: t("arrayOperations.access.read.pointerMovement", {
+        index: safeIndex,
+      }),
+      stepExplanation: t("arrayOperations.access.read.stepExplanation", {
+        index: safeIndex,
+      }),
       codeLine: 2,
       pointers: pointerAt("i", safeIndex),
     }),
@@ -147,9 +149,12 @@ export function generateAccessSteps(
       insertedValue: null,
       deletedValue: null,
       found: true,
-      statusTitle: "Access complete",
-      statusDetail: `Value ${array[safeIndex]} retrieved from index ${safeIndex}.`,
-      stepExplanation: "Index access is the main reason arrays are fast for lookups by position.",
+      statusTitle: t("arrayOperations.access.complete.statusTitle"),
+      statusDetail: t("arrayOperations.access.complete.statusDetail", {
+        value: array[safeIndex],
+        index: safeIndex,
+      }),
+      stepExplanation: t("arrayOperations.access.complete.stepExplanation"),
       codeLine: 3,
       pointers: pointerAt("i", safeIndex),
     }),
@@ -160,6 +165,8 @@ export function generateLinearSearchSteps(
   array: number[],
   target: number,
 ): ArrayOperationStep[] {
+  const t = getAlgorithmT();
+
   if (array.length === 0) {
     return [
       createStep({
@@ -172,9 +179,11 @@ export function generateLinearSearchSteps(
         shiftToIndex: null,
         insertedValue: null,
         deletedValue: null,
-        statusTitle: `Target ${target} not found`,
-        statusDetail: "The array is empty.",
-        stepExplanation: "Linear search checks each index until a match appears or the array ends.",
+        statusTitle: t("arrayOperations.linearSearch.empty.statusTitle", {
+          target,
+        }),
+        statusDetail: t("arrayOperations.linearSearch.empty.statusDetail"),
+        stepExplanation: t("arrayOperations.linearSearch.empty.stepExplanation"),
         codeLine: 8,
         pointers: [],
       }),
@@ -192,16 +201,19 @@ export function generateLinearSearchSteps(
       shiftToIndex: null,
       insertedValue: null,
       deletedValue: null,
-      statusTitle: "Linear search begins",
-      statusDetail: `Looking for target value ${target}.`,
-      stepExplanation:
-        "Unlike index access, search must inspect elements one by one from left to right.",
+      statusTitle: t("arrayOperations.linearSearch.intro.statusTitle"),
+      statusDetail: t("arrayOperations.linearSearch.intro.statusDetail", {
+        target,
+      }),
+      stepExplanation: t("arrayOperations.linearSearch.intro.stepExplanation"),
       codeLine: 1,
       pointers: pointerAt("i", 0),
     }),
   ];
 
   for (let index = 0; index < array.length; index += 1) {
+    const isMatch = array[index] === target;
+
     steps.push(
       createStep({
         phase: "compare",
@@ -215,19 +227,30 @@ export function generateLinearSearchSteps(
         shiftToIndex: null,
         insertedValue: null,
         deletedValue: null,
-        statusTitle: `Compare arr[${index}] with target`,
-        statusDetail: `arr[${index}] = ${array[index]}${array[index] === target ? " — match!" : ""}`,
-        pointerMovement: `i = ${index}`,
-        stepExplanation:
-          array[index] === target
-            ? `Match found at index ${index}.`
-            : `No match yet. Advance i to the next index.`,
-        codeLine: array[index] === target ? 4 : 3,
+        statusTitle: t("arrayOperations.linearSearch.compare.statusTitle", {
+          index,
+        }),
+        statusDetail: t("arrayOperations.linearSearch.compare.statusDetail", {
+          index,
+          value: array[index],
+          matchSuffix: isMatch
+            ? t("arrayOperations.linearSearch.compare.matchSuffix")
+            : "",
+        }),
+        pointerMovement: t("arrayOperations.linearSearch.compare.pointerMovement", {
+          index,
+        }),
+        stepExplanation: isMatch
+          ? t("arrayOperations.linearSearch.compare.stepExplanation.match", {
+              index,
+            })
+          : t("arrayOperations.linearSearch.compare.stepExplanation.noMatch"),
+        codeLine: isMatch ? 4 : 3,
         pointers: pointerAt("i", index),
       }),
     );
 
-    if (array[index] === target) {
+    if (isMatch) {
       steps.push(
         createStep({
           phase: "complete",
@@ -242,10 +265,19 @@ export function generateLinearSearchSteps(
           insertedValue: null,
           deletedValue: null,
           found: true,
-          statusTitle: `Target found at index ${index}`,
-          statusDetail: `Found ${target} at index ${index} after ${index + 1} comparison${index === 0 ? "" : "s"}.`,
-          stepExplanation:
-            "Linear search is simple but scales linearly because every element may need to be checked.",
+          statusTitle: t("arrayOperations.linearSearch.found.statusTitle", {
+            index,
+          }),
+          statusDetail: t("arrayOperations.linearSearch.found.statusDetail", {
+            target,
+            index,
+            comparisons: index + 1,
+            comparisonSuffix:
+              index === 0
+                ? ""
+                : t("arrayOperations.linearSearch.found.comparisonSuffix"),
+          }),
+          stepExplanation: t("arrayOperations.linearSearch.found.stepExplanation"),
           codeLine: 5,
           pointers: pointerAt("i", index),
         }),
@@ -265,9 +297,11 @@ export function generateLinearSearchSteps(
       shiftToIndex: null,
       insertedValue: null,
       deletedValue: null,
-      statusTitle: `Target ${target} not found`,
-      statusDetail: "Every index was inspected.",
-      stepExplanation: "When the target is absent, linear search always visits all n elements.",
+      statusTitle: t("arrayOperations.linearSearch.notFound.statusTitle", {
+        target,
+      }),
+      statusDetail: t("arrayOperations.linearSearch.notFound.statusDetail"),
+      stepExplanation: t("arrayOperations.linearSearch.notFound.stepExplanation"),
       codeLine: 8,
       pointers: [],
     }),
@@ -284,6 +318,7 @@ export function generateInsertSteps(
   array: number[],
   params: Pick<ArrayOperationParams, "index" | "value">,
 ): ArrayOperationStep[] {
+  const t = getAlgorithmT();
   const insertIndex = resolveInsertIndex(operation, array.length, params.index);
   const value = params.value;
   const steps: ArrayOperationStep[] = [
@@ -298,11 +333,16 @@ export function generateInsertSteps(
       insertedValue: value,
       deletedValue: null,
       statusTitle: operationLabel(operation),
-      statusDetail: `Insert ${value} at index ${insertIndex}.`,
+      statusDetail: t("arrayOperations.insert.intro.statusDetail", {
+        value,
+        index: insertIndex,
+      }),
       stepExplanation:
         insertIndex === array.length
-          ? "Appending at the end avoids shifting existing elements."
-          : `Elements from index ${insertIndex} onward must shift one slot to the right.`,
+          ? t("arrayOperations.insert.intro.stepExplanation.end")
+          : t("arrayOperations.insert.intro.stepExplanation.middle", {
+              index: insertIndex,
+            }),
       codeLine: insertIndex === array.length ? 14 : 8,
       pointers: pointerAt("i", insertIndex),
     }),
@@ -324,9 +364,12 @@ export function generateInsertSteps(
         insertedValue: value,
         deletedValue: null,
         found: true,
-        statusTitle: `Inserted ${value} at index ${insertIndex}`,
-        statusDetail: "O(1) when the array has spare capacity at the end.",
-        stepExplanation: "The new value is written directly into the next contiguous slot.",
+        statusTitle: t("arrayOperations.insert.writeEnd.statusTitle", {
+          value,
+          index: insertIndex,
+        }),
+        statusDetail: t("arrayOperations.insert.writeEnd.statusDetail"),
+        stepExplanation: t("arrayOperations.insert.writeEnd.stepExplanation"),
         codeLine: 15,
         pointers: pointerAt("i", insertIndex),
       }),
@@ -343,9 +386,11 @@ export function generateInsertSteps(
         insertedValue: value,
         deletedValue: null,
         found: true,
-        statusTitle: "Insert complete",
-        statusDetail: `Array length is now ${result.length}.`,
-        stepExplanation: "End insertion is fast because no elements need to move.",
+        statusTitle: t("arrayOperations.insert.completeEnd.statusTitle"),
+        statusDetail: t("arrayOperations.insert.completeEnd.statusDetail", {
+          length: result.length,
+        }),
+        stepExplanation: t("arrayOperations.insert.completeEnd.stepExplanation"),
         codeLine: 16,
         pointers: pointerAt("i", insertIndex),
       }),
@@ -375,11 +420,16 @@ export function generateInsertSteps(
         shiftToIndex: targetIndex,
         insertedValue: value,
         deletedValue: null,
-        statusTitle: "Shift element right",
-        statusDetail: `Move arr[${sourceIndex}] (${working[sourceIndex]}) to index ${targetIndex}.`,
-        pointerMovement: `j = ${sourceIndex}`,
-        stepExplanation:
-          "Each shift copies one value one slot to the right to free space at the insert position.",
+        statusTitle: t("arrayOperations.insert.shift.statusTitle"),
+        statusDetail: t("arrayOperations.insert.shift.statusDetail", {
+          sourceIndex,
+          value: working[sourceIndex],
+          targetIndex,
+        }),
+        pointerMovement: t("arrayOperations.insert.shift.pointerMovement", {
+          sourceIndex,
+        }),
+        stepExplanation: t("arrayOperations.insert.shift.stepExplanation"),
         codeLine: 10,
         pointers: pointerAt("j", sourceIndex),
       }),
@@ -403,9 +453,12 @@ export function generateInsertSteps(
       insertedValue: value,
       deletedValue: null,
       found: true,
-      statusTitle: `Write ${value} at index ${insertIndex}`,
-      statusDetail: "The vacant slot is now filled.",
-      stepExplanation: "After shifting, the new value is placed at the target index.",
+      statusTitle: t("arrayOperations.insert.write.statusTitle", {
+        value,
+        index: insertIndex,
+      }),
+      statusDetail: t("arrayOperations.insert.write.statusDetail"),
+      stepExplanation: t("arrayOperations.insert.write.stepExplanation"),
       codeLine: 12,
       pointers: pointerAt("i", insertIndex),
     }),
@@ -422,10 +475,11 @@ export function generateInsertSteps(
       insertedValue: value,
       deletedValue: null,
       found: true,
-      statusTitle: "Insert complete",
-      statusDetail: `Array length is now ${working.length}.`,
-      stepExplanation:
-        "Inserting away from the end costs O(n) because up to n elements must shift.",
+      statusTitle: t("arrayOperations.insert.complete.statusTitle"),
+      statusDetail: t("arrayOperations.insert.complete.statusDetail", {
+        length: working.length,
+      }),
+      stepExplanation: t("arrayOperations.insert.complete.stepExplanation"),
       codeLine: 13,
       pointers: pointerAt("i", insertIndex),
     }),
@@ -442,6 +496,8 @@ export function generateDeleteSteps(
   array: number[],
   params: Pick<ArrayOperationParams, "index">,
 ): ArrayOperationStep[] {
+  const t = getAlgorithmT();
+
   if (array.length === 0) {
     return [
       createStep({
@@ -454,9 +510,9 @@ export function generateDeleteSteps(
         shiftToIndex: null,
         insertedValue: null,
         deletedValue: null,
-        statusTitle: "Nothing to delete",
-        statusDetail: "The array is already empty.",
-        stepExplanation: "Deletion requires at least one element.",
+        statusTitle: t("arrayOperations.delete.empty.statusTitle"),
+        statusDetail: t("arrayOperations.delete.empty.statusDetail"),
+        stepExplanation: t("arrayOperations.delete.empty.stepExplanation"),
         codeLine: 1,
         pointers: [],
       }),
@@ -479,11 +535,14 @@ export function generateDeleteSteps(
       insertedValue: null,
       deletedValue: deletedValue,
       statusTitle: operationLabel(operation),
-      statusDetail: `Remove value ${deletedValue} at index ${deleteIndex}.`,
+      statusDetail: t("arrayOperations.delete.intro.statusDetail", {
+        value: deletedValue,
+        index: deleteIndex,
+      }),
       stepExplanation:
         deleteIndex === array.length - 1
-          ? "Deleting the last element avoids shifting."
-          : "Elements to the right must shift one slot left to close the gap.",
+          ? t("arrayOperations.delete.intro.stepExplanation.end")
+          : t("arrayOperations.delete.intro.stepExplanation.middle"),
       codeLine: deleteIndex === array.length - 1 ? 20 : 16,
       pointers: pointerAt("i", deleteIndex),
     }),
@@ -503,9 +562,11 @@ export function generateDeleteSteps(
         insertedValue: null,
         deletedValue: deletedValue,
         found: true,
-        statusTitle: "Delete complete",
-        statusDetail: `Array length is now ${result.length}.`,
-        stepExplanation: "Removing the tail element is O(1) because no shifting is required.",
+        statusTitle: t("arrayOperations.delete.completeEnd.statusTitle"),
+        statusDetail: t("arrayOperations.delete.completeEnd.statusDetail", {
+          length: result.length,
+        }),
+        stepExplanation: t("arrayOperations.delete.completeEnd.stepExplanation"),
         codeLine: 21,
         pointers: [],
       }),
@@ -540,11 +601,16 @@ export function generateDeleteSteps(
         shiftToIndex: targetIndex,
         insertedValue: null,
         deletedValue: deletedValue,
-        statusTitle: "Shift element left",
-        statusDetail: `Move arr[${sourceIndex}] (${working[sourceIndex]}) to index ${targetIndex}.`,
-        pointerMovement: `j = ${sourceIndex}`,
-        stepExplanation:
-          "Each left shift closes the gap by copying the next element one slot to the left.",
+        statusTitle: t("arrayOperations.delete.shift.statusTitle"),
+        statusDetail: t("arrayOperations.delete.shift.statusDetail", {
+          sourceIndex,
+          value: working[sourceIndex],
+          targetIndex,
+        }),
+        pointerMovement: t("arrayOperations.delete.shift.pointerMovement", {
+          sourceIndex,
+        }),
+        stepExplanation: t("arrayOperations.delete.shift.stepExplanation"),
         codeLine: 18,
         pointers: pointerAt("j", sourceIndex),
       }),
@@ -566,10 +632,12 @@ export function generateDeleteSteps(
       insertedValue: null,
       deletedValue: deletedValue,
       found: true,
-      statusTitle: "Delete complete",
-      statusDetail: `Removed ${deletedValue}. Length is now ${result.length}.`,
-      stepExplanation:
-        "Deleting away from the end costs O(n) because remaining elements must shift left.",
+      statusTitle: t("arrayOperations.delete.complete.statusTitle"),
+      statusDetail: t("arrayOperations.delete.complete.statusDetail", {
+        value: deletedValue,
+        length: result.length,
+      }),
+      stepExplanation: t("arrayOperations.delete.complete.stepExplanation"),
       codeLine: 19,
       pointers: [],
     }),

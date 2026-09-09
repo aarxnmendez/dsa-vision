@@ -1,0 +1,103 @@
+export const common = {
+  brand: "DSAVision",
+  loadingModule: "Loading module...",
+  language: {
+    en: "EN",
+    es: "ES",
+    switchAria: "Select language",
+  },
+  dataSetup: {
+    label: "Data Setup",
+    apply: "Apply Data",
+    customInputTitle: "Custom Data Input",
+    arraySize: "Array Size",
+    targetValue: "Target Value",
+    randomize: "Randomize",
+    customInput: "Custom Input",
+    cancel: "Cancel",
+    arrayValues: "Array Values",
+    autoSort: "Automatically sort array",
+    autoSortHint:
+      "Binary Search requires a sorted array. Values will be sorted ascending before the search begins.",
+    targetOptional: "Target (optional)",
+    arrayValuesHint:
+      "Enter {{min}} to {{max}} numbers separated by commas.",
+    targetPlaceholder: "e.g. 23",
+    closeModalAria: "Close modal",
+  },
+  idle: {
+    visualizer:
+      "Configure the data in the left panel, then press Play or Forward to begin.",
+    stack:
+      "Configure the stack parameters in the left panel, then press Play or Forward to step through operations.",
+  },
+  player: {
+    speed: "Speed",
+    back: "Back",
+    play: "Play",
+    pause: "Pause",
+    forward: "Forward",
+    reset: "Reset",
+    playbackSpeedAria: "Playback speed",
+    stepProgress: "Step {{current}} of {{total}}",
+  },
+  codePanel: {
+    code: "Code",
+    explanation: "Explanation",
+    currentStep: "Current Step",
+    copy: "Copy",
+    copied: "Copied!",
+  },
+  explanation: {
+    howItWorks: "How it works",
+    keyConcepts: "Key concepts",
+    complexityBreakdown: "Complexity breakdown",
+    whenToUse: "When to use",
+  },
+  footer: {
+    madeWith: "Made with",
+    byAaron: "by Aaron",
+    githubAria: "Aaron Mendez on GitHub",
+    linkedinAria: "Aaron Mendez on LinkedIn",
+  },
+  mobileNotice: {
+    title: "Large screen required",
+    body: "This interactive platform needs more screen space to display visualizers, animations, and code panels comfortably. Open DSAVision on a tablet in landscape mode or on a desktop browser.",
+  },
+  panel: {
+    collapseLeft: "Collapse left panel",
+    expandLeft: "Expand left panel",
+    collapseCode: "Collapse code panel",
+    expandCode: "Expand code panel",
+    backToCatalog: "Back to Catalog",
+  },
+  validation: {
+    invalidCharacters: "Only numbers, commas, and spaces are allowed.",
+    maxElements: "Maximum {{max}} elements allowed.",
+    emptyArray: "Enter at least one value.",
+    arrayCountRange: "Please enter between {{min}} and {{max}} numbers.",
+    invalidNumeric: "Only numeric values separated by commas are allowed.",
+    invalidTarget: "Target must be a valid number.",
+  },
+  difficulty: {
+    beginner: "Beginner",
+    intermediate: "Intermediate",
+    advanced: "Advanced",
+  },
+  complexity: {
+    timeLabel: "Time Complexity",
+    spaceLabel: "Space Complexity",
+    learnMore: "Learn about Big-O Notation →",
+  },
+  legend: {
+    unsorted: "Unsorted",
+    outerIndex: "Outer index (i)",
+    comparingMin: "Comparing / Min",
+    sorted: "Sorted",
+    min: "Min",
+  },
+  explore: "Explore",
+  comingSoon: "Coming Soon",
+  copy: "Copy",
+  copied: "Copied!",
+} as const;

@@ -1,6 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { getStepTransitionMs } from "../constants/player";
 import { selectionSortCode } from "../data/selectionSortCode";
-import { selectionSortExplanation } from "../data/selectionSortExplanation";
 import { DatasetSetupPanel } from "../components/controls/DatasetSetupPanel";
 import { PlayerControls } from "../components/controls/PlayerControls";
 import { AlgorithmPageShell } from "../components/layout/AlgorithmPageShell";
@@ -13,23 +13,15 @@ import { SortBarVisualizer, SortLegendBar } from "../components/visualizers/Sort
 import { VisualizerIdleStatus } from "../components/visualizers/VisualizerIdleStatus";
 import { useSelectionSortVisualizer } from "../hooks/useSelectionSortVisualizer";
 import {
-  SELECTION_SORT_SPACE_INFO,
-  SELECTION_SORT_TIME_INFO,
-} from "../constants/visualizerTokens";
-import {
-  CODE_PANEL_IDLE_FALLBACK,
-  DATA_SETUP_LABEL,
-  DATA_SETUP_ICON,
-  VISUALIZER_IDLE_MESSAGE,
-} from "../constants/copy";
-
-const PAGE_DESCRIPTION =
-  "In-place comparison sort that selects the minimum each pass and swaps it forward.";
-
-const SELECTION_SORT_CUSTOM_INPUT_DESCRIPTION =
-  "Enter values in any order. Selection Sort will sort them in place.";
+  useAlgorithmExplanation,
+  usePageMeta,
+} from "../hooks/useAlgorithmExplanation";
+import { DATA_SETUP_ICON } from "../constants/copy";
 
 export function SelectionSortPage() {
+  const { t } = useTranslation("common");
+  const pageMeta = usePageMeta("selectionSort");
+  const explanation = useAlgorithmExplanation("selectionSort");
   const visualizer = useSelectionSortVisualizer();
   const transitionMs = getStepTransitionMs(visualizer.speed);
   const defaultHighlights = visualizer.array.map(() => "default" as const);
@@ -41,18 +33,18 @@ export function SelectionSortPage() {
       isSuccess={visualizer.currentStep.isComplete}
     />
   ) : (
-    <VisualizerIdleStatus message={VISUALIZER_IDLE_MESSAGE} />
+    <VisualizerIdleStatus message={t("idle.visualizer")} />
   );
 
   return (
     <VisualizerLayout
-      title="Selection Sort"
-      description={PAGE_DESCRIPTION}
+      title={pageMeta.title}
+      description={pageMeta.description}
       timeComplexity="O(n²)"
       spaceComplexity="O(1)"
-      timeComplexityInfo={SELECTION_SORT_TIME_INFO}
-      spaceComplexityInfo={SELECTION_SORT_SPACE_INFO}
-      leftPanelSectionLabel={DATA_SETUP_LABEL}
+      timeComplexityInfo={pageMeta.timeComplexityInfo}
+      spaceComplexityInfo={pageMeta.spaceComplexityInfo}
+      leftPanelSectionLabel={t("dataSetup.label")}
       leftPanelSectionIcon={DATA_SETUP_ICON}
       leftPanel={
         <DatasetSetupPanel
@@ -60,7 +52,7 @@ export function SelectionSortPage() {
           onArraySizeChange={visualizer.setArraySize}
           onRandomize={visualizer.randomizeData}
           preserveArrayOrder
-          customInputDescription={SELECTION_SORT_CUSTOM_INPUT_DESCRIPTION}
+          customInputDescription={pageMeta.customInputHint}
           arrayPlaceholder="64, 25, 12, 22, 11"
           onApplyCustomDataset={({ array }) =>
             visualizer.applyCustomDataset(array)
@@ -88,15 +80,13 @@ export function SelectionSortPage() {
           <CodePanel
             codeByLanguage={selectionSortCode}
             activeLine={visualizer.currentStep?.activeLine ?? 1}
-            stepExplanation={
-              visualizer.currentStep?.stepExplanation ?? CODE_PANEL_IDLE_FALLBACK
-            }
+            stepExplanation={visualizer.currentStep?.stepExplanation}
             showStepFooter
           />
         }
         explanationColumn={
           <ExplanationPanelShell>
-            <AlgorithmExplanationContent {...selectionSortExplanation} />
+            <AlgorithmExplanationContent {...explanation} />
           </ExplanationPanelShell>
         }
         playerControls={

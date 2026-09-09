@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   binarySearch,
   generateSortedArray,
@@ -63,13 +64,15 @@ function buildPointers(step: BinarySearchStep | undefined): ArrayPointer[] {
 }
 
 export function useBinarySearchVisualizer() {
+  const { i18n } = useTranslation();
   const [arraySize, setArraySize] = useState(DEFAULT_SIZE);
   const [dataset, setDataset] = useState(() => createDataset(DEFAULT_SIZE));
   const { array, target } = dataset;
 
   const steps = useMemo(
     () => binarySearch(array, target),
-    [array, target],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- locale drives getAlgorithmT()
+    [array, target, i18n.language],
   );
 
   const player = usePlayerControls({ totalSteps: steps.length });

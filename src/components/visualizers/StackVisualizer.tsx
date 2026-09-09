@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { StackItemHighlight, StackItemState, StackPhase } from "../../types/stackStructure";
 import {
   STACK_BLOCK_HIGHLIGHT_STYLE,
@@ -189,10 +190,12 @@ function TopBadge({
   blockTopY,
   visible,
   stepTransitionMs,
+  topLabel,
 }: {
   blockTopY: number;
   visible: boolean;
   stepTransitionMs: number;
+  topLabel: string;
 }) {
   if (!visible) {
     return null;
@@ -228,19 +231,21 @@ function TopBadge({
         textAnchor="middle"
         className="fill-blue-700 text-[9px] font-bold uppercase tracking-wide"
       >
-        TOP
+        {topLabel}
       </text>
     </g>
   );
 }
 
 export function StackStructureLegendBar() {
+  const { t } = useTranslation("structures");
+
   return (
     <div
       className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 rounded-xl border-2 border-surface-variant bg-surface-container-lowest px-4 py-3"
       aria-label="Color legend"
     >
-      {STACK_LEGEND_ITEMS.map(({ token, label }) => (
+      {STACK_LEGEND_ITEMS.map(({ token }) => (
         <span
           key={token}
           className="inline-flex items-center gap-2 text-xs font-semibold text-slate-700"
@@ -252,7 +257,7 @@ export function StackStructureLegendBar() {
             ].join(" ")}
             aria-hidden="true"
           />
-          {label}
+          {t(`legends.stack.${token}`)}
         </span>
       ))}
     </div>
@@ -267,6 +272,7 @@ export function StackVisualizer({
   isError = false,
   stepTransitionMs = 200,
 }: StackVisualizerProps) {
+  const { t } = useTranslation("structures");
   const showErrorGlow =
     isError || phase === "overflow" || phase === "underflow";
   const showCapacityOverflow =
@@ -292,14 +298,14 @@ export function StackVisualizer({
             : STACK_CAPACITY_LABEL_NEUTRAL_CLASS,
         ].join(" ")}
       >
-        STACK · {size} / {maxCapacity} elements
+        {t("visualizer.stack.capacitySummary", { size, max: maxCapacity })}
       </p>
 
       <svg
         viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
         className="mx-auto h-auto w-full max-w-[320px] overflow-visible"
         role="img"
-        aria-label={`Stack with ${size} of ${maxCapacity} elements`}
+        aria-label={t("visualizer.stack.ariaLabel", { size, max: maxCapacity })}
       >
         <StackContainer maxCapacity={maxCapacity} occupiedCount={size} />
 
@@ -316,6 +322,7 @@ export function StackVisualizer({
           blockTopY={topBlockTopY}
           visible={size > 0}
           stepTransitionMs={stepTransitionMs}
+          topLabel={t("visualizer.stack.topBadge")}
         />
       </svg>
     </div>

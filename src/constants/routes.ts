@@ -20,3 +20,6 @@ export type VisualizerRoute =
   | typeof APP_ROUTES.selectionSort
   | typeof APP_ROUTES.insertionSort
   | typeof APP_ROUTES.quickSort;
+
+/** @deprecated Use APP_ROUTES */
+export const ROUTE_PATHS = APP_ROUTES;

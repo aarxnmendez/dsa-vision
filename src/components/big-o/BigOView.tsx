@@ -1,11 +1,8 @@
-import { useId, useState } from "react";
+import { useId, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
-  auxiliaryMemoryPoints,
-  spaceComplexityIntro,
-  spaceComplexityRows,
-  timeComplexityIntro,
-  timeComplexityRows,
+  withComplexityRowColors,
   type ComplexityDimension,
   type ComplexityReferenceRow,
 } from "../../data/bigOReference";
@@ -13,54 +10,34 @@ import { Icon } from "../ui/Icon";
 import { sectionLabelClass } from "../ui/sectionLabel";
 import { ComplexityGrowthChart } from "./ComplexityGrowthChart";
 
-const dimensionConfig: Record<
-  ComplexityDimension,
-  {
-    label: string;
-    chartTitle: string;
-    chartDescription: string;
-    tableTitle: string;
-    rows: ComplexityReferenceRow[];
-    intro: string;
-  }
-> = {
-  time: {
-    label: "Time Complexity",
-    chartTitle: "Time Growth Comparison",
-    chartDescription:
-      "As input size increases, some time complexity classes explode while others stay manageable. Lower curves mean faster algorithms at scale.",
-    tableTitle: "Time Complexity Reference",
-    rows: timeComplexityRows,
-    intro: timeComplexityIntro,
-  },
-  space: {
-    label: "Space Complexity",
-    chartTitle: "Space Growth Comparison",
-    chartDescription:
-      "Extra memory can come from recursion depth or auxiliary structures. In-place algorithms keep the lowest space footprint.",
-    tableTitle: "Space Complexity Reference",
-    rows: spaceComplexityRows,
-    intro: spaceComplexityIntro,
-  },
-};
-
-function ComplexityReferenceTable({ rows }: { rows: ComplexityReferenceRow[] }) {
+function ComplexityReferenceTable({
+  rows,
+  headers,
+}: {
+  rows: ComplexityReferenceRow[];
+  headers: {
+    notation: string;
+    class: string;
+    behavior: string;
+    examples: string;
+  };
+}) {
   return (
     <div className="overflow-hidden rounded-2xl border-2 border-surface-variant border-b-4">
       <table className="w-full table-fixed text-left align-middle">
         <thead className="bg-surface-container">
           <tr>
             <th className="w-32 min-w-[120px] px-4 py-3 font-label-caps text-label-caps text-on-surface-variant whitespace-nowrap align-middle">
-              Notation
+              {headers.notation}
             </th>
             <th className="w-36 px-4 py-3 font-label-caps text-label-caps text-on-surface-variant whitespace-nowrap align-middle">
-              Class
+              {headers.class}
             </th>
             <th className="px-4 py-3 font-label-caps text-label-caps text-on-surface-variant hidden md:table-cell align-middle">
-              Behavior
+              {headers.behavior}
             </th>
             <th className="w-48 px-4 py-3 font-label-caps text-label-caps text-on-surface-variant align-middle">
-              Examples
+              {headers.examples}
             </th>
           </tr>
         </thead>
@@ -101,6 +78,7 @@ type BigONavigationState = {
 };
 
 export function BigOView() {
+  const { t } = useTranslation("bigO");
   const location = useLocation();
   const navigate = useNavigate();
   const [dimension, setDimension] = useState<ComplexityDimension>("time");
@@ -110,7 +88,53 @@ export function BigOView() {
   const timePanelId = `${tabListId}-time-panel`;
   const spacePanelId = `${tabListId}-space-panel`;
 
-  const activeConfig = dimensionConfig[dimension];
+  const timeRows = useMemo(
+    () =>
+      withComplexityRowColors(
+        t("time.rows", { returnObjects: true }) as unknown as Omit<
+          ComplexityReferenceRow,
+          "color"
+        >[],
+      ),
+    [t],
+  );
+  const spaceRows = useMemo(
+    () =>
+      withComplexityRowColors(
+        t("space.rows", { returnObjects: true }) as unknown as Omit<
+          ComplexityReferenceRow,
+          "color"
+        >[],
+      ),
+    [t],
+  );
+  const auxiliaryPoints = t("space.auxiliaryPoints", {
+    returnObjects: true,
+  }) as unknown as { title: string; detail: string }[];
+
+  const activeConfig =
+    dimension === "time"
+      ? {
+          intro: t("time.intro"),
+          chartTitle: t("time.chartTitle"),
+          chartDescription: t("time.chartDescription"),
+          tableTitle: t("time.tableTitle"),
+          rows: timeRows,
+        }
+      : {
+          intro: t("space.intro"),
+          chartTitle: t("space.chartTitle"),
+          chartDescription: t("space.chartDescription"),
+          tableTitle: t("space.tableTitle"),
+          rows: spaceRows,
+        };
+
+  const tableHeaders = {
+    notation: t("table.notation"),
+    class: t("table.class"),
+    behavior: t("table.behavior"),
+    examples: t("table.examples"),
+  };
 
   const handleBack = () => {
     const from = (location.state as BigONavigationState | null)?.from;
@@ -141,24 +165,21 @@ export function BigOView() {
         className="self-start inline-flex items-center gap-2 text-on-surface-variant font-bold hover:text-primary transition-colors bg-surface-container-lowest px-4 py-2 rounded-xl border-b-4 border-surface-variant btn-3d cursor-pointer"
       >
         <Icon name="arrow_back" className="text-[20px]" />
-        Back to Visualizer
+        {t("backToVisualizer")}
       </button>
 
       <header className="text-center flex flex-col gap-stack-md items-center">
         <h1 className="font-display text-display text-primary max-w-3xl">
-          Big-O Notation
+          {t("title")}
         </h1>
         <p className="font-body-lg text-body-lg text-on-surface-variant max-w-2xl leading-relaxed">
-          Big-O describes how an algorithm&apos;s time or space requirements
-          scale as input size grows. It helps you compare solutions, predict
-          performance, and choose the right tool for real-world software
-          problems.
+          {t("subtitle")}
         </p>
       </header>
 
       <div
         role="tablist"
-        aria-label="Complexity dimension"
+        aria-label={t("dimensionTabsAria")}
         className="flex border-b-2 border-surface-variant bg-surface-container pt-2 px-2 gap-2 shrink-0 rounded-t-2xl"
       >
         <button
@@ -170,7 +191,7 @@ export function BigOView() {
           onClick={() => setDimension("time")}
           className={tabButtonClass("time")}
         >
-          Time Complexity
+          {t("time.label")}
         </button>
         <button
           type="button"
@@ -181,7 +202,7 @@ export function BigOView() {
           onClick={() => setDimension("space")}
           className={tabButtonClass("space")}
         >
-          Space Complexity
+          {t("space.label")}
         </button>
       </div>
 
@@ -207,14 +228,12 @@ export function BigOView() {
 
         {dimension === "space" && (
           <section className="bg-surface-container-low rounded-2xl border-2 border-surface-variant border-b-4 p-6 md:p-8 flex flex-col gap-4">
-            <h2 className={sectionLabelClass}>What Uses Auxiliary Memory?</h2>
+            <h2 className={sectionLabelClass}>{t("space.auxiliaryTitle")}</h2>
             <p className="font-body-md text-body-md text-on-surface-variant leading-relaxed">
-              Space complexity counts memory beyond the input itself. Two common
-              sources are the recursion call stack and temporary data structures
-              allocated during execution.
+              {t("space.auxiliaryIntro")}
             </p>
             <ul className="flex flex-col gap-4">
-              {auxiliaryMemoryPoints.map((point) => (
+              {auxiliaryPoints.map((point) => (
                 <li
                   key={point.title}
                   className="bg-surface-container-lowest rounded-xl border-2 border-surface-variant p-4 flex flex-col gap-1"
@@ -233,7 +252,10 @@ export function BigOView() {
 
         <section className="flex flex-col gap-4">
           <h2 className={sectionLabelClass}>{activeConfig.tableTitle}</h2>
-          <ComplexityReferenceTable rows={activeConfig.rows} />
+          <ComplexityReferenceTable
+            rows={activeConfig.rows}
+            headers={tableHeaders}
+          />
         </section>
       </div>
     </div>

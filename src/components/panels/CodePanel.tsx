@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import type { CodeLanguage } from "../../data/binarySearchCode";
 import { CODE_ACTIVE_LINE_CLASS } from "../../constants/visualizerTokens";
 import { CopyCodeButton } from "./CopyCodeButton";
@@ -21,12 +22,13 @@ export function CodePanel({
   stepFormula,
   showStepFooter = true,
 }: CodePanelProps) {
+  const { t } = useTranslation("common");
   const [language, setLanguage] = useState<CodeLanguage>("python");
   const lines = codeByLanguage[language];
 
   return (
     <div className="flex min-h-[22rem] min-w-0 flex-col overflow-hidden rounded-2xl border-2 border-surface-variant bg-surface-container-lowest shadow-sm">
-      <EmbeddedPanelTabBar icon="code" label="Code" />
+      <EmbeddedPanelTabBar icon="code" label={t("codePanel.code")} />
       <div className="flex shrink-0 items-center justify-between gap-4 border-b-2 border-surface-variant bg-surface-bright px-4 py-3">
         <LanguageSelector value={language} onChange={setLanguage} />
         <CopyCodeButton code={lines.join("\n")} />

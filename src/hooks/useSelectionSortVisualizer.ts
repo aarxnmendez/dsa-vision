@@ -1,4 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   generateSelectionSortSteps,
   generateUnsortedArray,
@@ -50,10 +51,15 @@ function buildBarHighlights(step: SelectionSortStep | undefined): SortBarHighlig
 }
 
 export function useSelectionSortVisualizer() {
+  const { i18n } = useTranslation();
   const [arraySize, setArraySize] = useState(DEFAULT_SIZE);
   const [array, setArray] = useState(() => generateUnsortedArray(DEFAULT_SIZE));
 
-  const steps = useMemo(() => generateSelectionSortSteps(array), [array]);
+  const steps = useMemo(
+    () => generateSelectionSortSteps(array),
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- locale drives getAlgorithmT()
+    [array, i18n.language],
+  );
   const player = usePlayerControls({
     totalSteps: steps.length,
   });

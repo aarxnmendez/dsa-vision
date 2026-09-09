@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { AlgorithmGrid } from "../components/catalog/AlgorithmGrid";
 import { FilterBar } from "../components/catalog/FilterBar";
 import { Hero } from "../components/catalog/Hero";
@@ -13,6 +14,7 @@ import {
 } from "../utils/catalogFilter";
 
 export function CatalogPage() {
+  const { t } = useTranslation("catalog");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<AlgorithmCategory>("all");
 
@@ -24,11 +26,22 @@ export function CatalogPage() {
         algorithm,
         activeCategory,
       );
-      const matchesSearch = algorithmMatchesSearch(algorithm, normalizedQuery);
+      const matchesSearch = algorithmMatchesSearch(
+        algorithm,
+        normalizedQuery,
+        {
+          title: t(`algorithms.${algorithm.id}.title`, {
+            defaultValue: algorithm.title,
+          }),
+          description: t(`algorithms.${algorithm.id}.description`, {
+            defaultValue: algorithm.description,
+          }),
+        },
+      );
 
       return matchesCategory && matchesSearch;
     });
-  }, [activeCategory, searchQuery]);
+  }, [activeCategory, searchQuery, t]);
 
   return (
     <CatalogLayout footer={<Footer />}>

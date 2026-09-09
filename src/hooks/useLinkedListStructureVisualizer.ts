@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   generateLinkedListOperationSteps,
   getDefaultOperationIndex,
@@ -19,6 +20,7 @@ import { usePlayerControls } from "./usePlayerControls";
 const DEFAULT_SIZE = 5;
 
 export function useLinkedListStructureVisualizer() {
+  const { i18n } = useTranslation();
   const [listSize, setListSize] = useState(DEFAULT_SIZE);
   const [listType, setListType] = useState<LinkedListType>("singly");
   const [dataset, setDataset] = useState<RandomLinkedListDataset>(() =>
@@ -35,7 +37,16 @@ export function useLinkedListStructureVisualizer() {
         value: operationValue,
         searchTarget,
       }),
-    [listType, operation, values, operationIndex, operationValue, searchTarget],
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- locale drives getAlgorithmT()
+    [
+      listType,
+      operation,
+      values,
+      operationIndex,
+      operationValue,
+      searchTarget,
+      i18n.language,
+    ],
   );
 
   const player = usePlayerControls({ totalSteps: steps.length });

@@ -1,6 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { getStepTransitionMs } from "../constants/player";
 import { linkedListCode } from "../data/linkedListCode";
-import { linkedListExplanation } from "../data/linkedListExplanation";
 import { buildLinkedListDisplayState } from "../algorithms/linkedListOperations";
 import { LinkedListSetupPanel } from "../components/controls/LinkedListSetupPanel";
 import { PlayerControls } from "../components/controls/PlayerControls";
@@ -17,18 +17,10 @@ import {
 import { VisualizerIdleStatus } from "../components/visualizers/VisualizerIdleStatus";
 import { useLinkedListStructureVisualizer } from "../hooks/useLinkedListStructureVisualizer";
 import {
-  LINKED_LIST_SPACE_INFO,
-  LINKED_LIST_TIME_INFO,
-} from "../constants/visualizerTokens";
-import {
-  CODE_PANEL_IDLE_FALLBACK,
-  DATA_SETUP_LABEL,
-  DATA_SETUP_ICON,
-  VISUALIZER_IDLE_MESSAGE,
-} from "../constants/copy";
-
-const PAGE_DESCRIPTION =
-  "Pointer-based nodes with O(1) head and tail ops when pointers are maintained, plus O(n) search and in-place reversal.";
+  useAlgorithmExplanation,
+  usePageMeta,
+} from "../hooks/useAlgorithmExplanation";
+import { DATA_SETUP_ICON } from "../constants/copy";
 
 function formatPointerMovement(
   pointers: { id: string; nodeId: string }[],
@@ -38,6 +30,9 @@ function formatPointerMovement(
 }
 
 export function LinkedListPage() {
+  const { t } = useTranslation("common");
+  const pageMeta = usePageMeta("linkedList");
+  const explanation = useAlgorithmExplanation("linkedList");
   const visualizer = useLinkedListStructureVisualizer();
   const transitionMs = getStepTransitionMs(visualizer.speed);
 
@@ -64,18 +59,18 @@ export function LinkedListPage() {
       isError={visualizer.currentStep.phase === "not-found"}
     />
   ) : (
-    <VisualizerIdleStatus message={VISUALIZER_IDLE_MESSAGE} />
+    <VisualizerIdleStatus message={t("idle.visualizer")} />
   );
 
   return (
     <VisualizerLayout
-      title="Linked List"
-      description={PAGE_DESCRIPTION}
+      title={pageMeta.title}
+      description={pageMeta.description}
       timeComplexity="O(1)–O(n)"
       spaceComplexity="O(n)"
-      timeComplexityInfo={LINKED_LIST_TIME_INFO}
-      spaceComplexityInfo={LINKED_LIST_SPACE_INFO}
-      leftPanelSectionLabel={DATA_SETUP_LABEL}
+      timeComplexityInfo={pageMeta.timeComplexityInfo}
+      spaceComplexityInfo={pageMeta.spaceComplexityInfo}
+      leftPanelSectionLabel={t("dataSetup.label")}
       leftPanelSectionIcon={DATA_SETUP_ICON}
       leftPanel={
         <LinkedListSetupPanel
@@ -118,15 +113,13 @@ export function LinkedListPage() {
           <CodePanel
             codeByLanguage={linkedListCode}
             activeLine={visualizer.currentStep?.codeLine ?? 1}
-            stepExplanation={
-              visualizer.currentStep?.stepExplanation ?? CODE_PANEL_IDLE_FALLBACK
-            }
+            stepExplanation={visualizer.currentStep?.stepExplanation}
             showStepFooter
           />
         }
         explanationColumn={
           <ExplanationPanelShell>
-            <AlgorithmExplanationContent {...linkedListExplanation} />
+            <AlgorithmExplanationContent {...explanation} />
           </ExplanationPanelShell>
         }
         playerControls={

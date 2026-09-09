@@ -1,3 +1,4 @@
+import { getAlgorithmT } from "../i18n/index";
 import type {
   StackItemHighlight,
   StackItemState,
@@ -121,13 +122,8 @@ function introStep(
 }
 
 function operationLabel(operation: StackOperationId): string {
-  const labels: Record<StackOperationId, string> = {
-    push: "Push",
-    pop: "Pop",
-    peek: "Peek",
-    clear: "Clear",
-  };
-  return labels[operation];
+  const t = getAlgorithmT();
+  return t(`stackOperations.operations.${operation}`);
 }
 
 export function generatePushSteps(
@@ -135,27 +131,33 @@ export function generatePushSteps(
   value: number,
   maxCapacity: number = STACK_MAX_CAPACITY,
 ): StackOperationStep[] {
+  const t = getAlgorithmT();
   const stack = buildStackFromValues(values, maxCapacity);
   const steps: StackOperationStep[] = [
     introStep(
       stack,
       "push",
-      `Push ${value} onto the stack`,
-      "Place the new element on top of the current stack.",
+      t("stackOperations.push.intro.statusTitle", { value }),
+      t("stackOperations.push.intro.statusDetail"),
       3,
-      `Preparing to push value ${value}. Stacks always insert new elements at the top.`,
+      t("stackOperations.push.intro.stepExplanation", { value }),
     ),
   ];
 
   if (stack.items.length >= stack.maxCapacity) {
+    const overflowDetail = t("stackOperations.push.overflow.statusDetail", {
+      maxCapacity: stack.maxCapacity,
+    });
     steps.push(
       createStep(stack, {
         phase: "overflow",
         operation: "push",
-        statusTitle: "Stack overflow!",
-        statusDetail: `Stack overflow! Maximum capacity of ${stack.maxCapacity} elements reached. Push operation rejected.`,
-        stepMessage: `Stack overflow! Maximum capacity of ${stack.maxCapacity} elements reached. Push operation rejected.`,
-        stepExplanation: `Push rejected in O(1): the bounded stack already holds ${stack.maxCapacity} elements at maximum capacity. No slot remains above TOP for a new write.`,
+        statusTitle: t("stackOperations.push.overflow.statusTitle"),
+        statusDetail: overflowDetail,
+        stepMessage: overflowDetail,
+        stepExplanation: t("stackOperations.push.overflow.stepExplanation", {
+          maxCapacity: stack.maxCapacity,
+        }),
         codeLine: 4,
         isError: true,
         itemHighlights: Object.fromEntries(
@@ -179,24 +181,30 @@ export function generatePushSteps(
     createStep(working, {
       phase: "push",
       operation: "push",
-      statusTitle: "Incoming element",
-      statusDetail: `Place ${value} on TOP.`,
-      stepMessage: `Incoming value ${value} placed at TOP.`,
-      stepExplanation: `Value ${value} pushed to index ${topIndex}. The top pointer advances to track the new uppermost element.`,
+      statusTitle: t("stackOperations.push.incoming.statusTitle"),
+      statusDetail: t("stackOperations.push.incoming.statusDetail", { value }),
+      stepMessage: t("stackOperations.push.incoming.stepMessage", { value }),
+      stepExplanation: t("stackOperations.push.incoming.stepExplanation", {
+        value,
+        topIndex,
+      }),
       codeLine: 4,
       itemHighlights: { [newId]: "pushing" },
     }),
   );
 
+  const completeDetail = t("stackOperations.push.complete.statusDetail", {
+    value,
+    topIndex,
+  });
   steps.push(
     createStep(working, {
       phase: "complete",
       operation: "push",
-      statusTitle: "Push complete",
-      statusDetail: `Push complete: Element '${value}' added to TOP. Stack updated in O(1) time (TOP index: ${topIndex}).`,
-      stepMessage: `Push complete: Element '${value}' added to TOP. Stack updated in O(1) time (TOP index: ${topIndex}).`,
-      stepExplanation:
-        "Push complete. Accessing or removing this element next maintains the LIFO order.",
+      statusTitle: t("stackOperations.push.complete.statusTitle"),
+      statusDetail: completeDetail,
+      stepMessage: completeDetail,
+      stepExplanation: t("stackOperations.push.complete.stepExplanation"),
       codeLine: 4,
       itemHighlights: { [newId]: "found" },
       found: true,
@@ -210,33 +218,34 @@ export function generatePopSteps(
   values: number[],
   maxCapacity: number = STACK_MAX_CAPACITY,
 ): StackOperationStep[] {
+  const t = getAlgorithmT();
   const stack = buildStackFromValues(values, maxCapacity);
   const topIndexBefore = stack.items.length > 0 ? stack.items.length - 1 : null;
   const steps: StackOperationStep[] = [
     introStep(
       stack,
       "pop",
-      "Pop the top element",
-      "Remove and return the most recently pushed value.",
+      t("stackOperations.pop.intro.statusTitle"),
+      t("stackOperations.pop.intro.statusDetail"),
       6,
       topIndexBefore !== null
-        ? `Preparing to pop from the stack. The operation targets index ${topIndexBefore} (the current top).`
-        : "Preparing to pop from the stack. The operation targets the current top index.",
+        ? t("stackOperations.pop.intro.stepExplanation.withTop", {
+            topIndex: topIndexBefore,
+          })
+        : t("stackOperations.pop.intro.stepExplanation.empty"),
     ),
   ];
 
   if (stack.items.length === 0) {
+    const underflowDetail = t("stackOperations.pop.underflow.statusDetail");
     steps.push(
       createStep(stack, {
         phase: "underflow",
         operation: "pop",
-        statusTitle: "Stack underflow!",
-        statusDetail:
-          "Stack underflow! Cannot execute pop or peek on an empty stack.",
-        stepMessage:
-          "Stack underflow! Cannot execute pop or peek on an empty stack.",
-        stepExplanation:
-          "Pop rejected in O(1): the stack is empty — there is no top index to remove.",
+        statusTitle: t("stackOperations.pop.underflow.statusTitle"),
+        statusDetail: underflowDetail,
+        stepMessage: underflowDetail,
+        stepExplanation: t("stackOperations.pop.underflow.stepExplanation"),
         codeLine: 7,
         isError: true,
       }),
@@ -253,13 +262,24 @@ export function generatePopSteps(
     createStep(working, {
       phase: "pop",
       operation: "pop",
-      statusTitle: "Lift TOP element",
-      statusDetail: `TOP = ${topItem.value}`,
-      stepMessage: `Highlight ${topItem.value} before removal.`,
+      statusTitle: t("stackOperations.pop.lift.statusTitle"),
+      statusDetail: t("stackOperations.pop.lift.statusDetail", {
+        value: topItem.value,
+      }),
+      stepMessage: t("stackOperations.pop.lift.stepMessage", {
+        value: topItem.value,
+      }),
       stepExplanation:
         newTopIndex !== null
-          ? `Targeting TOP element ${topItem.value} at index ${topIndex} before executing stack.pop(). After removal, the top pointer will move to index ${newTopIndex}.`
-          : `Targeting TOP element ${topItem.value} at index ${topIndex} before executing stack.pop(). After removal, the stack becomes empty.`,
+          ? t("stackOperations.pop.lift.stepExplanation.withNewTop", {
+              value: topItem.value,
+              topIndex,
+              newTopIndex,
+            })
+          : t("stackOperations.pop.lift.stepExplanation.emptyAfter", {
+              value: topItem.value,
+              topIndex,
+            }),
       codeLine: 7,
       itemHighlights: { [topItem.id]: "popping" },
     }),
@@ -267,17 +287,25 @@ export function generatePopSteps(
 
   working.items.pop();
 
+  const completeDetail = t("stackOperations.pop.complete.statusDetail", {
+    value: topItem.value,
+  });
   steps.push(
     createStep(working, {
       phase: "complete",
       operation: "pop",
-      statusTitle: "Pop complete",
-      statusDetail: `Pop complete: Element '${topItem.value}' removed from TOP in O(1) time.`,
-      stepMessage: `Pop complete: Element '${topItem.value}' removed from TOP in O(1) time.`,
+      statusTitle: t("stackOperations.pop.complete.statusTitle"),
+      statusDetail: completeDetail,
+      stepMessage: completeDetail,
       stepExplanation:
         newTopIndex !== null
-          ? `Element ${topItem.value} removed from top. The top pointer moves down to index ${newTopIndex}. Pop completes in O(1) without shifting remaining elements.`
-          : `Element ${topItem.value} removed from top. The stack is now empty. Pop completes in O(1) without shifting remaining elements.`,
+          ? t("stackOperations.pop.complete.stepExplanation.withNewTop", {
+              value: topItem.value,
+              newTopIndex,
+            })
+          : t("stackOperations.pop.complete.stepExplanation.emptyAfter", {
+              value: topItem.value,
+            }),
       codeLine: 7,
       returnedValue: topItem.value,
       found: true,
@@ -291,32 +319,35 @@ export function generatePeekSteps(
   values: number[],
   maxCapacity: number = STACK_MAX_CAPACITY,
 ): StackOperationStep[] {
+  const t = getAlgorithmT();
   const stack = buildStackFromValues(values, maxCapacity);
+  const topItem = stack.items.length > 0 ? stack.items[stack.items.length - 1]! : null;
   const steps: StackOperationStep[] = [
     introStep(
       stack,
       "peek",
-      "Peek at TOP",
-      "Inspect the top element without removing it.",
+      t("stackOperations.peek.intro.statusTitle"),
+      t("stackOperations.peek.intro.statusDetail"),
       9,
-      stack.items.length > 0
-        ? `Reading top element at index ${stack.items.length - 1} (value: ${stack.items[stack.items.length - 1]!.value}). Peek inspects top without mutating the stack.`
-        : "Preparing to peek at the top element without mutating the stack.",
+      topItem
+        ? t("stackOperations.peek.intro.stepExplanation.withTop", {
+            topIndex: stack.items.length - 1,
+            value: topItem.value,
+          })
+        : t("stackOperations.peek.intro.stepExplanation.empty"),
     ),
   ];
 
   if (stack.items.length === 0) {
+    const underflowDetail = t("stackOperations.peek.underflow.statusDetail");
     steps.push(
       createStep(stack, {
         phase: "underflow",
         operation: "peek",
-        statusTitle: "Stack underflow!",
-        statusDetail:
-          "Stack underflow! Cannot execute pop or peek on an empty stack.",
-        stepMessage:
-          "Stack underflow! Cannot execute pop or peek on an empty stack.",
-        stepExplanation:
-          "Peek rejected in O(1): the stack is empty — there is no top index to read.",
+        statusTitle: t("stackOperations.peek.underflow.statusTitle"),
+        statusDetail: underflowDetail,
+        stepMessage: underflowDetail,
+        stepExplanation: t("stackOperations.peek.underflow.stepExplanation"),
         codeLine: 10,
         isError: true,
       }),
@@ -324,19 +355,25 @@ export function generatePeekSteps(
     return steps;
   }
 
-  const topItem = stack.items[stack.items.length - 1]!;
   const topIndex = stack.items.length - 1;
 
   steps.push(
     createStep(stack, {
       phase: "peek",
       operation: "peek",
-      statusTitle: "Read TOP",
-      statusDetail: `TOP = ${topItem.value}`,
-      stepMessage: `Observe ${topItem.value} — stack size unchanged.`,
-      stepExplanation: `Reading top element at index ${topIndex} (value: ${topItem.value}). Peek inspects top without mutating the stack.`,
+      statusTitle: t("stackOperations.peek.read.statusTitle"),
+      statusDetail: t("stackOperations.peek.read.statusDetail", {
+        value: topItem!.value,
+      }),
+      stepMessage: t("stackOperations.peek.read.stepMessage", {
+        value: topItem!.value,
+      }),
+      stepExplanation: t("stackOperations.peek.read.stepExplanation", {
+        topIndex,
+        value: topItem!.value,
+      }),
       codeLine: 10,
-      itemHighlights: { [topItem.id]: "peeking" },
+      itemHighlights: { [topItem!.id]: "peeking" },
     }),
   );
 
@@ -344,14 +381,16 @@ export function generatePeekSteps(
     createStep(stack, {
       phase: "complete",
       operation: "peek",
-      statusTitle: "Peek complete",
-      statusDetail: `Value ${topItem.value} at TOP. Size still ${stack.items.length}.`,
-      stepMessage: "No elements were removed.",
-      stepExplanation:
-        "Peek complete. Stack size and LIFO order are unchanged — only the top value was inspected.",
+      statusTitle: t("stackOperations.peek.complete.statusTitle"),
+      statusDetail: t("stackOperations.peek.complete.statusDetail", {
+        value: topItem!.value,
+        size: stack.items.length,
+      }),
+      stepMessage: t("stackOperations.peek.complete.stepMessage"),
+      stepExplanation: t("stackOperations.peek.complete.stepExplanation"),
       codeLine: 10,
-      returnedValue: topItem.value,
-      itemHighlights: { [topItem.id]: "found" },
+      returnedValue: topItem!.value,
+      itemHighlights: { [topItem!.id]: "found" },
       found: true,
     }),
   );
@@ -363,31 +402,34 @@ export function generateClearSteps(
   values: number[],
   maxCapacity: number = STACK_MAX_CAPACITY,
 ): StackOperationStep[] {
+  const t = getAlgorithmT();
   const stack = buildStackFromValues(values, maxCapacity);
   const elementCount = stack.items.length;
   const steps: StackOperationStep[] = [
     introStep(
       stack,
       "clear",
-      "Clear the stack",
-      "Remove every element until the structure is empty.",
+      t("stackOperations.clear.intro.statusTitle"),
+      t("stackOperations.clear.intro.statusDetail"),
       12,
       elementCount > 0
-        ? `Preparing to clear the stack. ${elementCount} stored element(s) will be dropped from TOP down to the base.`
-        : "Preparing to clear the stack. No elements are currently stored.",
+        ? t("stackOperations.clear.intro.stepExplanation.withElements", {
+            count: elementCount,
+          })
+        : t("stackOperations.clear.intro.stepExplanation.empty"),
     ),
   ];
 
   if (stack.items.length === 0) {
+    const alreadyEmptyDetail = t("stackOperations.clear.alreadyEmpty.statusDetail");
     steps.push(
       createStep(stack, {
         phase: "complete",
         operation: "clear",
-        statusTitle: "Already empty",
-        statusDetail: "Nothing to remove.",
-        stepMessage: "Clear on an empty stack is a no-op.",
-        stepExplanation:
-          "Clear on an empty stack completes in O(1) — no elements require removal.",
+        statusTitle: t("stackOperations.clear.alreadyEmpty.statusTitle"),
+        statusDetail: alreadyEmptyDetail,
+        stepMessage: t("stackOperations.clear.alreadyEmpty.stepMessage"),
+        stepExplanation: t("stackOperations.clear.alreadyEmpty.stepExplanation"),
         codeLine: 13,
         found: true,
       }),
@@ -404,10 +446,14 @@ export function generateClearSteps(
     createStep(working, {
       phase: "clear",
       operation: "clear",
-      statusTitle: "Discard all elements",
-      statusDetail: `Removing ${working.items.length} element(s).`,
-      stepMessage: "Every slot from TOP down to the base is cleared.",
-      stepExplanation: `Clearing all ${working.items.length} elements from memory sequentially (O(n)).`,
+      statusTitle: t("stackOperations.clear.discard.statusTitle"),
+      statusDetail: t("stackOperations.clear.discard.statusDetail", {
+        count: working.items.length,
+      }),
+      stepMessage: t("stackOperations.clear.discard.stepMessage"),
+      stepExplanation: t("stackOperations.clear.discard.stepExplanation", {
+        count: working.items.length,
+      }),
       codeLine: 13,
       itemHighlights: clearingHighlights,
     }),
@@ -415,15 +461,15 @@ export function generateClearSteps(
 
   working.items = [];
 
+  const clearedDetail = t("stackOperations.clear.complete.statusDetail");
   steps.push(
     createStep(working, {
       phase: "complete",
       operation: "clear",
-      statusTitle: "Stack cleared",
-      statusDetail: "Stack cleared: All elements removed in O(n) time.",
-      stepMessage: "Stack cleared: All elements removed in O(n) time.",
-      stepExplanation:
-        "Clear complete. Every slot was emptied in O(n) time — push can resume from an empty stack in O(1).",
+      statusTitle: t("stackOperations.clear.complete.statusTitle"),
+      statusDetail: clearedDetail,
+      stepMessage: clearedDetail,
+      stepExplanation: t("stackOperations.clear.complete.stepExplanation"),
       codeLine: 13,
       found: true,
     }),

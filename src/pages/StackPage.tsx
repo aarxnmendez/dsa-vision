@@ -1,6 +1,6 @@
+import { useTranslation } from "react-i18next";
 import { getStepTransitionMs } from "../constants/player";
 import { stackCode } from "../data/stackCode";
-import { stackExplanation } from "../data/stackExplanation";
 import { buildStackDisplayState } from "../algorithms/stackOperations";
 import { StackSetupPanel } from "../components/controls/StackSetupPanel";
 import { PlayerControls } from "../components/controls/PlayerControls";
@@ -17,20 +17,15 @@ import {
 import { VisualizerIdleStatus } from "../components/visualizers/VisualizerIdleStatus";
 import { useStackStructureVisualizer } from "../hooks/useStackStructureVisualizer";
 import {
-  STACK_SPACE_INFO,
-  STACK_TIME_INFO,
-} from "../constants/visualizerTokens";
-import {
-  CODE_PANEL_IDLE_FALLBACK,
-  DATA_SETUP_LABEL,
-  DATA_SETUP_ICON,
-  STACK_IDLE_MESSAGE,
-} from "../constants/copy";
-
-const PAGE_DESCRIPTION =
-  "LIFO stack with O(1) push, pop, and peek. Bounded capacity models overflow when the structure is full.";
+  useAlgorithmExplanation,
+  usePageMeta,
+} from "../hooks/useAlgorithmExplanation";
+import { DATA_SETUP_ICON } from "../constants/copy";
 
 export function StackPage() {
+  const { t } = useTranslation("common");
+  const pageMeta = usePageMeta("stack");
+  const explanation = useAlgorithmExplanation("stack");
   const visualizer = useStackStructureVisualizer();
   const transitionMs = getStepTransitionMs(visualizer.speed);
 
@@ -59,18 +54,18 @@ export function StackPage() {
       isError={visualizer.currentStep.isError}
     />
   ) : (
-    <VisualizerIdleStatus message={STACK_IDLE_MESSAGE} />
+    <VisualizerIdleStatus message={t("idle.stack")} />
   );
 
   return (
     <VisualizerLayout
-      title="Stack"
-      description={PAGE_DESCRIPTION}
+      title={pageMeta.title}
+      description={pageMeta.description}
       timeComplexity="O(1)–O(n)"
       spaceComplexity="O(n)"
-      timeComplexityInfo={STACK_TIME_INFO}
-      spaceComplexityInfo={STACK_SPACE_INFO}
-      leftPanelSectionLabel={DATA_SETUP_LABEL}
+      timeComplexityInfo={pageMeta.timeComplexityInfo}
+      spaceComplexityInfo={pageMeta.spaceComplexityInfo}
+      leftPanelSectionLabel={t("dataSetup.label")}
       leftPanelSectionIcon={DATA_SETUP_ICON}
       leftPanel={
         <StackSetupPanel
@@ -106,15 +101,13 @@ export function StackPage() {
           <CodePanel
             codeByLanguage={stackCode}
             activeLine={visualizer.currentStep?.codeLine ?? 1}
-            stepExplanation={
-              visualizer.currentStep?.stepExplanation ?? CODE_PANEL_IDLE_FALLBACK
-            }
+            stepExplanation={visualizer.currentStep?.stepExplanation}
             showStepFooter
           />
         }
         explanationColumn={
           <ExplanationPanelShell>
-            <AlgorithmExplanationContent {...stackExplanation} />
+            <AlgorithmExplanationContent {...explanation} />
           </ExplanationPanelShell>
         }
         playerControls={

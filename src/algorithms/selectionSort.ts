@@ -1,3 +1,4 @@
+import { getAlgorithmT } from "../i18n/index";
 import { generateRandomArray } from "../utils/randomArray";
 
 export interface SelectionSortStep {
@@ -37,18 +38,33 @@ function compareStatusDetail(
   comparingIdx: number,
   isLess: boolean,
 ): string {
+  const t = getAlgorithmT();
+
   if (isLess) {
-    return `${current} < ${minimum}. A smaller value was found at index ${comparingIdx}.`;
+    return t("selectionSort.comparing.statusDetail.less", {
+      current,
+      minimum,
+      comparingIdx,
+    });
   }
 
   if (current > minimum) {
-    return `${current} > ${minimum}. The current minimum remains ${minimum} at index ${minIdx}.`;
+    return t("selectionSort.comparing.statusDetail.greater", {
+      current,
+      minimum,
+      minIdx,
+    });
   }
 
-  return `${current} == ${minimum}. The current minimum remains ${minimum} at index ${minIdx}.`;
+  return t("selectionSort.comparing.statusDetail.equal", {
+    current,
+    minimum,
+    minIdx,
+  });
 }
 
 export function generateSelectionSortSteps(input: number[]): SelectionSortStep[] {
+  const t = getAlgorithmT();
   const arr = [...input];
   const n = arr.length;
   const steps: SelectionSortStep[] = [];
@@ -68,9 +84,9 @@ export function generateSelectionSortSteps(input: number[]): SelectionSortStep[]
         comparingIdx: null,
         swapIndices: null,
         activeLine: 14,
-        statusTitle: "Sorting complete",
-        statusDetail: "The array is fully sorted in ascending order.",
-        stepExplanation: "Array completely sorted!",
+        statusTitle: t("selectionSort.complete.statusTitle"),
+        statusDetail: t("selectionSort.complete.statusDetail"),
+        stepExplanation: t("selectionSort.complete.stepExplanation"),
         isComplete: true,
         comparisons,
         swaps,
@@ -89,10 +105,9 @@ export function generateSelectionSortSteps(input: number[]): SelectionSortStep[]
       comparisons,
       swaps,
       activeLine: 1,
-      statusTitle: "Initializing",
-      statusDetail: `${n}-element unsorted array. Sorted boundary at index 0.`,
-      stepExplanation:
-        "Initialize: no elements are locked in their final position yet.",
+      statusTitle: t("selectionSort.init.statusTitle"),
+      statusDetail: t("selectionSort.init.statusDetail", { n }),
+      stepExplanation: t("selectionSort.init.stepExplanation"),
     }),
   );
 
@@ -109,9 +124,16 @@ export function generateSelectionSortSteps(input: number[]): SelectionSortStep[]
         comparisons,
         swaps,
         activeLine: 4,
-        statusTitle: `Starting pass ${i + 1}`,
-        statusDetail: `Initial minimum: ${arr[i]} at index ${i}.`,
-        stepExplanation: `Starting pass ${i + 1}: search for the minimum from index ${i}. Set minIdx = ${i} (value ${arr[i]}).`,
+        statusTitle: t("selectionSort.startPass.statusTitle", { pass: i + 1 }),
+        statusDetail: t("selectionSort.startPass.statusDetail", {
+          value: arr[i],
+          index: i,
+        }),
+        stepExplanation: t("selectionSort.startPass.stepExplanation", {
+          pass: i + 1,
+          index: i,
+          value: arr[i],
+        }),
       }),
     );
 
@@ -131,7 +153,10 @@ export function generateSelectionSortSteps(input: number[]): SelectionSortStep[]
           comparisons,
           swaps,
           activeLine: 6,
-          statusTitle: `Comparing ${currentValue} and ${minimumValue}`,
+          statusTitle: t("selectionSort.comparing.statusTitle", {
+            current: currentValue,
+            minimum: minimumValue,
+          }),
           statusDetail: compareStatusDetail(
             currentValue,
             minimumValue,
@@ -140,8 +165,17 @@ export function generateSelectionSortSteps(input: number[]): SelectionSortStep[]
             isLess,
           ),
           stepExplanation: isLess
-            ? `Scanning index ${j} (value: ${currentValue}). Value ${currentValue} is less than current minimum ${minimumValue}.`
-            : `Scanning index ${j} (value: ${currentValue}). Value ${currentValue} is not less than current minimum ${minimumValue}. minIdx stays at ${minIdx}.`,
+            ? t("selectionSort.comparing.stepExplanation.less", {
+                j,
+                current: currentValue,
+                minimum: minimumValue,
+              })
+            : t("selectionSort.comparing.stepExplanation.notLess", {
+                j,
+                current: currentValue,
+                minimum: minimumValue,
+                minIdx,
+              }),
         }),
       );
 
@@ -158,9 +192,16 @@ export function generateSelectionSortSteps(input: number[]): SelectionSortStep[]
             comparisons,
             swaps,
             activeLine: 7,
-            statusTitle: "New minimum found",
-            statusDetail: `${currentValue} < ${previousMinimum}. Updated current minimum to ${currentValue} at index ${j}.`,
-            stepExplanation: `New minimum found at index ${j} (value: ${currentValue}). minIdx updates to ${j}.`,
+            statusTitle: t("selectionSort.newMinimum.statusTitle"),
+            statusDetail: t("selectionSort.newMinimum.statusDetail", {
+              current: currentValue,
+              previousMinimum,
+              j,
+            }),
+            stepExplanation: t("selectionSort.newMinimum.stepExplanation", {
+              j,
+              current: currentValue,
+            }),
           }),
         );
       }
@@ -181,9 +222,18 @@ export function generateSelectionSortSteps(input: number[]): SelectionSortStep[]
           comparisons,
           swaps,
           activeLine: 11,
-          statusTitle: "Placing minimum",
-          statusDetail: `Swapping ${minimumValue} with ${valueAtOuterIndex} to fix position [${i}].`,
-          stepExplanation: `Swapping index ${i} (value ${valueAtOuterIndex}) and minimum index ${minIdx} (value ${minimumValue}). Place ${minimumValue} at index ${i}.`,
+          statusTitle: t("selectionSort.placingMinimum.statusTitle"),
+          statusDetail: t("selectionSort.placingMinimum.statusDetail", {
+            minimumValue,
+            valueAtOuterIndex,
+            i,
+          }),
+          stepExplanation: t("selectionSort.placingMinimum.stepExplanation", {
+            i,
+            valueAtOuterIndex,
+            minIdx,
+            minimumValue,
+          }),
         }),
       );
 
@@ -202,13 +252,22 @@ export function generateSelectionSortSteps(input: number[]): SelectionSortStep[]
         comparisons,
         swaps,
         activeLine: 3,
-        statusTitle: `Pass ${i + 1} complete`,
+        statusTitle: t("selectionSort.passComplete.statusTitle", { pass: i + 1 }),
         statusDetail: passWasSwap
-          ? `Position [${i}] fixed with ${sortedValue}. Indices 0..${i} are sorted.`
-          : `${sortedValue} was already at index ${i}. Indices 0..${i} are sorted.`,
+          ? t("selectionSort.passComplete.statusDetail.swap", {
+              i,
+              sortedValue,
+            })
+          : t("selectionSort.passComplete.statusDetail.noSwap", {
+              sortedValue,
+              i,
+            }),
         stepExplanation: passWasSwap
-          ? `Swap complete. Sub-array [0..${i}] is sorted. Indices 0 through ${i} now hold the ${i + 1} smallest elements in order.`
-          : `Minimum was already at index ${i}. Sub-array [0..${i}] is sorted.`,
+          ? t("selectionSort.passComplete.stepExplanation.swap", {
+              i,
+              count: i + 1,
+            })
+          : t("selectionSort.passComplete.stepExplanation.noSwap", { i }),
       }),
     );
   }
@@ -223,9 +282,9 @@ export function generateSelectionSortSteps(input: number[]): SelectionSortStep[]
       comparisons,
       swaps,
       activeLine: 14,
-      statusTitle: "Sorting complete",
-      statusDetail: "The array is fully sorted in ascending order.",
-      stepExplanation: "Array completely sorted!",
+      statusTitle: t("selectionSort.complete.statusTitle"),
+      statusDetail: t("selectionSort.complete.statusDetail"),
+      stepExplanation: t("selectionSort.complete.stepExplanation"),
       isComplete: true,
     }),
   );

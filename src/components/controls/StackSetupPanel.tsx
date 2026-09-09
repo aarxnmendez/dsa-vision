@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { StackOperationId } from "../../types/stackStructure";
 import { STACK_MAX_CAPACITY } from "../../types/stackStructure";
 import { DatasetSetupPanel } from "./DatasetSetupPanel";
@@ -15,18 +16,21 @@ interface StackSetupPanelProps {
   onPushValueChange: (value: number) => void;
 }
 
-const OPERATION_OPTIONS: {
-  id: StackOperationId;
-  label: string;
-  description: string;
-}[] = [
-  { id: "push", label: "Push", description: "O(1) — add to TOP" },
-  { id: "pop", label: "Pop", description: "O(1) — remove TOP" },
-  { id: "peek", label: "Peek", description: "O(1) — read TOP" },
-  { id: "clear", label: "Clear", description: "O(n) — empty stack" },
-];
+const OPERATION_IDS: StackOperationId[] = ["push", "pop", "peek", "clear"];
 
-const STACK_CUSTOM_INPUT_DESCRIPTION = `Enter bottom-to-top values (max ${STACK_MAX_CAPACITY} elements).`;
+const OPERATION_LABEL_KEYS = {
+  push: "stack.operations.push",
+  pop: "stack.operations.pop",
+  peek: "stack.operations.peek",
+  clear: "stack.operations.clear",
+} as const satisfies Record<StackOperationId, string>;
+
+const OPERATION_DESCRIPTION_KEYS = {
+  push: "stack.operations.pushDescription",
+  pop: "stack.operations.popDescription",
+  peek: "stack.operations.peekDescription",
+  clear: "stack.operations.clearDescription",
+} as const satisfies Record<StackOperationId, string>;
 
 const compactFieldClass =
   "w-full rounded-xl border-2 border-surface-variant bg-surface px-3 py-2 font-body-md text-sm focus:border-primary focus:outline-none";
@@ -51,6 +55,8 @@ export function StackSetupPanel({
   onOperationChange,
   onPushValueChange,
 }: StackSetupPanelProps) {
+  const { t } = useTranslation("structures");
+
   return (
     <div className="flex flex-col gap-3">
       <DatasetSetupPanel
@@ -60,33 +66,35 @@ export function StackSetupPanel({
         onRandomize={onRandomize}
         preserveArrayOrder
         array={values}
-        customInputDescription={STACK_CUSTOM_INPUT_DESCRIPTION}
+        customInputDescription={t("stack.customInputDescription", {
+          max: STACK_MAX_CAPACITY,
+        })}
         arrayPlaceholder="12, 45, 89"
         sizeMin={0}
         sizeMax={STACK_MAX_CAPACITY}
-        sizeLabel="Initial Stack Size"
+        sizeLabel={t("stack.initialSize")}
         onApplyCustomDataset={({ array }) => onApplyCustomDataset(array)}
       />
 
       <div className="rounded-2xl border-2 border-surface-variant bg-surface-container-lowest p-3 flex flex-col gap-3">
         <div className="flex flex-col gap-1.5">
-          <span className={sectionLabelClass}>Stack Operation</span>
+          <span className={sectionLabelClass}>{t("stack.stackOperation")}</span>
           <div className="grid grid-cols-2 gap-2.5">
-            {OPERATION_OPTIONS.map((option) => {
-              const isActive = operation === option.id;
+            {OPERATION_IDS.map((id) => {
+              const isActive = operation === id;
               return (
                 <button
-                  key={option.id}
+                  key={id}
                   type="button"
-                  onClick={() => onOperationChange(option.id)}
+                  onClick={() => onOperationChange(id)}
                   aria-pressed={isActive}
                   className={operationButtonClass(isActive)}
                 >
                   <span className="block text-sm font-bold leading-snug">
-                    {option.label}
+                    {t(OPERATION_LABEL_KEYS[id])}
                   </span>
                   <span className="mt-1 block text-[11px] leading-relaxed opacity-80">
-                    {option.description}
+                    {t(OPERATION_DESCRIPTION_KEYS[id])}
                   </span>
                 </button>
               );
@@ -97,7 +105,7 @@ export function StackSetupPanel({
         {operation === "push" && (
           <div className="flex flex-col gap-1.5">
             <label htmlFor="stack-push-value" className={sectionLabelClass}>
-              Value to Push
+              {t("stack.valueToPush")}
             </label>
             <input
               id="stack-push-value"
@@ -110,7 +118,10 @@ export function StackSetupPanel({
         )}
 
         <p className="text-xs text-on-surface-variant">
-          Capacity: {values.length} / {STACK_MAX_CAPACITY} elements loaded.
+          {t("stack.capacityLoaded", {
+            loaded: values.length,
+            max: STACK_MAX_CAPACITY,
+          })}
         </p>
       </div>
     </div>

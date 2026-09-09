@@ -1,3 +1,4 @@
+import { getAlgorithmT } from "../i18n/index";
 import { generateRandomArray } from "../utils/randomArray";
 
 export interface InsertionSortStep {
@@ -33,6 +34,7 @@ function createStep(
 }
 
 export function generateInsertionSortSteps(input: number[]): InsertionSortStep[] {
+  const t = getAlgorithmT();
   const arr = [...input];
   const n = arr.length;
   const steps: InsertionSortStep[] = [];
@@ -54,9 +56,9 @@ export function generateInsertionSortSteps(input: number[]): InsertionSortStep[]
         shiftIndices: null,
         insertIndex: 0,
         activeLine: 12,
-        statusTitle: "Sorting complete",
-        statusDetail: "The array is fully sorted in ascending order.",
-        stepExplanation: "Array completely sorted!",
+        statusTitle: t("insertionSort.complete.statusTitle"),
+        statusDetail: t("insertionSort.complete.statusDetail"),
+        stepExplanation: t("insertionSort.complete.stepExplanation"),
         isComplete: true,
         comparisons,
         shifts,
@@ -77,10 +79,9 @@ export function generateInsertionSortSteps(input: number[]): InsertionSortStep[]
       comparisons,
       shifts,
       activeLine: 1,
-      statusTitle: "Initializing",
-      statusDetail: `${n}-element array. Index 0 is the initial sorted partition.`,
-      stepExplanation:
-        "Initialize: the left partition [0] is sorted. The unsorted partition starts at index 1.",
+      statusTitle: t("insertionSort.init.statusTitle"),
+      statusDetail: t("insertionSort.init.statusDetail", { n }),
+      stepExplanation: t("insertionSort.init.stepExplanation"),
     }),
   );
 
@@ -99,9 +100,13 @@ export function generateInsertionSortSteps(input: number[]): InsertionSortStep[]
         comparisons,
         shifts,
         activeLine: 4,
-        statusTitle: `Selecting key ${key}`,
-        statusDetail: `Key ${key} at index ${i}. Sorted partition: indices 0..${i - 1}.`,
-        stepExplanation: `Pass ${i}: select key ${key} at index ${i} and insert it into the sorted partition on the left.`,
+        statusTitle: t("insertionSort.selectKey.statusTitle", { key }),
+        statusDetail: t("insertionSort.selectKey.statusDetail", {
+          key,
+          i,
+          lastSorted: i - 1,
+        }),
+        stepExplanation: t("insertionSort.selectKey.stepExplanation", { i, key }),
       }),
     );
 
@@ -124,13 +129,32 @@ export function generateInsertionSortSteps(input: number[]): InsertionSortStep[]
           comparisons,
           shifts,
           activeLine: 6,
-          statusTitle: `Comparing ${compareValue} with key ${key}`,
+          statusTitle: t("insertionSort.comparing.statusTitle", {
+            compareValue,
+            key,
+          }),
           statusDetail: shouldShift
-            ? `${compareValue} > ${key}. Shift ${compareValue} one position to the right.`
-            : `${compareValue} <= ${key}. Stop shifting and insert key at index ${j + 1}.`,
+            ? t("insertionSort.comparing.statusDetail.shift", {
+                compareValue,
+                key,
+              })
+            : t("insertionSort.comparing.statusDetail.stop", {
+                compareValue,
+                key,
+                insertIndex: j + 1,
+              }),
           stepExplanation: shouldShift
-            ? `Compare key ${key} with ${compareValue} at index ${j}. ${compareValue} is greater, so it will shift right.`
-            : `Compare key ${key} with ${compareValue} at index ${j}. ${compareValue} is not greater, so key belongs at index ${j + 1}.`,
+            ? t("insertionSort.comparing.stepExplanation.shift", {
+                key,
+                compareValue,
+                j,
+              })
+            : t("insertionSort.comparing.stepExplanation.stop", {
+                key,
+                compareValue,
+                j,
+                insertIndex: j + 1,
+              }),
         }),
       );
 
@@ -152,9 +176,18 @@ export function generateInsertionSortSteps(input: number[]): InsertionSortStep[]
           comparisons,
           shifts,
           activeLine: 7,
-          statusTitle: `Shifting ${compareValue} to the right`,
-          statusDetail: `Move ${compareValue} from index ${j} to index ${j + 1}.`,
-          stepExplanation: `Shift ${compareValue} from index ${j} to index ${j + 1} to make room for key ${key}.`,
+          statusTitle: t("insertionSort.shifting.statusTitle", { compareValue }),
+          statusDetail: t("insertionSort.shifting.statusDetail", {
+            compareValue,
+            j,
+            jPlusOne: j + 1,
+          }),
+          stepExplanation: t("insertionSort.shifting.stepExplanation", {
+            compareValue,
+            j,
+            jPlusOne: j + 1,
+            key,
+          }),
         }),
       );
 
@@ -176,9 +209,15 @@ export function generateInsertionSortSteps(input: number[]): InsertionSortStep[]
         comparisons,
         shifts,
         activeLine: 9,
-        statusTitle: `Inserting key ${key}`,
-        statusDetail: `Place key ${key} at index ${targetIndex}.`,
-        stepExplanation: `Insert key ${key} at index ${targetIndex}.`,
+        statusTitle: t("insertionSort.inserting.statusTitle", { key }),
+        statusDetail: t("insertionSort.inserting.statusDetail", {
+          key,
+          targetIndex,
+        }),
+        stepExplanation: t("insertionSort.inserting.stepExplanation", {
+          key,
+          targetIndex,
+        }),
       }),
     );
 
@@ -196,9 +235,12 @@ export function generateInsertionSortSteps(input: number[]): InsertionSortStep[]
         comparisons,
         shifts,
         activeLine: 3,
-        statusTitle: `Pass ${i} complete`,
-        statusDetail: `Indices 0..${i} are sorted. Unsorted partition starts at index ${i + 1}.`,
-        stepExplanation: `Pass ${i} complete. Sorted partition now covers indices 0 through ${i}.`,
+        statusTitle: t("insertionSort.passComplete.statusTitle", { i }),
+        statusDetail: t("insertionSort.passComplete.statusDetail", {
+          i,
+          nextIndex: i + 1,
+        }),
+        stepExplanation: t("insertionSort.passComplete.stepExplanation", { i }),
       }),
     );
   }
@@ -215,9 +257,9 @@ export function generateInsertionSortSteps(input: number[]): InsertionSortStep[]
       comparisons,
       shifts,
       activeLine: 12,
-      statusTitle: "Sorting complete",
-      statusDetail: "The array is fully sorted in ascending order.",
-      stepExplanation: "Array completely sorted!",
+      statusTitle: t("insertionSort.complete.statusTitle"),
+      statusDetail: t("insertionSort.complete.statusDetail"),
+      stepExplanation: t("insertionSort.complete.stepExplanation"),
       isComplete: true,
     }),
   );

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "type-check": "tsc -b --noEmit",
     "lint": "eslint .",
     "optimize:images": "node scripts/optimize-images.mjs",
     "preview": "vite preview"
@@ -15,9 +16,11 @@
     "@tailwindcss/vite": "^4.3.3",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
+    "i18next": "^26.4.2",
     "lucide-react": "^1.33.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
+    "react-i18next": "^17.0.13",
     "react-router-dom": "^7.18.2",
     "tailwindcss": "^4.3.3"
   },

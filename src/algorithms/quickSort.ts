@@ -1,3 +1,4 @@
+import { getAlgorithmT } from "../i18n/index";
 import { generateRandomArray } from "../utils/randomArray";
 
 export type PivotStrategy = "first" | "middle" | "last" | "random";
@@ -53,32 +54,55 @@ function pivotChoiceCopy(
   high: number,
   pivotValue: number,
 ): Pick<QuickSortStep, "statusTitle" | "statusDetail" | "stepExplanation"> {
-  const rangeLabel = `[${low}..${high}]`;
+  const t = getAlgorithmT();
+  const range = `[${low}..${high}]`;
 
   switch (strategy) {
     case "first":
       return {
-        statusTitle: "Choose first pivot",
-        statusDetail: `Sub-array ${rangeLabel}. Index ${pivotPick} (first element) selects pivot ${pivotValue}.`,
-        stepExplanation: `First-element pivot always uses index ${low}. On already sorted data this creates maximally unbalanced partitions and O(n²) recursion depth.`,
+        statusTitle: t("quickSort.pivot.first.statusTitle"),
+        statusDetail: t("quickSort.pivot.first.statusDetail", {
+          range,
+          pivotPick,
+          pivotValue,
+        }),
+        stepExplanation: t("quickSort.pivot.first.stepExplanation", { low }),
       };
     case "last":
       return {
-        statusTitle: "Choose last pivot",
-        statusDetail: `Sub-array ${rangeLabel}. Index ${pivotPick} (last element) selects pivot ${pivotValue}.`,
-        stepExplanation: `Last-element pivot always uses index ${high}. On reverse-sorted data this skews partitions and can degrade to O(n²).`,
+        statusTitle: t("quickSort.pivot.last.statusTitle"),
+        statusDetail: t("quickSort.pivot.last.statusDetail", {
+          range,
+          pivotPick,
+          pivotValue,
+        }),
+        stepExplanation: t("quickSort.pivot.last.stepExplanation", { high }),
       };
     case "middle":
       return {
-        statusTitle: "Choose middle pivot",
-        statusDetail: `Sub-array ${rangeLabel}. Middle index ${pivotPick} selects pivot ${pivotValue}.`,
-        stepExplanation: `Middle pivot at index ${pivotPick} tends to split ${rangeLabel} evenly on sorted or uniform input, keeping average depth near O(log n).`,
+        statusTitle: t("quickSort.pivot.middle.statusTitle"),
+        statusDetail: t("quickSort.pivot.middle.statusDetail", {
+          range,
+          pivotPick,
+          pivotValue,
+        }),
+        stepExplanation: t("quickSort.pivot.middle.stepExplanation", {
+          pivotPick,
+          range,
+        }),
       };
     case "random":
       return {
-        statusTitle: "Choose random pivot",
-        statusDetail: `Sub-array ${rangeLabel}. Random index ${pivotPick} selects pivot ${pivotValue}.`,
-        stepExplanation: `Random pivot in ${rangeLabel} (here: index ${pivotPick}) makes highly unbalanced splits unlikely on average, preserving expected O(n log n) time.`,
+        statusTitle: t("quickSort.pivot.random.statusTitle"),
+        statusDetail: t("quickSort.pivot.random.statusDetail", {
+          range,
+          pivotPick,
+          pivotValue,
+        }),
+        stepExplanation: t("quickSort.pivot.random.stepExplanation", {
+          range,
+          pivotPick,
+        }),
       };
     default: {
       const _exhaustive: never = strategy;
@@ -88,15 +112,17 @@ function pivotChoiceCopy(
 }
 
 function initStepCopy(strategy: PivotStrategy, size: number): string {
+  const t = getAlgorithmT();
+
   switch (strategy) {
     case "first":
-      return `Initialize quicksort with first-element pivots on a ${size}-element array. Watch recursion deepen on sorted input.`;
+      return t("quickSort.init.first", { size });
     case "last":
-      return `Initialize quicksort with last-element pivots on a ${size}-element array. Partitions may skew on reverse-sorted input.`;
+      return t("quickSort.init.last", { size });
     case "middle":
-      return `Initialize quicksort with middle pivots on a ${size}-element array. Expect relatively balanced partitions.`;
+      return t("quickSort.init.middle", { size });
     case "random":
-      return `Initialize randomized quicksort on a ${size}-element array. Each partition picks a random pivot within the active sub-array.`;
+      return t("quickSort.init.random", { size });
     default: {
       const _exhaustive: never = strategy;
       return _exhaustive;
@@ -159,6 +185,7 @@ function partition(
   low: number,
   high: number,
 ): number {
+  const t = getAlgorithmT();
   const pivotPick = pickPivotIndex(ctx.pivotStrategy, low, high);
   const pivotChoice = pivotChoiceCopy(
     ctx.pivotStrategy,
@@ -190,9 +217,9 @@ function partition(
       null,
       null,
       13,
-      "Move pivot to end",
-      `Swap index ${pivotPick} with ${high} so the pivot sits at the partition boundary.`,
-      `Move the pivot candidate to index ${high} before scanning the sub-array.`,
+      t("quickSort.movePivotToEnd.statusTitle"),
+      t("quickSort.movePivotToEnd.statusDetail", { pivotPick, high }),
+      t("quickSort.movePivotToEnd.stepExplanation", { high }),
     );
   }
 
@@ -206,9 +233,16 @@ function partition(
     comparingIdx: null,
     swapIndices: null,
     activeLine: 14,
-    statusTitle: "Initialize partition",
-    statusDetail: `Pivot = ${pivotValue} at index ${high}. Set i = ${low - 1}.`,
-    stepExplanation: `Pivot value is ${pivotValue}. Initialize i = ${low - 1} to mark the end of the "less than or equal" region.`,
+    statusTitle: t("quickSort.initPartition.statusTitle"),
+    statusDetail: t("quickSort.initPartition.statusDetail", {
+      pivotValue,
+      high,
+      i: low - 1,
+    }),
+    stepExplanation: t("quickSort.initPartition.stepExplanation", {
+      pivotValue,
+      i: low - 1,
+    }),
   });
 
   let i = low - 1;
@@ -225,13 +259,27 @@ function partition(
       comparingIdx: j,
       swapIndices: null,
       activeLine: 17,
-      statusTitle: `Compare index ${j}`,
+      statusTitle: t("quickSort.compare.statusTitle", { j }),
       statusDetail: belongsLeft
-        ? `${currentValue} <= ${pivotValue}. Element belongs on the left side of the pivot.`
-        : `${currentValue} > ${pivotValue}. Element stays on the right side of the pivot.`,
+        ? t("quickSort.compare.statusDetail.left", {
+            currentValue,
+            pivotValue,
+          })
+        : t("quickSort.compare.statusDetail.right", {
+            currentValue,
+            pivotValue,
+          }),
       stepExplanation: belongsLeft
-        ? `Scan index j = ${j} (value ${currentValue}). It is less than or equal to pivot ${pivotValue}, so it belongs in the left partition.`
-        : `Scan index j = ${j} (value ${currentValue}). It is greater than pivot ${pivotValue}, so i does not advance.`,
+        ? t("quickSort.compare.stepExplanation.left", {
+            j,
+            currentValue,
+            pivotValue,
+          })
+        : t("quickSort.compare.stepExplanation.right", {
+            j,
+            currentValue,
+            pivotValue,
+          }),
     });
 
     if (belongsLeft) {
@@ -248,9 +296,9 @@ function partition(
           i,
           j,
           19,
-          "Swap into left partition",
-          `Increment i to ${i}, then swap index ${i} with ${j}.`,
-          `Advance i to ${i} and swap arr[${i}] with arr[${j}] to grow the left partition.`,
+          t("quickSort.swapIntoLeft.statusTitle"),
+          t("quickSort.swapIntoLeft.statusDetail", { i, j }),
+          t("quickSort.swapIntoLeft.stepExplanation", { i, j }),
         );
       } else {
         pushStep(ctx, {
@@ -261,30 +309,34 @@ function partition(
           comparingIdx: j,
           swapIndices: null,
           activeLine: 18,
-          statusTitle: "Advance partition boundary",
-          statusDetail: `Increment i to ${i}. Index ${j} is already in the left partition.`,
-          stepExplanation: `i advances to ${i}. No swap needed because j already equals i.`,
+          statusTitle: t("quickSort.advanceBoundary.statusTitle"),
+          statusDetail: t("quickSort.advanceBoundary.statusDetail", { i, j }),
+          stepExplanation: t("quickSort.advanceBoundary.stepExplanation", { i }),
         });
       }
     }
   }
 
+  const pivotFinalIndex = i + 1;
+
   swapElements(
     ctx,
-    i + 1,
+    pivotFinalIndex,
     high,
     low,
     high,
-    i + 1,
+    pivotFinalIndex,
     i,
     high,
     22,
-    "Place pivot",
-    `Swap pivot at index ${high} with index ${i + 1}. Pivot locks into final position.`,
-    `Swap arr[${i + 1}] with arr[${high}] so the pivot rests at its sorted index ${i + 1}.`,
+    t("quickSort.placePivot.statusTitle"),
+    t("quickSort.placePivot.statusDetail", { high, pivotIndex: pivotFinalIndex }),
+    t("quickSort.placePivot.stepExplanation", {
+      pivotIndex: pivotFinalIndex,
+      high,
+    }),
   );
 
-  const pivotFinalIndex = i + 1;
   ctx.sortedIndices.add(pivotFinalIndex);
 
   pushStep(ctx, {
@@ -295,9 +347,18 @@ function partition(
     comparingIdx: null,
     swapIndices: null,
     activeLine: 23,
-    statusTitle: "Partition complete",
-    statusDetail: `Pivot ${ctx.arr[pivotFinalIndex]} is fixed at index ${pivotFinalIndex}. Recurse on [${low}..${pivotFinalIndex - 1}] and [${pivotFinalIndex + 1}..${high}].`,
-    stepExplanation: `Partition complete. Index ${pivotFinalIndex} is in its final sorted position. Elements left of it are <= pivot; elements right are > pivot.`,
+    statusTitle: t("quickSort.partitionComplete.statusTitle"),
+    statusDetail: t("quickSort.partitionComplete.statusDetail", {
+      pivotValue: ctx.arr[pivotFinalIndex],
+      pivotIndex: pivotFinalIndex,
+      low,
+      leftHigh: pivotFinalIndex - 1,
+      rightLow: pivotFinalIndex + 1,
+      high,
+    }),
+    stepExplanation: t("quickSort.partitionComplete.stepExplanation", {
+      pivotIndex: pivotFinalIndex,
+    }),
   });
 
   return pivotFinalIndex;
@@ -308,6 +369,8 @@ function quickSortRange(
   low: number,
   high: number,
 ): void {
+  const t = getAlgorithmT();
+
   if (low >= high) {
     if (low === high && low >= 0 && low < ctx.arr.length) {
       ctx.sortedIndices.add(low);
@@ -319,9 +382,9 @@ function quickSortRange(
         comparingIdx: null,
         swapIndices: null,
         activeLine: 2,
-        statusTitle: "Base case",
-        statusDetail: `Single element at index ${low} is already sorted.`,
-        stepExplanation: `Recursive base case: a sub-array of one element requires no further partitioning.`,
+        statusTitle: t("quickSort.baseCase.statusTitle"),
+        statusDetail: t("quickSort.baseCase.statusDetail", { low }),
+        stepExplanation: t("quickSort.baseCase.stepExplanation"),
       });
     }
     return;
@@ -335,9 +398,13 @@ function quickSortRange(
     comparingIdx: null,
     swapIndices: null,
     activeLine: 2,
-    statusTitle: "Recursive call",
-    statusDetail: `Sort sub-array [${low}..${high}] (${high - low + 1} elements).`,
-    stepExplanation: `Divide: quicksort is called on sub-array indices ${low} through ${high}.`,
+    statusTitle: t("quickSort.recursiveCall.statusTitle"),
+    statusDetail: t("quickSort.recursiveCall.statusDetail", {
+      low,
+      high,
+      count: high - low + 1,
+    }),
+    stepExplanation: t("quickSort.recursiveCall.stepExplanation", { low, high }),
   });
 
   const pivotIndex = partition(ctx, low, high);
@@ -353,9 +420,15 @@ function quickSortRange(
       comparingIdx: null,
       swapIndices: null,
       activeLine: 6,
-      statusTitle: "Recurse left",
-      statusDetail: `Left partition [${low}..${leftHigh}] contains elements <= pivot.`,
-      stepExplanation: `Conquer left: recursively sort indices ${low} to ${leftHigh}.`,
+      statusTitle: t("quickSort.recurseLeft.statusTitle"),
+      statusDetail: t("quickSort.recurseLeft.statusDetail", {
+        low,
+        high: leftHigh,
+      }),
+      stepExplanation: t("quickSort.recurseLeft.stepExplanation", {
+        low,
+        high: leftHigh,
+      }),
     });
 
     quickSortRange(ctx, low, leftHigh);
@@ -370,9 +443,15 @@ function quickSortRange(
       comparingIdx: null,
       swapIndices: null,
       activeLine: 7,
-      statusTitle: "Recurse right",
-      statusDetail: `Right partition [${rightLow}..${high}] contains elements > pivot.`,
-      stepExplanation: `Conquer right: recursively sort indices ${rightLow} to ${high}.`,
+      statusTitle: t("quickSort.recurseRight.statusTitle"),
+      statusDetail: t("quickSort.recurseRight.statusDetail", {
+        low: rightLow,
+        high,
+      }),
+      stepExplanation: t("quickSort.recurseRight.stepExplanation", {
+        low: rightLow,
+        high,
+      }),
     });
 
     quickSortRange(ctx, rightLow, high);
@@ -383,6 +462,7 @@ export function generateQuickSortSteps(
   input: number[],
   pivotStrategy: PivotStrategy = "random",
 ): QuickSortStep[] {
+  const t = getAlgorithmT();
   const arr = [...input];
   const n = arr.length;
   const ctx: StepContext = {
@@ -406,9 +486,9 @@ export function generateQuickSortSteps(
       comparingIdx: null,
       swapIndices: null,
       activeLine: 2,
-      statusTitle: "Sorting complete",
-      statusDetail: "Single-element array is already sorted.",
-      stepExplanation: "Base case: arrays with one element are already sorted.",
+      statusTitle: t("quickSort.singleElement.statusTitle"),
+      statusDetail: t("quickSort.singleElement.statusDetail"),
+      stepExplanation: t("quickSort.singleElement.stepExplanation"),
       isComplete: true,
     });
     return ctx.steps;
@@ -422,8 +502,8 @@ export function generateQuickSortSteps(
     comparingIdx: null,
     swapIndices: null,
     activeLine: 1,
-    statusTitle: "Initializing",
-    statusDetail: `${n}-element array. Quicksort will partition recursively using the ${pivotStrategy} pivot strategy.`,
+    statusTitle: t("quickSort.init.statusTitle"),
+    statusDetail: t("quickSort.init.statusDetail", { n, strategy: pivotStrategy }),
     stepExplanation: initStepCopy(pivotStrategy, n),
   });
 
@@ -441,9 +521,9 @@ export function generateQuickSortSteps(
     comparingIdx: null,
     swapIndices: null,
     activeLine: 9,
-    statusTitle: "Sorting complete",
-    statusDetail: "The array is fully sorted in ascending order.",
-    stepExplanation: "All partitions resolved. The array is completely sorted.",
+    statusTitle: t("quickSort.complete.statusTitle"),
+    statusDetail: t("quickSort.complete.statusDetail"),
+    stepExplanation: t("quickSort.complete.stepExplanation"),
     isComplete: true,
   });
 

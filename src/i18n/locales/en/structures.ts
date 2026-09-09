@@ -1,0 +1,127 @@
+export const structures = {
+  array: {
+    customInputDescription: "Values are stored left-to-right in contiguous memory.",
+    operation: "Operation",
+    operationAria: "Array operation",
+    index: "Index",
+    value: "Value",
+    valueToInsert: "Value to Insert",
+    searchTarget: "Search Target",
+    operations: {
+      access: "Access by Index — O(1)",
+      linearSearch: "Linear Search — O(n)",
+      insertStart: "Insert at Start — O(n)",
+      insertMiddle: "Insert at Middle — O(n)",
+      insertEnd: "Insert at End — O(1) amortized",
+      deleteStart: "Delete at Start — O(n)",
+      deleteMiddle: "Delete at Middle — O(n)",
+      deleteEnd: "Delete at End — O(1)",
+    },
+  },
+  linkedList: {
+    customInputDescription:
+      "Enter node values in traversal order from head to tail.",
+    listType: "List Type",
+    operation: "Operation",
+    operationAria: "Linked list operation",
+    value: "Value",
+    valueToInsert: "Value to Insert",
+    index: "Index",
+    searchTarget: "Search Target",
+    types: {
+      singly: "Singly Linked",
+      doubly: "Doubly Linked",
+      circular: "Circular Linked",
+    },
+    operations: {
+      insertAtHead: "Insert at Head — O(1)",
+      insertAtTail: "Insert at Tail — O(1)",
+      insertAtIndex: "Insert at Index — O(n)",
+      deleteHead: "Delete Head — O(1)",
+      deleteTail: "Delete Tail — O(n)",
+      deleteValue: "Delete by Value — O(n)",
+      search: "Search — O(n)",
+      reverse: "Reverse — O(n)",
+    },
+  },
+  stack: {
+    initialSize: "Initial Stack Size",
+    customInputDescription:
+      "Enter bottom-to-top values (max {{max}} elements).",
+    stackOperation: "Stack Operation",
+    valueToPush: "Value to Push",
+    capacityLoaded: "Capacity: {{loaded}} / {{max}} elements loaded.",
+    operation: "Operation",
+    value: "Value",
+    operations: {
+      push: "Push",
+      pushDescription: "O(1) — add to TOP",
+      pop: "Pop",
+      popDescription: "O(1) — remove TOP",
+      peek: "Peek",
+      peekDescription: "O(1) — read TOP",
+      clear: "Clear",
+      clearDescription: "O(n) — empty stack",
+    },
+  },
+  legends: {
+    array: {
+      active: "Active / Accessed",
+      shift: "Shift / Reorder",
+      success: "Inserted / Success",
+      vacant: "Vacant / Memory",
+    },
+    linkedList: {
+      active: "Active / Traversing",
+      newNode: "New node (pending)",
+      relinking: "Relinking",
+      breaking: "Breaking",
+      idleLink: "Idle link",
+    },
+    stack: {
+      active: "TOP / Active",
+      incoming: "Push / Incoming",
+      delete: "Pop / Error",
+    },
+  },
+  quickSort: {
+    pivotStrategy: "Pivot Strategy",
+    pivot: {
+      first: "First",
+      firstDescription: "Skews to O(n²) on pre-sorted data",
+      middle: "Middle",
+      middleDescription: "Balanced splits on sorted input",
+      last: "Last",
+      lastDescription: "Skews on reverse-sorted data",
+      random: "Random",
+      randomDescription: "Avoids O(n²) on pre-sorted data",
+    },
+  },
+  visualizer: {
+    array: {
+      memoryBlockTitle: "Contiguous memory block",
+      capacityHint_one:
+        "Capacity: {{count}} slot — indices are fixed addresses in the block",
+      capacityHint_other:
+        "Capacity: {{count}} slots — indices are fixed addresses in the block",
+    },
+    stack: {
+      topBadge: "TOP",
+      capacitySummary: "STACK · {{size}} / {{max}} elements",
+      ariaLabel: "Stack with {{size}} of {{max}} elements",
+    },
+    linkedList: {
+      singlyTitle: "Singly linked nodes (value + next)",
+      doublyTitle: "Doubly linked nodes (prev + value + next)",
+      circularTitle: "Circular linked list (tail → head)",
+      circularBackEdgeHint:
+        "The orthogonal back-edge routes tail.next around the list exterior back to head",
+      nodeHead: "head",
+      nodeTail: "tail",
+      nodeNew: "NEW",
+      portNull: "null",
+      portPrev: "prev",
+      portNext: "next",
+    },
+  },
+} as const;

@@ -1,12 +1,19 @@
+import i18n from "../i18n";
+
 export const MIN_CUSTOM_ARRAY_ELEMENTS = 5;
 export const MAX_CUSTOM_ARRAY_ELEMENTS = 20;
-
-export const CUSTOM_ARRAY_COUNT_ERROR =
-  "Please enter between 5 and 20 numbers.";
 
 export interface CustomDatasetPayload {
   array: number[];
   target?: number;
+}
+
+function arrayCountError(): string {
+  return i18n.t("validation.arrayCountRange", {
+    ns: "common",
+    min: MIN_CUSTOM_ARRAY_ELEMENTS,
+    max: MAX_CUSTOM_ARRAY_ELEMENTS,
+  });
 }
 
 export function parseCustomArrayInput(
@@ -16,7 +23,7 @@ export function parseCustomArrayInput(
   const trimmed = input.trim();
 
   if (!trimmed) {
-    return { error: CUSTOM_ARRAY_COUNT_ERROR };
+    return { error: arrayCountError() };
   }
 
   const parts = trimmed.split(/[,;\s]+/).filter(Boolean);
@@ -25,7 +32,7 @@ export function parseCustomArrayInput(
     parts.length < MIN_CUSTOM_ARRAY_ELEMENTS ||
     parts.length > MAX_CUSTOM_ARRAY_ELEMENTS
   ) {
-    return { error: CUSTOM_ARRAY_COUNT_ERROR };
+    return { error: arrayCountError() };
   }
 
   const values: number[] = [];
@@ -34,7 +41,7 @@ export function parseCustomArrayInput(
     const token = part.trim();
     if (!/^-?\d+$/.test(token)) {
       return {
-        error: "Only numeric values separated by commas are allowed.",
+        error: i18n.t("validation.invalidNumeric", { ns: "common" }),
       };
     }
     values.push(Number(token));
@@ -57,7 +64,7 @@ export function parseOptionalTarget(
   }
 
   if (!/^-?\d+$/.test(trimmed)) {
-    return { error: "Target must be a valid number." };
+    return { error: i18n.t("validation.invalidTarget", { ns: "common" }) };
   }
 
   return { target: Number(trimmed) };
