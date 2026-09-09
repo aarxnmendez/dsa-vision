@@ -100,6 +100,16 @@ export const SELECTION_SORT_SPACE_INFO = {
   text: "The algorithm sorts in place using only a constant amount of extra memory for indices and swaps.",
 };
 
+export const INSERTION_SORT_TIME_INFO = {
+  title: "Adaptive Quadratic Time",
+  text: "Insertion Sort runs in O(n) time on already sorted input and O(n²) in average and worst cases due to nested comparisons and shifts.",
+};
+
+export const INSERTION_SORT_SPACE_INFO = {
+  title: "Constant Space",
+  text: "The algorithm sorts in place using only a constant amount of extra memory for the key and loop indices.",
+};
+
 export const QUICKSORT_TIME_INFO = {
   title: "Logarithmic Average Time",
   text: "Randomized Quicksort picks a random pivot each partition, keeping expected recursion depth at O(log n). Average and best cases run in O(n log n) time; a rare unlucky pivot sequence can still reach O(n²).",

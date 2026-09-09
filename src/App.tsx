@@ -27,6 +27,11 @@ const LinkedListPage = lazy(() =>
 const StackPage = lazy(() =>
   import("./pages/StackPage").then((module) => ({ default: module.StackPage })),
 );
+const InsertionSortPage = lazy(() =>
+  import("./pages/InsertionSortPage").then((module) => ({
+    default: module.InsertionSortPage,
+  })),
+);
 const QuickSortPage = lazy(() =>
   import("./pages/QuickSortPage").then((module) => ({
     default: module.QuickSortPage,
@@ -61,6 +66,7 @@ function App() {
           <Route path={APP_ROUTES.stack} element={<StackPage />} />
           <Route path={APP_ROUTES.binarySearch} element={<BinarySearchPage />} />
           <Route path={APP_ROUTES.selectionSort} element={<SelectionSortPage />} />
+          <Route path={APP_ROUTES.insertionSort} element={<InsertionSortPage />} />
           <Route path={APP_ROUTES.quickSort} element={<QuickSortPage />} />
           <Route path={APP_ROUTES.bigONotation} element={<BigONotationPage />} />
         </Routes>

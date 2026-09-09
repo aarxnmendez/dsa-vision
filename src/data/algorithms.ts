@@ -94,6 +94,23 @@ export const algorithms: AlgorithmMeta[] = [
     route: APP_ROUTES.selectionSort,
   },
   {
+    id: "insertion-sort",
+    title: "Insertion Sort",
+    description:
+      "Build a sorted prefix by inserting each element into its correct position with right-to-left shifts.",
+    complexity: "O(n²)",
+    complexityVariant: "warning",
+    difficulty: "beginner",
+    category: "sorting",
+    tags: ["insertion-sort", "sorting", "arrays"],
+    imageUrl: "/images/insertion-sort-cover.webp",
+    imageWidth: 960,
+    imageHeight: 536,
+    imageBg: "bg-primary-fixed",
+    availability: "available",
+    route: APP_ROUTES.insertionSort,
+  },
+  {
     id: "quick-sort",
     title: "Quicksort",
     description:
