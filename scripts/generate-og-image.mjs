@@ -3,7 +3,7 @@ import sharp from "sharp";
 const WIDTH = 1200;
 const HEIGHT = 630;
 const OUTPUT = "public/og-image.png";
-const LOGO = "public/favicon-icon.png";
+const LOGO = "scripts/assets/logo-512.png";
 
 const backgroundSvg = `
 <svg width="${WIDTH}" height="${HEIGHT}" xmlns="http://www.w3.org/2000/svg">

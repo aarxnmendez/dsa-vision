@@ -9,6 +9,8 @@
     "type-check": "tsc -b --noEmit",
     "lint": "eslint .",
     "optimize:images": "node scripts/optimize-images.mjs",
+    "optimize:favicons": "node scripts/optimize-favicons.mjs",
+    "generate:og-image": "node scripts/generate-og-image.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
