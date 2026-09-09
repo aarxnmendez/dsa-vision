@@ -8,7 +8,7 @@
 
 **An interactive, didactic-professional platform for learning data structures and algorithms.**
 
-DSAVision turns abstract pointer logic and complexity analysis into **step-by-step visual stories**: watch nodes highlight, edges relink, and code lines activate in sync — with explanations in **four languages** and live Big-O context for every operation.
+DSAVision turns abstract pointer logic and complexity analysis into **step-by-step visual stories**: watch nodes highlight, edges relink, and code lines activate in sync — with a **bilingual UI (English / Spanish)**, synchronized implementations in **Python, JavaScript, Java, and Pseudocode**, and live Big-O context for every operation.
 
 ---
 
@@ -17,7 +17,7 @@ DSAVision turns abstract pointer logic and complexity analysis into **step-by-st
 | Chapter | Topics | Status |
 | :-- | :-- | :-- |
 | **1** | Binary Search · Big-O Notation (time & space reference) | ✅ Complete |
-| **2** | Selection Sort · Array (contiguous memory ops) · Linked List (Singly, Doubly, Circular — O(1) head/tail ops) | ✅ Complete |
+| **2** | Selection Sort · Insertion Sort · Quick Sort · Array (contiguous memory ops) · Linked List (Singly, Doubly, Circular — O(1) head/tail ops) | ✅ Complete |
 | **3** | Stack (LIFO — O(1) push/pop/peek, O(n) clear) · Queues | Stack ✅ · Queues ⏳ |
 | **4** | Merge Sort · Graph algorithms (Dijkstra) | ⏳ Planned |
 
@@ -29,6 +29,7 @@ DSAVision turns abstract pointer logic and complexity analysis into **step-by-st
 | :-- | :-- |
 | 🎯 **Step-by-step engine** | Pure TypeScript step generators drive every animation frame — no guesswork, fully reproducible. |
 | 🗺️ **SVG multi-row visualizers** | Dynamic pointer labels, Manhattan orthogonal routing, circular back-edges, and smooth transitions. |
+| 🌍 **Bilingual UI (EN / ES)** | Language switcher in the navbar; preference stored in `localStorage` with browser-language fallback. All catalog copy, step narration, theory panels, and SEO meta update live. |
 | 🌐 **Multi-language code panels** | Side-by-side implementations in **Python**, **JavaScript**, **Java**, and **Pseudocode** with active line tracking. |
 | ⏯️ **Playback controls** | Play, pause, step forward/backward, speed slider, and random or custom dataset input. |
 | 📐 **Complexity in context** | Inline time/space badges and expandable breakdowns (O(1), O(log n), O(n), O(n²), …). |
@@ -45,6 +46,8 @@ DSAVision turns abstract pointer logic and complexity analysis into **step-by-st
 | `/binary-search` | Binary search on sorted arrays |
 | `/big-o-notation` | Big-O time & space reference |
 | `/selection-sort` | Selection sort bar visualizer |
+| `/insertion-sort` | Insertion sort bar visualizer (adaptive O(n) best case) |
+| `/quick-sort` | Quicksort with configurable pivot strategy |
 | `/array` | Array insert, delete, shift & access operations |
 | `/linked-list` | Singly · Doubly · Circular — 8 operations (insert, delete, search, reverse) |
 | `/stack` | Stack — push, pop, peek, clear (O(1) push/pop/peek, O(n) clear) |
@@ -57,6 +60,7 @@ DSAVision turns abstract pointer logic and complexity analysis into **step-by-st
 - **Vite** — dev server and production bundling
 - **Tailwind CSS v4** — design tokens, responsive layout, dark-ready surfaces
 - **React Router v7** — client-side routing
+- **i18next** + **react-i18next** — UI localization (EN / ES) with typed namespaces
 - **Lucide React** — icon system
 - **Nunito Sans** — typography via `@fontsource`
 
@@ -85,6 +89,8 @@ pnpm dev
 
 Open the URL printed by Vite (typically `http://localhost:5173`).
 
+Use the **EN / ES** toggle in the navbar to switch UI language. The choice persists across sessions via `localStorage` (`dsavision-locale`).
+
 ### Production build
 
 ```bash
@@ -92,10 +98,12 @@ pnpm build
 pnpm preview   # optional — serve the dist/ folder locally
 ```
 
-### Lint
+### Quality checks
 
 ```bash
 pnpm lint
+pnpm type-check
+pnpm build
 ```
 
 ---
@@ -104,19 +112,38 @@ pnpm lint
 
 ```
 src/
-├── algorithms/          # Pure step engines (linkedListOperations, binarySearch, …)
+├── algorithms/          # Pure step engines (binarySearch, insertionSort, …)
+├── i18n/                # i18next init, locale preference, EN/ES locale bundles
 ├── components/
+│   ├── i18n/            # DocumentMeta (SEO), LegacyEsRouteRedirect
 │   ├── visualizers/     # SVG / DOM visualizers by data family
 │   ├── panels/          # Code, explanation, status, complexity badges
 │   ├── controls/        # Player, dataset setup, custom input
-│   └── layout/          # VisualizerLayout, AlgorithmPageShell, catalog
-├── data/                # Code snippets, explanations, catalog metadata
-├── hooks/               # use*Visualizer + usePlayerControls
+│   └── layout/          # VisualizerLayout, LanguageSwitcher, catalog shell
+├── data/                # Code snippets (*Code.ts) and catalog metadata
+├── hooks/               # use*Visualizer, usePlayerControls, useAlgorithmExplanation
 ├── pages/               # Route-level page composition
-└── constants/           # Routes, copy, visualizer tokens, player speed
+└── constants/           # Routes, visualizer tokens, player speed
 ```
 
 Architecture conventions live in [`.cursor/rules/dsa-architecture.mdc`](.cursor/rules/dsa-architecture.mdc).
+
+---
+
+## Localization (i18n)
+
+| Namespace | Purpose |
+| :-- | :-- |
+| `common` | Shared UI: player, modals, validation, footer, legends |
+| `catalog` | Catalog hero, filters, algorithm card copy |
+| `pages` | Page titles, descriptions, complexity popovers |
+| `explanations` | Theory panels (how it works, key concepts, …) |
+| `algorithms` | Step engine narration (`statusTitle`, `stepExplanation`, …) |
+| `structures` | Structure setup panels and visualizer overlay labels |
+| `bigO` | Big-O reference page |
+| `seo` | Document title, meta description, Open Graph |
+
+Static English meta tags in `index.html` serve as a pre-hydration fallback; `DocumentMeta` updates `lang`, title, and descriptions client-side after load.
 
 ---
 
