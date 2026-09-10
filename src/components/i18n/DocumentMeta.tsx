@@ -56,6 +56,7 @@ export function DocumentMeta() {
 
   useLayoutEffect(() => {
     const siteUrl = tSeo("siteUrl");
+    const ogImageUrl = `${siteUrl}/og-image.png`;
     const canonicalUrl =
       pathname === "/"
         ? `${siteUrl}/`
@@ -93,6 +94,11 @@ export function DocumentMeta() {
     );
     upsertMeta('meta[property="og:url"]', { property: "og:url" }, canonicalUrl);
     upsertMeta(
+      'meta[property="og:image"]',
+      { property: "og:image" },
+      ogImageUrl,
+    );
+    upsertMeta(
       'meta[property="og:locale"]',
       { property: "og:locale" },
       locale === "es" ? "es_ES" : "en_US",
@@ -104,6 +110,11 @@ export function DocumentMeta() {
       ogDescription,
     );
     upsertMeta('meta[name="twitter:url"]', { name: "twitter:url" }, canonicalUrl);
+    upsertMeta(
+      'meta[name="twitter:image"]',
+      { name: "twitter:image" },
+      ogImageUrl,
+    );
 
     upsertLink("canonical", canonicalUrl);
   }, [i18n.language, locale, pathname, tPages, tSeo]);

@@ -1,6 +1,6 @@
 export const seo = {
   siteName: "DSAVision",
-  siteUrl: "https://dsavision.vercel.app",
+  siteUrl: "https://www.dsavision.dev",
   catalog: {
     title: "DSAVision - Interactive Algorithm & Data Structure Visualizer",
     description:
