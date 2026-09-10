@@ -114,9 +114,9 @@ export const structures = {
     linkedList: {
       singlyTitle: "Nodos enlazados simples (valor + next)",
       doublyTitle: "Nodos enlazados dobles (prev + valor + next)",
-      circularTitle: "Lista circular (tail → head)",
+      circularTitle: "Lista circular (cola → cabeza)",
       circularBackEdgeHint:
-        "El arco ortogonal exterior reconecta tail.next de vuelta a head",
+        "El arco ortogonal exterior reconecta cola.next de vuelta a cabeza",
       nodeHead: "cabeza",
       nodeTail: "cola",
       nodeNew: "NUEVO",
