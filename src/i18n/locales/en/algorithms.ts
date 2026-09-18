@@ -144,29 +144,42 @@ export const algorithms = {
     comparing: {
       statusTitle: "Comparing {{compareValue}} with key {{key}}",
       statusDetail: {
-        shift:
-          "{{compareValue}} > {{key}}. Shift {{compareValue}} one position to the right.",
+        shift: "{{compareValue}} > {{key}} at index {{j}}.",
         stop:
-          "{{compareValue}} <= {{key}}. Stop shifting and insert key at index {{insertIndex}}.",
+          "{{compareValue}} <= {{key}} at index {{j}}. Target index {{insertIndex}}.",
       },
       stepExplanation: {
-        shift:
-          "Compare key {{key}} with {{compareValue}} at index {{j}}. {{compareValue}} is greater, so it will shift right.",
+        shift: "{{compareValue}} > {{key}} at index {{j}}.",
         stop:
-          "Compare key {{key}} with {{compareValue}} at index {{j}}. {{compareValue}} is not greater, so key belongs at index {{insertIndex}}.",
+          "{{compareValue}} <= {{key}} at index {{j}}. Target index {{insertIndex}}.",
       },
+    },
+    extractKey: {
+      statusTitle: "Extracting key {{key}}",
+      statusDetail:
+        "Remove key {{key}} from index {{i}}. Destination after shifts: index {{targetIndex}}.",
+      stepExplanation:
+        "Phase 2 — extract key {{key}} from index {{i}}, leaving an empty slot before shifting elements right.",
     },
     shifting: {
       statusTitle: "Shifting {{compareValue}} to the right",
       statusDetail:
-        "Move {{compareValue}} from index {{j}} to index {{jPlusOne}}.",
+        "Phase 3 — move {{compareValue}} from index {{j}} to index {{jPlusOne}}.",
       stepExplanation:
-        "Shift {{compareValue}} from index {{j}} to index {{jPlusOne}} to make room for key {{key}}.",
+        "Phase 3 — shift {{compareValue}} one slot right (from {{j}} to {{jPlusOne}}) to slide the hole left.",
     },
     inserting: {
-      statusTitle: "Inserting key {{key}}",
-      statusDetail: "Place key {{key}} at index {{targetIndex}}.",
-      stepExplanation: "Insert key {{key}} at index {{targetIndex}}.",
+      statusTitle: "Inserting key {{key}} at index {{targetIndex}}",
+      statusDetail: "Phase 4 — place key {{key}} at index {{targetIndex}}.",
+      stepExplanation:
+        "Phase 4 — insert key {{key}} into the open slot at index {{targetIndex}}.",
+    },
+    insertingInPlace: {
+      statusTitle: "Keeping key {{key}} at index {{i}}",
+      statusDetail:
+        "Key {{key}} is already greater than the elements to its left. It stays at index {{i}}.",
+      stepExplanation:
+        "No shifts were needed. Key {{key}} remains at index {{i}} in the sorted partition.",
     },
     passComplete: {
       statusTitle: "Pass {{i}} complete",

@@ -20,31 +20,65 @@ function buildBarHighlights(step: InsertionSortStep | undefined): SortBarHighlig
   }
 
   return step.array.map((_, index) => {
-    if (
-      step.shiftIndices &&
-      (index === step.shiftIndices[0] || index === step.shiftIndices[1])
-    ) {
-      return "swapping";
+    if (step.shiftIndices) {
+      const [fromIndex, toIndex] = step.shiftIndices;
+      if (index === toIndex) {
+        return "swapping";
+      }
+      if (index === fromIndex && step.array[fromIndex] === null) {
+        return "default";
+      }
+      if (index === fromIndex) {
+        return "swapping";
+      }
     }
 
     if (step.comparingIdx !== null && index === step.comparingIdx) {
       return "comparing";
     }
 
-    if (index === step.keyIdx) {
+    if (
+      step.keyIndex !== null &&
+      index === step.keyIndex &&
+      (step.phase === "select-key" || step.phase === "compare")
+    ) {
       return "active";
     }
 
-    if (step.insertIndex !== null && index === step.insertIndex) {
+    if (
+      step.insertIndex !== null &&
+      index === step.insertIndex &&
+      step.phase === "insert"
+    ) {
+      return "active";
+    }
+
+    if (
+      step.insertIndex !== null &&
+      index === step.insertIndex &&
+      (step.phase === "extract-key" || step.phase === "shift")
+    ) {
       return "minimum";
     }
 
-    if (index < step.sortedBoundary) {
+    if (index < step.sortedBoundary && step.array[index] !== null) {
       return "sorted";
     }
 
     return "default";
   });
+}
+
+function numericValuesForScale(
+  cells: (number | null)[],
+  reservedKey: number | null,
+): number[] {
+  const values = cells.filter((value): value is number => value !== null);
+  if (reservedKey !== null) {
+    values.push(reservedKey);
+  }
+
+  return values;
 }
 
 export function useInsertionSortVisualizer() {
@@ -65,7 +99,37 @@ export function useInsertionSortVisualizer() {
   const currentStep =
     player.currentIndex >= 0 ? steps[player.currentIndex] : undefined;
 
-  const currentArray = currentStep?.array ?? array;
+  const cellValues = currentStep?.array ?? array.map((value) => value);
+
+  const reservedKey = useMemo(() => {
+    if (!currentStep) {
+      return null;
+    }
+
+    if (
+      currentStep.phase === "extract-key" ||
+      currentStep.phase === "shift" ||
+      currentStep.phase === "insert"
+    ) {
+      const outerIndex = currentStep.sortedBoundary - 1;
+      const keyWasExtracted =
+        currentStep.phase !== "insert" ||
+        (currentStep.insertIndex !== null &&
+          currentStep.insertIndex < outerIndex);
+
+      if (keyWasExtracted) {
+        return currentStep.keyValue;
+      }
+    }
+
+    return null;
+  }, [currentStep]);
+
+  const currentArray = useMemo(
+    () => numericValuesForScale(cellValues, reservedKey),
+    [cellValues, reservedKey],
+  );
+
   const barHighlights = useMemo(
     () => buildBarHighlights(currentStep),
     [currentStep],
@@ -99,7 +163,9 @@ export function useInsertionSortVisualizer() {
     arraySize,
     steps,
     currentStep,
+    cellValues,
     currentArray,
+    reservedKey,
     barHighlights,
     randomizeData,
     applyCustomDataset,

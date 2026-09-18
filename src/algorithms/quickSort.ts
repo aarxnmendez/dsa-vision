@@ -164,6 +164,8 @@ function swapElements(
   statusDetail: string,
   stepExplanation: string,
 ): void {
+  [ctx.arr[i], ctx.arr[j]] = [ctx.arr[j], ctx.arr[i]];
+
   pushStep(ctx, {
     subArrayRange: [low, high],
     pivotIndex,
@@ -176,8 +178,6 @@ function swapElements(
     statusDetail,
     stepExplanation,
   });
-
-  [ctx.arr[i], ctx.arr[j]] = [ctx.arr[j], ctx.arr[i]];
 }
 
 function partition(

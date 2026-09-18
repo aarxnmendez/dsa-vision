@@ -95,6 +95,7 @@ export const common = {
     comparingMin: "Comparing / Min",
     sorted: "Sorted",
     min: "Min",
+    heldKey: "Held key",
   },
   explore: "Explore",
   comingSoon: "Coming Soon",

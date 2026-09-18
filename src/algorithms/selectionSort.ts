@@ -212,6 +212,8 @@ export function generateSelectionSortSteps(input: number[]): SelectionSortStep[]
       const valueAtOuterIndex = arr[i];
       const minimumValue = arr[minIdx];
 
+      [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
+
       steps.push(
         createStep({
           array: [...arr],
@@ -236,8 +238,6 @@ export function generateSelectionSortSteps(input: number[]): SelectionSortStep[]
           }),
         }),
       );
-
-      [arr[i], arr[minIdx]] = [arr[minIdx], arr[i]];
     }
 
     const sortedValue = arr[i];

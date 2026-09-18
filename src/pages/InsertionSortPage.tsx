@@ -66,7 +66,9 @@ export function InsertionSortPage() {
         hero={
           <SortBarVisualizer
             currentArray={visualizer.currentArray}
-            trackedValues={visualizer.array}
+            cellValues={visualizer.cellValues}
+            reservedKeyValue={visualizer.reservedKey}
+            positionByIndex
             highlights={
               visualizer.barHighlights.length > 0
                 ? visualizer.barHighlights

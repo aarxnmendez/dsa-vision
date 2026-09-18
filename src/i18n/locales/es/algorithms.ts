@@ -144,29 +144,42 @@ export const algorithms = {
     comparing: {
       statusTitle: "Comparando {{compareValue}} con la clave {{key}}",
       statusDetail: {
-        shift:
-          "{{compareValue}} > {{key}}. Desplaza {{compareValue}} una posición a la derecha.",
+        shift: "{{compareValue}} > {{key}} en el índice {{j}}.",
         stop:
-          "{{compareValue}} <= {{key}}. Detén el desplazamiento e inserta la clave en el índice {{insertIndex}}.",
+          "{{compareValue}} <= {{key}} en el índice {{j}}. Índice destino: {{insertIndex}}.",
       },
       stepExplanation: {
-        shift:
-          "Compara la clave {{key}} con {{compareValue}} en el índice {{j}}. {{compareValue}} es mayor, así que se desplazará a la derecha.",
+        shift: "{{compareValue}} > {{key}} en el índice {{j}}.",
         stop:
-          "Compara la clave {{key}} con {{compareValue}} en el índice {{j}}. {{compareValue}} no es mayor, así que la clave pertenece al índice {{insertIndex}}.",
+          "{{compareValue}} <= {{key}} en el índice {{j}}. Índice destino: {{insertIndex}}.",
       },
+    },
+    extractKey: {
+      statusTitle: "Extrayendo clave {{key}}",
+      statusDetail:
+        "Retira la clave {{key}} del índice {{i}}. Destino tras desplazamientos: índice {{targetIndex}}.",
+      stepExplanation:
+        "Fase 2 — extrae la clave {{key}} del índice {{i}} y deja un hueco visible antes de desplazar a la derecha.",
     },
     shifting: {
       statusTitle: "Desplazando {{compareValue}} a la derecha",
       statusDetail:
-        "Mueve {{compareValue}} del índice {{j}} al índice {{jPlusOne}}.",
+        "Fase 3 — mueve {{compareValue}} del índice {{j}} al {{jPlusOne}}.",
       stepExplanation:
-        "Desplaza {{compareValue}} del índice {{j}} al índice {{jPlusOne}} para hacer espacio a la clave {{key}}.",
+        "Fase 3 — desplaza {{compareValue}} una posición a la derecha (de {{j}} a {{jPlusOne}}) y arrastra el hueco hacia la izquierda.",
     },
     inserting: {
-      statusTitle: "Insertando clave {{key}}",
-      statusDetail: "Coloca la clave {{key}} en el índice {{targetIndex}}.",
-      stepExplanation: "Inserta la clave {{key}} en el índice {{targetIndex}}.",
+      statusTitle: "Insertando clave {{key}} en el índice {{targetIndex}}",
+      statusDetail: "Fase 4 — coloca la clave {{key}} en el índice {{targetIndex}}.",
+      stepExplanation:
+        "Fase 4 — inserta la clave {{key}} en el hueco libre del índice {{targetIndex}}.",
+    },
+    insertingInPlace: {
+      statusTitle: "Mantenemos la clave {{key}} en el índice {{i}}",
+      statusDetail:
+        "La clave {{key}} ya es mayor que los elementos de su izquierda. Permanece en el índice {{i}}.",
+      stepExplanation:
+        "No hubo desplazamientos. La clave {{key}} se queda en el índice {{i}} dentro de la partición ordenada.",
     },
     passComplete: {
       statusTitle: "Pasada {{i}} completada",
