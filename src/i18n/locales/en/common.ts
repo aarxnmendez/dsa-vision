@@ -55,6 +55,8 @@ export const common = {
     whenToUse: "When to use",
   },
   footer: {
+    livingProject:
+      "🚀 Continuously developed alongside university Algorithms coursework and based on Grokking Algorithms.",
     madeWith: "Made with",
     byAaron: "by Aaron",
     githubAria: "Aaron Mendez on GitHub",

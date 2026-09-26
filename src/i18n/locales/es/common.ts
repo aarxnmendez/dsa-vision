@@ -55,6 +55,8 @@ export const common = {
     whenToUse: "Cuándo usarlo",
   },
   footer: {
+    livingProject:
+      "🚀 Proyecto en desarrollo continuo a la par de la asignatura de Algoritmos y basado en Grokking Algorithms.",
     madeWith: "Hecho con",
     byAaron: "por Aaron",
     githubAria: "Aaron Mendez en GitHub",

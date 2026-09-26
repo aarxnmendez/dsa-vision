@@ -43,36 +43,42 @@ export function Footer() {
   const { t } = useTranslation("common");
 
   return (
-    <footer className="w-full border-t border-surface-variant/60 bg-surface/80 px-base py-6">
-      <div className="mx-auto flex max-w-container-max flex-col items-center justify-center gap-3 text-center sm:flex-row sm:gap-4">
-        <p className="inline-flex items-center text-sm text-on-surface-variant">
-          {t("footer.madeWith")}
-          <Heart
-            className="mx-1 inline-block size-4 fill-none text-blue-600 stroke-blue-600"
-            strokeWidth={2}
-            aria-hidden="true"
-          />
-          {t("footer.byAaron")}
+    <footer className="w-full border-t border-surface-variant/60 bg-surface/80">
+      <div className="mx-auto flex w-full max-w-container-max flex-col gap-4 px-margin-mobile py-6 md:px-gutter xl:px-8">
+        <p className="rounded-xl border border-surface-variant/80 bg-surface-container-low px-4 py-3 text-center text-sm leading-relaxed text-on-surface-variant">
+          {t("footer.livingProject")}
         </p>
-        <div className="flex items-center gap-3">
-          <a
-            href={AUTHOR_GITHUB_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t("footer.githubAria")}
-            className="inline-flex items-center justify-center rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
-          >
-            <GitHubIcon className="size-5" />
-          </a>
-          <a
-            href={AUTHOR_LINKEDIN_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={t("footer.linkedinAria")}
-            className="inline-flex items-center justify-center rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
-          >
-            <LinkedInIcon className="size-5" />
-          </a>
+
+        <div className="flex flex-col items-center justify-between gap-3 sm:flex-row">
+          <p className="inline-flex items-center text-sm text-on-surface-variant">
+            {t("footer.madeWith")}
+            <Heart
+              className="mx-1 inline-block size-4 fill-none text-blue-600 stroke-blue-600"
+              strokeWidth={2}
+              aria-hidden="true"
+            />
+            {t("footer.byAaron")}
+          </p>
+          <div className="flex items-center gap-3">
+            <a
+              href={AUTHOR_GITHUB_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t("footer.githubAria")}
+              className="inline-flex items-center justify-center rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
+            >
+              <GitHubIcon className="size-5" />
+            </a>
+            <a
+              href={AUTHOR_LINKEDIN_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={t("footer.linkedinAria")}
+              className="inline-flex items-center justify-center rounded-lg p-2 text-on-surface-variant transition-colors hover:bg-surface-container hover:text-primary"
+            >
+              <LinkedInIcon className="size-5" />
+            </a>
+          </div>
         </div>
       </div>
     </footer>
