@@ -1,178 +1,35 @@
 # DSAVision
 
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)
-![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
-![pnpm](https://img.shields.io/badge/pnpm-workspace-F69220?style=flat-square&logo=pnpm&logoColor=white)
+**An interactive platform for learning and visualizing data structures and algorithms.**
 
-**An interactive, didactic-professional platform for learning data structures and algorithms.**
-
-DSAVision turns abstract pointer logic and complexity analysis into **step-by-step visual stories**: watch nodes highlight, edges relink, and code lines activate in sync — with a **bilingual UI (English / Spanish)**, synchronized implementations in **Python, JavaScript, Java, and Pseudocode**, and live Big-O context for every operation.
+DSAVision turns abstract pointer logic and algorithm execution into step-by-step visual stories: smooth SVG animations, side-by-side code execution in multiple languages (**Python, JavaScript, Java, Pseudocode**), and interactive playback controls.
 
 ---
 
-## Study Plan Progress
+## Implemented Modules
 
-| Chapter | Topics | Status |
-| :-- | :-- | :-- |
-| **1** | Binary Search · Big-O Notation (time & space reference) | ✅ Complete |
-| **2** | Selection Sort · Insertion Sort · Quick Sort · Array (contiguous memory ops) · Linked List (Singly, Doubly, Circular — O(1) head/tail ops) | ✅ Complete |
-| **3** | Stack (LIFO — O(1) push/pop/peek, O(n) clear) · Queues | Stack ✅ · Queues ⏳ |
-| **4** | Merge Sort · Graph algorithms (Dijkstra) | ⏳ Planned |
+- 🔍 **Search**: Binary Search
+- 📊 **Sorting**: Selection Sort, Insertion Sort, Quick Sort
+- 🗂️ **Arrays & Memory**: Contiguous memory operations
+- 🔗 **Linked Lists**: Singly, Doubly, Circular
+- 🥞 **LIFO Structures**: Stack
+- 📈 **Theory**: Interactive Big-O reference (Time & Space)
+
+---
+
+## Upcoming Algorithms & Structures
+
+- Queues
+- Hash Table
+- Merge Sort
+- Graphs (BFS, DFS, Dijkstra)
+- Trees (BST, Traversals)
 
 ---
 
 ## Key Features
 
-| | |
-| :-- | :-- |
-| 🎯 **Step-by-step engine** | Pure TypeScript step generators drive every animation frame — no guesswork, fully reproducible. |
-| 🗺️ **SVG multi-row visualizers** | Dynamic pointer labels, Manhattan orthogonal routing, circular back-edges, and smooth transitions. |
-| 🌍 **Bilingual UI (EN / ES)** | Language switcher in the navbar; preference stored in `localStorage` with browser-language fallback. All catalog copy, step narration, theory panels, and SEO meta update live. |
-| 🌐 **Multi-language code panels** | Side-by-side implementations in **Python**, **JavaScript**, **Java**, and **Pseudocode** with active line tracking. |
-| ⏯️ **Playback controls** | Play, pause, step forward/backward, speed slider, and random or custom dataset input. |
-| 📐 **Complexity in context** | Inline time/space badges and expandable breakdowns (O(1), O(log n), O(n), O(n²), …). |
-| 📚 **Theory panels** | Data-driven explanations: how it works, key concepts, complexity table, and when to use. |
-| 🧩 **Consistent architecture** | Shared layout shell, player hook, dataset setup, and visualizer families (arrays, sort bars, linked nodes). |
-
----
-
-## Available Visualizers
-
-| Route | Module |
-| :-- | :-- |
-| `/` | Algorithm catalog with search & filters |
-| `/binary-search` | Binary search on sorted arrays |
-| `/big-o-notation` | Big-O time & space reference |
-| `/selection-sort` | Selection sort bar visualizer |
-| `/insertion-sort` | Insertion sort bar visualizer (adaptive O(n) best case) |
-| `/quick-sort` | Quicksort with configurable pivot strategy |
-| `/array` | Array insert, delete, shift & access operations |
-| `/linked-list` | Singly · Doubly · Circular — 8 operations (insert, delete, search, reverse) |
-| `/stack` | Stack — push, pop, peek, clear (O(1) push/pop/peek, O(n) clear) |
-
----
-
-## Tech Stack
-
-- **React 19** + **TypeScript** — UI and type-safe step models
-- **Vite** — dev server and production bundling
-- **Tailwind CSS v4** — design tokens, responsive layout, dark-ready surfaces
-- **React Router v7** — client-side routing
-- **i18next** + **react-i18next** — UI localization (EN / ES) with typed namespaces
-- **Lucide React** — icon system
-- **Nunito Sans** — typography via `@fontsource`
-
----
-
-## Getting Started
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) 20+
-- [pnpm](https://pnpm.io/) 9+
-
-### Installation
-
-```bash
-git clone https://github.com/aarxnmendez/dsa-vision.git
-cd dsa-vision
-pnpm install
-```
-
-### Development
-
-```bash
-pnpm dev
-```
-
-Open the URL printed by Vite (typically `http://localhost:5173`).
-
-Use the **EN / ES** toggle in the navbar to switch UI language. The choice persists across sessions via `localStorage` (`dsavision-locale`).
-
-### Production build
-
-```bash
-pnpm build
-pnpm preview   # optional — serve the dist/ folder locally
-```
-
-### Quality checks
-
-```bash
-pnpm lint
-pnpm type-check
-pnpm build
-```
-
----
-
-## Project Structure
-
-```
-src/
-├── algorithms/          # Pure step engines (binarySearch, insertionSort, …)
-├── i18n/                # i18next init, locale preference, EN/ES locale bundles
-├── components/
-│   ├── i18n/            # DocumentMeta (SEO), LegacyEsRouteRedirect
-│   ├── visualizers/     # SVG / DOM visualizers by data family
-│   ├── panels/          # Code, explanation, status, complexity badges
-│   ├── controls/        # Player, dataset setup, custom input
-│   └── layout/          # VisualizerLayout, LanguageSwitcher, catalog shell
-├── data/                # Code snippets (*Code.ts) and catalog metadata
-├── hooks/               # use*Visualizer, usePlayerControls, useAlgorithmExplanation
-├── pages/               # Route-level page composition
-└── constants/           # Routes, visualizer tokens, player speed
-```
-
-Architecture conventions live in [`.cursor/rules/dsa-architecture.mdc`](.cursor/rules/dsa-architecture.mdc).
-
----
-
-## Localization (i18n)
-
-| Namespace | Purpose |
-| :-- | :-- |
-| `common` | Shared UI: player, modals, validation, footer, legends |
-| `catalog` | Catalog hero, filters, algorithm card copy |
-| `pages` | Page titles, descriptions, complexity popovers |
-| `explanations` | Theory panels (how it works, key concepts, …) |
-| `algorithms` | Step engine narration (`statusTitle`, `stepExplanation`, …) |
-| `structures` | Structure setup panels and visualizer overlay labels |
-| `bigO` | Big-O reference page |
-| `seo` | Document title, meta description, Open Graph |
-
-Static English meta tags in `index.html` serve as a pre-hydration fallback; `DocumentMeta` updates `lang`, title, and descriptions client-side after load.
-
----
-
-## Linked List Highlights
-
-The linked list module is the most complete structure visualizer in the catalog:
-
-- **Variants:** singly linked, doubly linked, circular
-- **Operations:** insert at head/tail/index, delete head/tail/by value, search, in-place reverse
-- **Pedagogy:** explicit `null` pointer ports, O(1) vs O(n) tail deletion, circular tail → head relinking
-- **Layout:** multi-row wrap without horizontal scroll; orthogonal edge routing
-
----
-
-## Roadmap
-
-- [ ] Queue visualizer
-- [ ] Merge Sort
-- [ ] Graph visualizer (BFS, DFS, Dijkstra)
-- [ ] Tree structures (BST, traversals)
-
----
-
-## Author
-
-Built by **Aaron Mendez** — interactive CS education tooling with production-grade UX.
-
----
-
-<p align="center">
-  <sub>If this project helps your learning or interview prep, consider starring the repo.</sub>
-</p>
+- 🌍 **Bilingual UI**: Native support for English and Spanish (EN / ES).
+- ⚙️ **Playback Controls**: Play, pause, step-by-step navigation, and speed slider.
+- 💻 **Multi-Language Code Panels**: Synchronized code view in Python, JavaScript, Java, and Pseudocode.
+- 🎨 **Modern Stack**: Built with React 19, TypeScript, Vite, and Tailwind CSS v4.
