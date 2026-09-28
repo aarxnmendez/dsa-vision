@@ -65,7 +65,7 @@ export function SortLegendBar() {
   return (
     <div
       className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 rounded-xl border-2 border-surface-variant bg-surface-container-lowest px-4 py-3"
-      aria-label="Color legend"
+      aria-label={t("aria.colorLegend")}
     >
       {LEGEND_ITEMS.map(({ highlight, labelKey }) => (
         <span

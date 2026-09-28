@@ -582,11 +582,12 @@ export function LinkedListStructureVisualizer({
 
 export function LinkedListStructureLegendBar() {
   const { t } = useTranslation("structures");
+  const { t: tCommon } = useTranslation("common");
 
   return (
     <div
       className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 rounded-xl border-2 border-surface-variant bg-surface-container-lowest px-4 py-3"
-      aria-label="Color legend"
+      aria-label={tCommon("aria.colorLegend")}
     >
       {LINKED_LIST_LEGEND_ITEMS.map(({ id, swatch }) => (
         <span

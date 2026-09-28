@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 interface AlgorithmPageShellProps {
   heroLegend?: ReactNode;
@@ -19,6 +20,7 @@ export function AlgorithmPageShell({
   playerControls,
   bottomColumnsOrder = "code-first",
 }: AlgorithmPageShellProps) {
+  const { t } = useTranslation("common");
   const [leftBottomColumn, rightBottomColumn] =
     bottomColumnsOrder === "explanation-first"
       ? [explanationColumn, codeColumn]
@@ -28,7 +30,7 @@ export function AlgorithmPageShell({
     <div className="flex min-h-0 flex-1 flex-col">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-5 pb-32">
         <section
-          aria-label="Algorithm visualization"
+          aria-label={t("aria.algorithmVisualization")}
           className="w-full rounded-2xl border-2 border-surface-variant bg-surface-container-lowest p-4 shadow-sm sm:p-6"
         >
           {heroLegend && (
@@ -38,7 +40,7 @@ export function AlgorithmPageShell({
           )}
           {hero}
           <div
-            aria-label="Step status"
+            aria-label={t("aria.stepStatus")}
             className="mt-5 border-t border-surface-variant pt-5"
           >
             {statusSection}
@@ -46,7 +48,7 @@ export function AlgorithmPageShell({
         </section>
 
         <section
-          aria-label="Code and algorithm reference"
+          aria-label={t("aria.codeAndReference")}
           className="grid grid-cols-1 gap-6 lg:grid-cols-2"
         >
           <div className="min-w-0">{leftBottomColumn}</div>

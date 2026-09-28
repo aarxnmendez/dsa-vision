@@ -73,6 +73,12 @@ export const common = {
     expandCode: "Expand code panel",
     backToCatalog: "Back to Catalog",
   },
+  aria: {
+    colorLegend: "Color legend",
+    algorithmVisualization: "Algorithm visualization",
+    stepStatus: "Step status",
+    codeAndReference: "Code and algorithm reference",
+  },
   validation: {
     invalidCharacters: "Only numbers, commas, and spaces are allowed.",
     maxElements: "Maximum {{max}} elements allowed.",
