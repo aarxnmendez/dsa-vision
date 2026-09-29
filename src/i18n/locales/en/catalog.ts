@@ -16,6 +16,12 @@ export const catalog = {
     trees: "Trees",
     graphs: "Graphs",
   },
+  sections: {
+    dataStructures: { title: "Data Structures" },
+    searching: { title: "Searching Algorithms" },
+    sorting: { title: "Sorting Algorithms" },
+  },
+  emptyResults: "No algorithms match your search.",
   categories: {
     array: "Array",
     "data-structures": "Data Structure",
@@ -48,6 +54,12 @@ export const catalog = {
       description:
         "Find an element in a sorted array by repeatedly halving the search interval.",
       complexity: "O(log n)",
+    },
+    "sequential-search": {
+      title: "Linear Search",
+      description:
+        "Scan from the first index to the last until the target is found or the array ends.",
+      complexity: "O(n)",
     },
     "selection-sort": {
       title: "Selection Sort",

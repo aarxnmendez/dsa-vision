@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { AlgorithmGrid } from "../components/catalog/AlgorithmGrid";
+import { CatalogSectionList } from "../components/catalog/CatalogSectionList";
 import { FilterBar } from "../components/catalog/FilterBar";
 import { Hero } from "../components/catalog/Hero";
 import { SearchBar } from "../components/catalog/SearchBar";
@@ -51,7 +51,7 @@ export function CatalogPage() {
         activeCategory={activeCategory}
         onCategoryChange={setActiveCategory}
       />
-      <AlgorithmGrid algorithms={filteredAlgorithms} />
+      <CatalogSectionList algorithms={filteredAlgorithms} />
     </CatalogLayout>
   );
 }

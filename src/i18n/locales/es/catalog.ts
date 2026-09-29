@@ -16,6 +16,12 @@ export const catalog = {
     trees: "Árboles",
     graphs: "Grafos",
   },
+  sections: {
+    dataStructures: { title: "Estructuras de datos" },
+    searching: { title: "Algoritmos de búsqueda" },
+    sorting: { title: "Algoritmos de ordenación" },
+  },
+  emptyResults: "Ningún algoritmo coincide con tu búsqueda.",
   categories: {
     array: "Array",
     "data-structures": "Estructura de datos",
@@ -48,6 +54,12 @@ export const catalog = {
       description:
         "Encuentra un elemento en un array ordenado dividiendo repetidamente el intervalo de búsqueda.",
       complexity: "O(log n)",
+    },
+    "sequential-search": {
+      title: "Búsqueda secuencial",
+      description:
+        "Recorre desde el primer índice hasta el último hasta encontrar el objetivo o agotar el array.",
+      complexity: "O(n)",
     },
     "selection-sort": {
       title: "Ordenación por selección",

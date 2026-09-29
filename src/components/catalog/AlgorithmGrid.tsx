@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import type { AlgorithmMeta } from "../../types/algorithm";
 import { AlgorithmCard } from "./AlgorithmCard";
 
@@ -6,11 +7,13 @@ interface AlgorithmGridProps {
 }
 
 export function AlgorithmGrid({ algorithms }: AlgorithmGridProps) {
+  const { t } = useTranslation("catalog");
+
   if (algorithms.length === 0) {
     return (
       <div className="mb-12 text-center py-stack-lg">
         <p className="font-body-lg text-body-lg text-on-surface-variant">
-          No algorithms match your search.
+          {t("emptyResults")}
         </p>
       </div>
     );
