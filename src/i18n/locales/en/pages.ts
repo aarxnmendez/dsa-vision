@@ -15,6 +15,23 @@ export const pages = {
       },
     },
   },
+  sequentialSearch: {
+    title: "Linear Search",
+    description:
+      "Walk the array from the first index to the last, comparing each element with the target.",
+    customInputHint:
+      "Enter values in any order. The array is not sorted for linear search.",
+    complexity: {
+      time: {
+        title: "Linear time",
+        text: "In the worst case every element is inspected once, so runtime grows proportionally with array length: O(n).",
+      },
+      space: {
+        title: "Constant space",
+        text: "Only the loop index and a few variables are needed: O(1) auxiliary space.",
+      },
+    },
+  },
   selectionSort: {
     title: "Selection Sort",
     description:

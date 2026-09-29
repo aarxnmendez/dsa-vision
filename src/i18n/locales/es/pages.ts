@@ -16,6 +16,23 @@ export const pages = {
       },
     },
   },
+  sequentialSearch: {
+    title: "Búsqueda secuencial",
+    description:
+      "Recorre el array desde el primer índice hasta el último comparando cada elemento con el objetivo.",
+    customInputHint:
+      "Introduce valores en cualquier orden. El array no se ordena para la búsqueda lineal.",
+    complexity: {
+      time: {
+        title: "Tiempo lineal",
+        text: "En el peor caso se inspecciona cada elemento una vez, así que el tiempo crece proporcionalmente a la longitud: O(n).",
+      },
+      space: {
+        title: "Espacio constante",
+        text: "Solo hace falta el índice del bucle y unas pocas variables: O(1) de espacio auxiliar.",
+      },
+    },
+  },
   selectionSort: {
     title: "Ordenación por selección",
     description:

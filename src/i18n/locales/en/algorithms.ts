@@ -55,6 +55,43 @@ export const algorithms = {
         "The middle value is larger than the target, so search the left half.",
     },
   },
+  sequentialSearch: {
+    intro: {
+      statusTitle: "Search for target {{target}}",
+      statusDetail:
+        "Scan {{length}} elements from index 0 to {{length}} - 1 left to right.",
+      stepExplanation:
+        "Linear search checks each array slot in order until the target appears or the scan finishes.",
+    },
+    compare: {
+      statusTitle: "Compare arr[{{index}}] with {{target}}",
+      statusDetail: {
+        match: "{{arrayValue}} equals {{target}}.",
+        noMatch: "{{arrayValue}} is not equal to {{target}}. Move to the next index.",
+      },
+      stepExplanation:
+        "At index {{index}}, compare arr[{{index}}] ({{arrayValue}}) with the target {{target}}.",
+    },
+    found: {
+      statusTitle: "Found {{target}} at index {{index}}",
+      statusDetail: "arr[{{index}}] = {{arrayValue}} matches the target.",
+      pointerMovement: "Target located at index {{index}}.",
+      stepExplanation:
+        "A match at index {{index}} ends the search successfully.",
+    },
+    complete: {
+      statusTitle: "Search complete",
+      statusDetail: "Returned index {{index}} for target {{target}}.",
+      stepExplanation:
+        "Linear search finished: target {{target}} found at index {{index}}.",
+    },
+    notFound: {
+      statusTitle: "Target {{target}} not found",
+      statusDetail: "The value {{target}} is not in the array.",
+      stepExplanation:
+        "Every index was checked and none equals {{target}}. The search returns -1.",
+    },
+  },
   selectionSort: {
     complete: {
       statusTitle: "Sorting complete",

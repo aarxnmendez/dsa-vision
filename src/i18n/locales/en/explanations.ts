@@ -40,6 +40,26 @@ export const explanations = {
       "Repeated lookups on the same ordered collection (e.g. dictionaries, indexes).",
     ],
   },
+  sequentialSearch: {
+    howItWorks:
+      "Linear search walks the array from the lowest index upward. At each position it compares the current element with the target; if they match, it returns that index. If the loop finishes without a match, the target is absent.",
+    keyConcepts: [
+      "No ordering requirement: works on sorted or unsorted arrays.",
+      "Index i: scans 0, 1, 2, … until a match or end of array.",
+      "Early exit: stops as soon as the target is found.",
+    ],
+    complexityRows: [
+      { label: "Best Case", value: "O(1)" },
+      { label: "Average Case", value: "O(n)" },
+      { label: "Worst Case", value: "O(n)" },
+      { label: "Space", value: "O(1)" },
+    ],
+    whenToUse: [
+      "Small or unsorted collections where simplicity beats preprocessing.",
+      "Single lookups when sorting for binary search is not worth the cost.",
+      "Linked structures without random access where scanning is natural.",
+    ],
+  },
   selectionSort: {
     howItWorks:
       "Selection Sort maintains a sorted prefix on the left and an unsorted suffix on the right. Each outer pass scans the unsorted region for the minimum value and swaps it into the next sorted position.",

@@ -40,6 +40,26 @@ export const explanations = {
       "Búsquedas repetidas sobre la misma colección ordenada (p. ej. diccionarios, índices).",
     ],
   },
+  sequentialSearch: {
+    howItWorks:
+      "La búsqueda secuencial (lineal) recorre el array desde el índice más bajo hacia arriba. En cada posición compara el elemento actual con el objetivo; si coinciden, devuelve ese índice. Si el bucle termina sin coincidencia, el objetivo no está presente.",
+    keyConcepts: [
+      "Sin requisito de orden: funciona en arrays ordenados o no.",
+      "Índice i: recorre 0, 1, 2, … hasta una coincidencia o el final del array.",
+      "Salida anticipada: se detiene en cuanto encuentra el objetivo.",
+    ],
+    complexityRows: [
+      { label: "Mejor caso", value: "O(1)" },
+      { label: "Caso promedio", value: "O(n)" },
+      { label: "Peor caso", value: "O(n)" },
+      { label: "Espacio", value: "O(1)" },
+    ],
+    whenToUse: [
+      "Colecciones pequeñas o no ordenadas donde la simplicidad supera el preprocesado.",
+      "Búsquedas puntuales cuando ordenar para búsqueda binaria no compensa.",
+      "Estructuras enlazadas sin acceso aleatorio donde el recorrido es natural.",
+    ],
+  },
   selectionSort: {
     howItWorks:
       "La ordenación por selección mantiene un prefijo ordenado a la izquierda y un sufijo no ordenado a la derecha. Cada paso externo busca el mínimo en la región no ordenada y lo intercambia a la siguiente posición ordenada.",

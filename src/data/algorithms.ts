@@ -77,6 +77,29 @@ export const algorithms: AlgorithmMeta[] = [
     route: APP_ROUTES.binarySearch,
   },
   {
+    id: "sequential-search",
+    title: "Linear Search",
+    description:
+      "Scan an array from left to right until the target is found or every element is checked.",
+    complexity: "O(n)",
+    complexityVariant: "warning",
+    difficulty: "beginner",
+    category: "searching",
+    tags: [
+      "sequential-search",
+      "linear-search",
+      "arrays",
+      "search",
+      "searching",
+    ],
+    imageUrl: "/images/linear-search.webp",
+    imageWidth: 881,
+    imageHeight: 492,
+    imageBg: "bg-linear-search-cover-bg",
+    availability: "available",
+    route: APP_ROUTES.sequentialSearch,
+  },
+  {
     id: "selection-sort",
     title: "Selection Sort",
     description:

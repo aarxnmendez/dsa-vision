@@ -10,6 +10,7 @@ const PAGE_SEO_KEYS: Partial<Record<AppRoute, ExplanationKey | "bigO">> = {
   [APP_ROUTES.linkedList]: "linkedList",
   [APP_ROUTES.stack]: "stack",
   [APP_ROUTES.binarySearch]: "binarySearch",
+  [APP_ROUTES.sequentialSearch]: "sequentialSearch",
   [APP_ROUTES.selectionSort]: "selectionSort",
   [APP_ROUTES.insertionSort]: "insertionSort",
   [APP_ROUTES.quickSort]: "quickSort",

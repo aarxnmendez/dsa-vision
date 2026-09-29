@@ -4,6 +4,7 @@ import type { AlgorithmExplanationData } from "../components/panels/AlgorithmExp
 
 export type ExplanationKey =
   | "binarySearch"
+  | "sequentialSearch"
   | "selectionSort"
   | "insertionSort"
   | "quickSort"

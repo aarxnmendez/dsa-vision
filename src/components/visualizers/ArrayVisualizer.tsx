@@ -191,7 +191,9 @@ export function ArrayVisualizer({
                     className={[
                       "w-14 h-14 rounded-xl flex items-center justify-center relative transition-all",
                       cellBase,
-                      hasPointers && !isComparing
+                      hasPointers &&
+                        !isComparing &&
+                        cell.highlight !== "found"
                         ? getPointerBorder(pointerIds)
                         : "",
                       cellHighlightStyles[cell.highlight],

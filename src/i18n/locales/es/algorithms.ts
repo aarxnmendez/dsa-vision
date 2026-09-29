@@ -55,6 +55,44 @@ export const algorithms = {
         "El valor del medio es mayor que el objetivo, así que busca en la mitad izquierda.",
     },
   },
+  sequentialSearch: {
+    intro: {
+      statusTitle: "Buscar objetivo {{target}}",
+      statusDetail:
+        "Recorrer {{length}} elementos del índice 0 al {{length}} - 1 de izquierda a derecha.",
+      stepExplanation:
+        "La búsqueda lineal comprueba cada posición en orden hasta encontrar el objetivo o terminar el recorrido.",
+    },
+    compare: {
+      statusTitle: "Comparar arr[{{index}}] con {{target}}",
+      statusDetail: {
+        match: "{{arrayValue}} es igual a {{target}}.",
+        noMatch:
+          "{{arrayValue}} no es igual a {{target}}. Avanzar al siguiente índice.",
+      },
+      stepExplanation:
+        "En el índice {{index}}, compara arr[{{index}}] ({{arrayValue}}) con el objetivo {{target}}.",
+    },
+    found: {
+      statusTitle: "Encontrado {{target}} en el índice {{index}}",
+      statusDetail: "arr[{{index}}] = {{arrayValue}} coincide con el objetivo.",
+      pointerMovement: "Objetivo localizado en el índice {{index}}.",
+      stepExplanation:
+        "Una coincidencia en el índice {{index}} finaliza la búsqueda con éxito.",
+    },
+    complete: {
+      statusTitle: "Búsqueda completada",
+      statusDetail: "Devuelto índice {{index}} para el objetivo {{target}}.",
+      stepExplanation:
+        "Búsqueda lineal finalizada: objetivo {{target}} encontrado en el índice {{index}}.",
+    },
+    notFound: {
+      statusTitle: "Objetivo {{target}} no encontrado",
+      statusDetail: "El valor {{target}} no está en el array.",
+      stepExplanation:
+        "Se revisó cada índice y ninguno coincide con {{target}}. La búsqueda devuelve -1.",
+    },
+  },
   selectionSort: {
     complete: {
       statusTitle: "Ordenación completada",
