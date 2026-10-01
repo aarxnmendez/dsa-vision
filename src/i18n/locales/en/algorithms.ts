@@ -181,35 +181,38 @@ export const algorithms = {
     comparing: {
       statusTitle: "Comparing {{compareValue}} with key {{key}}",
       statusDetail: {
-        shift: "{{compareValue}} > {{key}} at index {{j}}.",
+        shift:
+          "{{compareValue}} > {{key}} at index {{j}}. Next: copy {{compareValue}} one slot to the right.",
         stop:
           "{{compareValue}} <= {{key}} at index {{j}}. Target index {{insertIndex}}.",
       },
       stepExplanation: {
-        shift: "{{compareValue}} > {{key}} at index {{j}}.",
+        shift:
+          "{{compareValue}} is greater than key {{key}} at index {{j}}. The next step copies {{compareValue}} to index {{jPlusOne}} (arr[j+1] = arr[j]).",
         stop:
-          "{{compareValue}} <= {{key}} at index {{j}}. Target index {{insertIndex}}.",
+          "{{compareValue}} is not greater than key {{key}} at index {{j}}. Target slot for the key: index {{insertIndex}}.",
       },
     },
     extractKey: {
       statusTitle: "Extracting key {{key}}",
       statusDetail:
-        "Remove key {{key}} from index {{i}}. Destination after shifts: index {{targetIndex}}.",
+        "Store key {{key}} outside the array and leave an empty slot at index {{i}}.",
       stepExplanation:
-        "Phase 2 — extract key {{key}} from index {{i}}, leaving an empty slot before shifting elements right.",
+        "Extract key {{key}} from index {{i}}. The held key moves to the side panel and index {{i}} stays empty before any shifts.",
     },
     shifting: {
-      statusTitle: "Shifting {{compareValue}} to the right",
+      statusTitle: "Copying {{compareValue}} to the right",
       statusDetail:
-        "Phase 3 — move {{compareValue}} from index {{j}} to index {{jPlusOne}}.",
+        "Copying and shifting {{compareValue}}: arr[{{jPlusOne}}] = arr[{{j}}] (from index {{j}} to {{jPlusOne}}).",
       stepExplanation:
-        "Phase 3 — shift {{compareValue}} one slot right (from {{j}} to {{jPlusOne}}) to slide the hole left.",
+        "Copying {{compareValue}} one slot to the right. Indices {{j}} and {{jPlusOne}} both show the value while the hole moves left toward {{j}}.",
     },
     inserting: {
       statusTitle: "Inserting key {{key}} at index {{targetIndex}}",
-      statusDetail: "Phase 4 — place key {{key}} at index {{targetIndex}}.",
+      statusDetail:
+        "Inserting key {{key}} at position {{targetIndex}}: arr[{{targetIndex}}] = key.",
       stepExplanation:
-        "Phase 4 — insert key {{key}} into the open slot at index {{targetIndex}}.",
+        "Insert key {{key}} into the open slot at index {{targetIndex}}. The sorted partition grows by one element.",
     },
     insertingInPlace: {
       statusTitle: "Keeping key {{key}} at index {{i}}",

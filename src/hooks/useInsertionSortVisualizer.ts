@@ -22,13 +22,7 @@ function buildBarHighlights(step: InsertionSortStep | undefined): SortBarHighlig
   return step.array.map((_, index) => {
     if (step.shiftIndices) {
       const [fromIndex, toIndex] = step.shiftIndices;
-      if (index === toIndex) {
-        return "swapping";
-      }
-      if (index === fromIndex && step.array[fromIndex] === null) {
-        return "default";
-      }
-      if (index === fromIndex) {
+      if (index === fromIndex || index === toIndex) {
         return "swapping";
       }
     }
@@ -109,17 +103,11 @@ export function useInsertionSortVisualizer() {
     if (
       currentStep.phase === "extract-key" ||
       currentStep.phase === "shift" ||
-      currentStep.phase === "insert"
+      (currentStep.phase === "compare" &&
+        currentStep.keyIndex === null &&
+        currentStep.holeIndex !== null)
     ) {
-      const outerIndex = currentStep.sortedBoundary - 1;
-      const keyWasExtracted =
-        currentStep.phase !== "insert" ||
-        (currentStep.insertIndex !== null &&
-          currentStep.insertIndex < outerIndex);
-
-      if (keyWasExtracted) {
-        return currentStep.keyValue;
-      }
+      return currentStep.keyValue;
     }
 
     return null;

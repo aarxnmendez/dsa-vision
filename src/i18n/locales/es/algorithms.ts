@@ -182,35 +182,38 @@ export const algorithms = {
     comparing: {
       statusTitle: "Comparando {{compareValue}} con la clave {{key}}",
       statusDetail: {
-        shift: "{{compareValue}} > {{key}} en el índice {{j}}.",
+        shift:
+          "{{compareValue}} > {{key}} en el índice {{j}}. Siguiente: copiar {{compareValue}} una posición a la derecha.",
         stop:
           "{{compareValue}} <= {{key}} en el índice {{j}}. Índice destino: {{insertIndex}}.",
       },
       stepExplanation: {
-        shift: "{{compareValue}} > {{key}} en el índice {{j}}.",
+        shift:
+          "{{compareValue}} es mayor que la clave {{key}} en el índice {{j}}. El siguiente paso copia {{compareValue}} al índice {{jPlusOne}} (arr[j+1] = arr[j]).",
         stop:
-          "{{compareValue}} <= {{key}} en el índice {{j}}. Índice destino: {{insertIndex}}.",
+          "{{compareValue}} no es mayor que la clave {{key}} en el índice {{j}}. Hueco destino de la clave: índice {{insertIndex}}.",
       },
     },
     extractKey: {
       statusTitle: "Extrayendo clave {{key}}",
       statusDetail:
-        "Retira la clave {{key}} del índice {{i}}. Destino tras desplazamientos: índice {{targetIndex}}.",
+        "Guarda la clave {{key}} fuera del array y deja un hueco vacío en el índice {{i}}.",
       stepExplanation:
-        "Fase 2 — extrae la clave {{key}} del índice {{i}} y deja un hueco visible antes de desplazar a la derecha.",
+        "Extrae la clave {{key}} del índice {{i}}. La clave reservada pasa al panel lateral y el índice {{i}} queda vacío antes de desplazar.",
     },
     shifting: {
-      statusTitle: "Desplazando {{compareValue}} a la derecha",
+      statusTitle: "Copiando {{compareValue}} a la derecha",
       statusDetail:
-        "Fase 3 — mueve {{compareValue}} del índice {{j}} al {{jPlusOne}}.",
+        "Copiando y desplazando {{compareValue}}: arr[{{jPlusOne}}] = arr[{{j}}] (del índice {{j}} al {{jPlusOne}}).",
       stepExplanation:
-        "Fase 3 — desplaza {{compareValue}} una posición a la derecha (de {{j}} a {{jPlusOne}}) y arrastra el hueco hacia la izquierda.",
+        "Copiando {{compareValue}} una posición a la derecha. Los índices {{j}} y {{jPlusOne}} muestran el mismo valor mientras el hueco se desplaza hacia {{j}}.",
     },
     inserting: {
       statusTitle: "Insertando clave {{key}} en el índice {{targetIndex}}",
-      statusDetail: "Fase 4 — coloca la clave {{key}} en el índice {{targetIndex}}.",
+      statusDetail:
+        "Insertando clave {{key}} en la posición {{targetIndex}}: arr[{{targetIndex}}] = key.",
       stepExplanation:
-        "Fase 4 — inserta la clave {{key}} en el hueco libre del índice {{targetIndex}}.",
+        "Inserta la clave {{key}} en el hueco libre del índice {{targetIndex}}. La partición ordenada crece un elemento.",
     },
     insertingInPlace: {
       statusTitle: "Mantenemos la clave {{key}} en el índice {{i}}",

@@ -109,12 +109,11 @@ export function generateInsertionSortSteps(input: number[]): InsertionSortStep[]
 
   for (let i = 1; i < n; i++) {
     const key = arr[i];
-    const staticView = [...arr];
 
     steps.push(
       createStep({
         phase: "select-key",
-        array: [...staticView],
+        array: [...arr],
         sortedBoundary: i,
         keyValue: key,
         keyIndex: i,
@@ -135,72 +134,45 @@ export function generateInsertionSortSteps(input: number[]): InsertionSortStep[]
       }),
     );
 
-    let j = i - 1;
-
-    while (j >= 0) {
-      comparisons += 1;
-      const compareValue = staticView[j];
-      const shouldShift = compareValue > key;
-
+    if (i > 0 && arr[i - 1] <= key) {
       steps.push(
         createStep({
           phase: "compare",
-          array: [...staticView],
+          array: [...arr],
           sortedBoundary: i,
           keyValue: key,
           keyIndex: i,
           holeIndex: null,
-          comparingIdx: j,
+          comparingIdx: i - 1,
           shiftIndices: null,
-          insertIndex: null,
-          comparisons,
+          insertIndex: i,
+          comparisons: comparisons + 1,
           shifts,
           activeLine: 6,
           statusTitle: t("insertionSort.comparing.statusTitle", {
-            compareValue,
+            compareValue: arr[i - 1],
             key,
           }),
-          statusDetail: shouldShift
-            ? t("insertionSort.comparing.statusDetail.shift", {
-                compareValue,
-                key,
-                j,
-              })
-            : t("insertionSort.comparing.statusDetail.stop", {
-                compareValue,
-                key,
-                j,
-                insertIndex: j + 1,
-              }),
-          stepExplanation: shouldShift
-            ? t("insertionSort.comparing.stepExplanation.shift", {
-                key,
-                compareValue,
-                j,
-              })
-            : t("insertionSort.comparing.stepExplanation.stop", {
-                key,
-                compareValue,
-                j,
-                insertIndex: j + 1,
-              }),
+          statusDetail: t("insertionSort.comparing.statusDetail.stop", {
+            compareValue: arr[i - 1],
+            key,
+            j: i - 1,
+            insertIndex: i,
+          }),
+          stepExplanation: t("insertionSort.comparing.stepExplanation.stop", {
+            key,
+            compareValue: arr[i - 1],
+            j: i - 1,
+            insertIndex: i,
+          }),
         }),
       );
+      comparisons += 1;
 
-      if (!shouldShift) {
-        break;
-      }
-
-      j -= 1;
-    }
-
-    const targetIndex = j + 1;
-
-    if (targetIndex === i) {
       steps.push(
         createStep({
           phase: "insert",
-          array: [...staticView],
+          array: [...arr],
           sortedBoundary: i + 1,
           keyValue: key,
           keyIndex: null,
@@ -229,7 +201,7 @@ export function generateInsertionSortSteps(input: number[]): InsertionSortStep[]
       steps.push(
         createStep({
           phase: "pass-complete",
-          array: [...staticView],
+          array: [...arr],
           sortedBoundary: i + 1,
           keyValue: key,
           keyIndex: null,
@@ -251,7 +223,7 @@ export function generateInsertionSortSteps(input: number[]): InsertionSortStep[]
       continue;
     }
 
-    const work: (number | null)[] = [...staticView];
+    const work: (number | null)[] = [...arr];
     work[i] = null;
 
     steps.push(
@@ -264,29 +236,81 @@ export function generateInsertionSortSteps(input: number[]): InsertionSortStep[]
         holeIndex: i,
         comparingIdx: null,
         shiftIndices: null,
-        insertIndex: targetIndex,
+        insertIndex: null,
         comparisons,
         shifts,
-        activeLine: 5,
+        activeLine: 4,
         statusTitle: t("insertionSort.extractKey.statusTitle", { key }),
         statusDetail: t("insertionSort.extractKey.statusDetail", {
           key,
           i,
-          targetIndex,
         }),
         stepExplanation: t("insertionSort.extractKey.stepExplanation", {
           key,
           i,
-          targetIndex,
         }),
       }),
     );
 
-    for (let k = i - 1; k >= targetIndex; k -= 1) {
+    let j = i - 1;
+
+    while (j >= 0) {
+      const compareValue = work[j]!;
+      comparisons += 1;
+      const shouldShift = compareValue > key;
+
+      steps.push(
+        createStep({
+          phase: "compare",
+          array: [...work],
+          sortedBoundary: i,
+          keyValue: key,
+          keyIndex: null,
+          holeIndex: j + 1,
+          comparingIdx: j,
+          shiftIndices: null,
+          insertIndex: null,
+          comparisons,
+          shifts,
+          activeLine: 6,
+          statusTitle: t("insertionSort.comparing.statusTitle", {
+            compareValue,
+            key,
+          }),
+          statusDetail: shouldShift
+            ? t("insertionSort.comparing.statusDetail.shift", {
+                compareValue,
+                key,
+                j,
+              })
+            : t("insertionSort.comparing.statusDetail.stop", {
+                compareValue,
+                key,
+                j,
+                insertIndex: j + 1,
+              }),
+          stepExplanation: shouldShift
+            ? t("insertionSort.comparing.stepExplanation.shift", {
+                key,
+                compareValue,
+                j,
+                jPlusOne: j + 1,
+              })
+            : t("insertionSort.comparing.stepExplanation.stop", {
+                key,
+                compareValue,
+                j,
+                insertIndex: j + 1,
+              }),
+        }),
+      );
+
+      if (!shouldShift) {
+        break;
+      }
+
       shifts += 1;
-      const shiftedValue = work[k]!;
-      work[k + 1] = shiftedValue;
-      work[k] = null;
+      work[j + 1] = compareValue;
 
       steps.push(
         createStep({
@@ -295,31 +319,34 @@ export function generateInsertionSortSteps(input: number[]): InsertionSortStep[]
           sortedBoundary: i,
           keyValue: key,
           keyIndex: null,
-          holeIndex: k,
+          holeIndex: j,
           comparingIdx: null,
-          shiftIndices: [k, k + 1],
-          insertIndex: targetIndex,
+          shiftIndices: [j, j + 1],
+          insertIndex: j + 1,
           comparisons,
           shifts,
           activeLine: 7,
           statusTitle: t("insertionSort.shifting.statusTitle", {
-            compareValue: shiftedValue,
+            compareValue,
           }),
           statusDetail: t("insertionSort.shifting.statusDetail", {
-            compareValue: shiftedValue,
-            j: k,
-            jPlusOne: k + 1,
+            compareValue,
+            j,
+            jPlusOne: j + 1,
           }),
           stepExplanation: t("insertionSort.shifting.stepExplanation", {
-            compareValue: shiftedValue,
-            j: k,
-            jPlusOne: k + 1,
+            compareValue,
+            j,
+            jPlusOne: j + 1,
             key,
           }),
         }),
       );
+
+      j -= 1;
     }
 
+    const targetIndex = j + 1;
     work[targetIndex] = key;
 
     for (let index = 0; index < n; index += 1) {
