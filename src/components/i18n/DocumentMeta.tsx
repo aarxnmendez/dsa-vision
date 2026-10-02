@@ -71,13 +71,13 @@ export function DocumentMeta() {
     const pageKey = PAGE_SEO_KEYS[pathname as AppRoute];
 
     if (pageKey === "bigO") {
-      title = `${tSeo("bigO.title")} | ${tSeo("titleSuffix")}`;
+      title = `${tSeo("bigO.title")}${tSeo("titleSuffix")}`;
       description = tSeo("bigO.description");
       ogTitle = title;
       ogDescription = description;
     } else if (pageKey) {
       const pageTitle = tPages(`${pageKey}.title`);
-      title = `${pageTitle} | ${tSeo("titleSuffix")}`;
+      title = `${pageTitle}${tSeo("titleSuffix")}`;
       description = tPages(`${pageKey}.description`);
       ogTitle = title;
       ogDescription = description;

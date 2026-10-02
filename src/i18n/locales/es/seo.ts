@@ -1,11 +1,11 @@
 export const seo = {
-  siteName: "DSAVision",
+  siteName: "DSA Vision",
   siteUrl: "https://www.dsavision.dev",
   catalog: {
-    title: "DSAVision - Visualizador interactivo de algoritmos y estructuras de datos",
+    title: "DSA Vision - Visualizador Interactivo de Algoritmos y Estructuras de Datos",
     description:
       "Domina estructuras de datos y algoritmos con visualizadores interactivos y gamificados. Aprendizaje tangible.",
-    ogTitle: "DSAVision - Visualizador interactivo de algoritmos",
+    ogTitle: "DSA Vision - Visualizador Interactivo de Algoritmos y Estructuras de Datos",
     ogDescription:
       "Domina estructuras de datos y algoritmos con visualizadores interactivos y gamificados.",
   },
@@ -14,5 +14,5 @@ export const seo = {
     description:
       "Guía de referencia de complejidad temporal y espacial con comparaciones de crecimiento.",
   },
-  titleSuffix: "DSAVision",
+  titleSuffix: " | DSA Vision",
 } as const;
