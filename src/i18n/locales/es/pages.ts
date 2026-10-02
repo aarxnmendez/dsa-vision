@@ -68,7 +68,7 @@ export const pages = {
     },
   },
   quickSort: {
-    title: "Quicksort",
+    title: "Ordenación Rápida",
     description:
       "Ordenación divide y vencerás que particiona alrededor de un pivote y ordena subarrays recursivamente.",
     customInputHint:

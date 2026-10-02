@@ -74,7 +74,7 @@ export const catalog = {
       complexity: "O(n²)",
     },
     "quick-sort": {
-      title: "Quicksort",
+      title: "Ordenación Rápida",
       description:
         "Particiona alrededor de un pivote y ordena sub-arrays recursivamente con divide y vencerás.",
       complexity: "O(n log n) prom.",
