@@ -104,6 +104,28 @@ export const explanations = {
       "Online sorting scenarios where elements arrive one at a time.",
     ],
   },
+  mergeSort: {
+    howItWorks:
+      "Merge Sort repeatedly splits the array into halves until every segment has one element, then merges sibling segments bottom-up. Each merge compares the front elements of two sorted lists and copies the smaller value into the combined buffer until both lists are exhausted.",
+    keyConcepts: [
+      "Divide: split ranges in half until base cases of length one are reached.",
+      "Conquer: merge sorted siblings with two pointers, always picking the smaller front value.",
+      "Stable merge: equal values keep their relative order from the left segment.",
+      "Auxiliary space: typical implementations copy into temporary buffers during merge.",
+    ],
+    complexityRows: [
+      { label: "Best Case", value: "O(n log n)" },
+      { label: "Average Case", value: "O(n log n)" },
+      { label: "Worst Case", value: "O(n log n)" },
+      { label: "Space", value: "O(n)" },
+      { label: "Stability", value: "Stable" },
+    ],
+    whenToUse: [
+      "Linked lists or external sorting where stable O(n log n) time is required.",
+      "Large datasets where predictable log-linear performance beats quadratic sorts.",
+      "Scenarios where stability matters and auxiliary memory is available.",
+    ],
+  },
   quickSort: {
     howItWorks:
       "Quicksort applies divide-and-conquer on an array. On each active sub-array, a pivot index is chosen according to a strategy, the array is partitioned so elements less than or equal to the pivot sit on the left and greater elements on the right, then each side is sorted recursively until sub-arrays contain at most one element.",

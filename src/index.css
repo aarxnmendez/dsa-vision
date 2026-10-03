@@ -23,6 +23,7 @@
   --color-stack-cover-bg: #e0f2fe;
   --color-linear-search-cover-bg: #dcfce7;
   --color-quick-sort-cover-bg: #fac5a5;
+  --color-merge-sort-cover-bg: #d1fae5;
   --color-surface-container: #eaeef2;
   --color-on-secondary-fixed-variant: #005236;
   --color-surface-container-high: #e4e9ed;
@@ -177,5 +178,17 @@
     @apply border border-solid;
     border-color: var(--color-success);
     background: color-mix(in oklab, var(--color-success) 15%, transparent);
+  }
+
+  .infinite-canvas-world {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: geometricPrecision;
+  }
+
+  .infinite-canvas-vector-content {
+    overflow: visible;
+    shape-rendering: geometricPrecision;
+    text-rendering: geometricPrecision;
   }
 }

@@ -104,6 +104,28 @@ export const explanations = {
       "Escenarios de ordenación online donde los elementos llegan uno a uno.",
     ],
   },
+  mergeSort: {
+    howItWorks:
+      "La Ordenación por Fusión divide repetidamente el array por la mitad hasta que cada segmento tiene un elemento, y luego fusiona pares de hermanos de abajo hacia arriba. Cada fusión compara los frentes de dos listas ordenadas y copia el menor al buffer combinado hasta agotar ambas listas.",
+    keyConcepts: [
+      "Divide: parte rangos por la mitad hasta casos base de longitud uno.",
+      "Conquista: fusiona hermanos ordenados con dos punteros, eligiendo siempre el menor frente.",
+      "Fusión estable: valores iguales conservan el orden relativo del segmento izquierdo.",
+      "Espacio auxiliar: implementaciones típicas copian a buffers temporales durante la fusión.",
+    ],
+    complexityRows: [
+      { label: "Mejor caso", value: "O(n log n)" },
+      { label: "Caso promedio", value: "O(n log n)" },
+      { label: "Peor caso", value: "O(n log n)" },
+      { label: "Espacio", value: "O(n)" },
+      { label: "Estabilidad", value: "Estable" },
+    ],
+    whenToUse: [
+      "Listas enlazadas u ordenación externa cuando se requiere O(n log n) estable.",
+      "Conjuntos grandes donde el rendimiento log-lineal predecible supera ordenaciones cuadráticas.",
+      "Escenarios con estabilidad y memoria auxiliar disponible.",
+    ],
+  },
   quickSort: {
     howItWorks:
       "Quicksort aplica divide y vencerás sobre un array. En cada subarray activo se elige un pivote según una estrategia, se particiona para que elementos menores o iguales queden a la izquierda y mayores a la derecha, y luego cada lado se ordena recursivamente hasta subarrays de un elemento.",

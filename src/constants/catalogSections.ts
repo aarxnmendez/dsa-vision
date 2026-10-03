@@ -16,6 +16,6 @@ export const CATALOG_SECTIONS: readonly CatalogSectionDefinition[] = [
   },
   {
     id: "sorting",
-    algorithmIds: ["selection-sort", "insertion-sort", "quick-sort"],
+    algorithmIds: ["selection-sort", "insertion-sort", "merge-sort", "quick-sort"],
   },
 ] as const;

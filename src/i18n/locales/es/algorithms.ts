@@ -230,6 +230,59 @@ export const algorithms = {
         "Pasada {{i}} completada. La partición ordenada cubre ahora los índices 0 a {{i}}.",
     },
   },
+  mergeSort: {
+    ready: {
+      statusTitle: "Array inicial listo",
+      statusDetail:
+        "{{n}} valores cargados. Pulsa Adelante o Reproducir para empezar la división.",
+      stepExplanation:
+        "El array de entrada completo está visible en la raíz. Los siguientes pasos lo dividen recursivamente antes de fusionar.",
+    },
+    divide: {
+      statusTitle: "Dividiendo el sub-array",
+      statusDetail:
+        "Se divide por el índice {{mid}} en dos sub-arrays: {{leftRange}} y {{rightRange}}.",
+      stepExplanation:
+        "Fase de división: se separa el sub-array [{{low}}..{{high}}] en dos nodos hijos por el índice {{mid}}.",
+    },
+    baseCase: {
+      statusTitle: "Caso base alcanzado",
+      statusDetail: "Un solo elemento en el índice {{low}} ya está ordenado.",
+      stepExplanation:
+        "Un segmento de un elemento en el índice {{index}} no requiere más divisiones.",
+    },
+    mergeStart: {
+      statusTitle: "Comienza la fusión",
+      statusDetail: "Fusiona hijos ordenados en el rango [{{low}}..{{high}}].",
+      stepExplanation:
+        "Ambos hijos están ordenados. Empieza a fusionarlos en el rango padre [{{low}}..{{high}}].",
+    },
+    mergeCompare: {
+      statusTitle: "Comparando elementos para fusionar",
+      statusDetail:
+        "Compara el {{leftValue}} y el {{rightValue}} para copiar el valor menor.",
+      stepExplanation:
+        "Comparación de fusión: se selecciona el elemento menor entre {{leftValue}} y {{rightValue}}.",
+    },
+    mergeCopy: {
+      statusTitle: "Copiando {{value}} al sub-array fusionado",
+      statusDetail:
+        "Coloca el {{value}} en la posición {{position}} del rango combinado.",
+      stepExplanation:
+        "Copia {{value}} al segmento padre fusionado en el índice {{position}} (resaltado en verde).",
+    },
+    mergeComplete: {
+      statusTitle: "Fusión completada",
+      statusDetail: "El rango [{{low}}..{{high}}] está completamente ordenado.",
+      stepExplanation:
+        "Fusión terminada para [{{low}}..{{high}}]. El nodo padre contiene un segmento ordenado.",
+    },
+    complete: {
+      statusTitle: "Ordenación completada",
+      statusDetail: "El array está completamente ordenado en orden ascendente.",
+      stepExplanation: "Todos los niveles de fusión terminaron. La raíz contiene el array ordenado.",
+    },
+  },
   quickSort: {
     complete: {
       statusTitle: "Ordenación completada",

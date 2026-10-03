@@ -73,6 +73,12 @@ export const catalog = {
         "Construye un prefijo ordenado insertando cada elemento en su posición con desplazamientos hacia la derecha.",
       complexity: "O(n²)",
     },
+    "merge-sort": {
+      title: "Ordenación por Fusión",
+      description:
+        "Divide el array de forma recursiva y fusiona mitades ordenadas con una fusión estable.",
+      complexity: "O(n log n)",
+    },
     "quick-sort": {
       title: "Ordenación Rápida",
       description:

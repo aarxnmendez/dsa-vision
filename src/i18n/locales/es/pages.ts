@@ -67,6 +67,27 @@ export const pages = {
       },
     },
   },
+  mergeSort: {
+    title: "Ordenación por Fusión",
+    description:
+      "Ordenación estable de tipo divide y vencerás que fusiona sub-arrays ordenados con memoria auxiliar.",
+    customInputHint:
+      "Introduce entre 4 y 20 valores en cualquier orden. La Ordenación por Fusión usa espacio extra al fusionar niveles del árbol.",
+    headerComplexity: {
+      time: "O(n log n)",
+      space: "O(n)",
+    },
+    complexity: {
+      time: {
+        title: "Tiempo log-lineal",
+        text: "La Ordenación por Fusión siempre ejecuta en O(n log n) porque cada nivel procesa los n elementos una vez en log n niveles de división.",
+      },
+      space: {
+        title: "Espacio auxiliar lineal",
+        text: "La fase de fusión copia elementos en buffers auxiliares, requiriendo O(n) de espacio extra en implementaciones recursivas habituales.",
+      },
+    },
+  },
   quickSort: {
     title: "Ordenación Rápida",
     description:

@@ -90,7 +90,7 @@ export const bigO = {
         notation: "O(n)",
         name: "Lineal",
         description: "Requiere estructuras auxiliares que escalan con el tamaño de la entrada.",
-        examples: "Arrays auxiliares, mapas hash, buffer de merge sort",
+        examples: "Arrays auxiliares, mapas hash, buffer de Ordenación por Fusión",
       },
     ],
   },

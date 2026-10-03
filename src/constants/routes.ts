@@ -6,6 +6,7 @@ export const APP_ROUTES = {
   binarySearch: "/binary-search",
   selectionSort: "/selection-sort",
   insertionSort: "/insertion-sort",
+  mergeSort: "/merge-sort",
   quickSort: "/quick-sort",
   sequentialSearch: "/sequential-search",
   bigONotation: "/big-o-notation",
@@ -21,6 +22,7 @@ export type VisualizerRoute =
   | typeof APP_ROUTES.sequentialSearch
   | typeof APP_ROUTES.selectionSort
   | typeof APP_ROUTES.insertionSort
+  | typeof APP_ROUTES.mergeSort
   | typeof APP_ROUTES.quickSort;
 
 /** @deprecated Use APP_ROUTES */

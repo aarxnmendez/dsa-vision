@@ -134,6 +134,23 @@ export const algorithms: AlgorithmMeta[] = [
     route: APP_ROUTES.insertionSort,
   },
   {
+    id: "merge-sort",
+    title: "Merge Sort",
+    description:
+      "Divide the array recursively and merge sorted sub-arrays with a stable two-pointer combine pass.",
+    complexity: "O(n log n)",
+    complexityVariant: "success",
+    difficulty: "intermediate",
+    category: "sorting",
+    tags: ["merge-sort", "sorting", "arrays", "divide-and-conquer", "stable"],
+    imageUrl: "/images/merge-sort-cover.webp",
+    imageWidth: 2752,
+    imageHeight: 1536,
+    imageBg: "bg-merge-sort-cover-bg",
+    availability: "available",
+    route: APP_ROUTES.mergeSort,
+  },
+  {
     id: "quick-sort",
     title: "Quicksort",
     description:

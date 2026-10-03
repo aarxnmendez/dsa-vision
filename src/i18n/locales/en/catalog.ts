@@ -73,6 +73,12 @@ export const catalog = {
         "Build a sorted prefix by inserting each element into its correct position with right-to-left shifts.",
       complexity: "O(n²)",
     },
+    "merge-sort": {
+      title: "Merge Sort",
+      description:
+        "Recursively divide the array and merge sorted halves with a stable combine step.",
+      complexity: "O(n log n)",
+    },
     "quick-sort": {
       title: "Quicksort",
       description:

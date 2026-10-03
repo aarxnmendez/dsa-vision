@@ -229,6 +229,57 @@ export const algorithms = {
         "Pass {{i}} complete. Sorted partition now covers indices 0 through {{i}}.",
     },
   },
+  mergeSort: {
+    ready: {
+      statusTitle: "Input array at root",
+      statusDetail:
+        "{{n}} values loaded at the root node. Press Forward or Play to begin dividing.",
+      stepExplanation:
+        "The full input array is visible at the root. The next steps split it recursively before merging.",
+    },
+    divide: {
+      statusTitle: "Dividing sub-array",
+      statusDetail:
+        "Split at mid index {{mid}} into {{leftRange}} and {{rightRange}}.",
+      stepExplanation:
+        "Divide step: break range [{{low}}..{{high}}] into two child nodes at index {{mid}}.",
+    },
+    baseCase: {
+      statusTitle: "Base case reached",
+      statusDetail: "Single element at index {{low}} is already sorted.",
+      stepExplanation:
+        "Segment of one element at index {{index}} needs no further division.",
+    },
+    mergeStart: {
+      statusTitle: "Begin merge",
+      statusDetail: "Merge sorted children back into range [{{low}}..{{high}}].",
+      stepExplanation:
+        "Both child segments are sorted. Start merging them into the parent range [{{low}}..{{high}}].",
+    },
+    mergeCompare: {
+      statusTitle: "Compare merge fronts",
+      statusDetail: "Compare {{leftValue}} with {{rightValue}} before copying the smaller value.",
+      stepExplanation:
+        "Merge compare: pick the smaller front value between {{leftValue}} and {{rightValue}}.",
+    },
+    mergeCopy: {
+      statusTitle: "Copy {{value}} into merged segment",
+      statusDetail: "Place {{value}} at index {{position}} of the combined range.",
+      stepExplanation:
+        "Copy {{value}} into the merged parent segment at index {{position}} (highlighted in green).",
+    },
+    mergeComplete: {
+      statusTitle: "Merge complete",
+      statusDetail: "Range [{{low}}..{{high}}] is fully sorted.",
+      stepExplanation:
+        "Merge finished for range [{{low}}..{{high}}]. The parent node now holds a sorted segment.",
+    },
+    complete: {
+      statusTitle: "Sorting complete",
+      statusDetail: "The array is fully sorted in ascending order.",
+      stepExplanation: "All merge levels finished. The root node contains the sorted array.",
+    },
+  },
   quickSort: {
     complete: {
       statusTitle: "Sorting complete",

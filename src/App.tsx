@@ -40,6 +40,11 @@ const InsertionSortPage = lazy(() =>
     default: module.InsertionSortPage,
   })),
 );
+const MergeSortPage = lazy(() =>
+  import("./pages/MergeSortPage").then((module) => ({
+    default: module.MergeSortPage,
+  })),
+);
 const QuickSortPage = lazy(() =>
   import("./pages/QuickSortPage").then((module) => ({
     default: module.QuickSortPage,
@@ -83,6 +88,7 @@ function App() {
           />
           <Route path={APP_ROUTES.selectionSort} element={<SelectionSortPage />} />
           <Route path={APP_ROUTES.insertionSort} element={<InsertionSortPage />} />
+          <Route path={APP_ROUTES.mergeSort} element={<MergeSortPage />} />
           <Route path={APP_ROUTES.quickSort} element={<QuickSortPage />} />
           <Route path={APP_ROUTES.bigONotation} element={<BigONotationPage />} />
         </Routes>

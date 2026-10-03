@@ -64,6 +64,27 @@ export const pages = {
       },
     },
   },
+  mergeSort: {
+    title: "Merge Sort",
+    description:
+      "Stable divide-and-conquer sort that merges sorted sub-arrays with auxiliary buffer space.",
+    customInputHint:
+      "Enter 4 to 20 values in any order. Merge Sort uses extra space while merging levels of the recursion tree.",
+    headerComplexity: {
+      time: "O(n log n)",
+      space: "O(n)",
+    },
+    complexity: {
+      time: {
+        title: "Log-linear time",
+        text: "Merge Sort always runs in O(n log n) time because each level processes all n elements once across log n divide levels.",
+      },
+      space: {
+        title: "Linear auxiliary space",
+        text: "The merge step copies elements into auxiliary buffers, requiring O(n) extra space for typical top-down implementations.",
+      },
+    },
+  },
   quickSort: {
     title: "Quicksort",
     description:

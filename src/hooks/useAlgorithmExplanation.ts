@@ -7,6 +7,7 @@ export type ExplanationKey =
   | "sequentialSearch"
   | "selectionSort"
   | "insertionSort"
+  | "mergeSort"
   | "quickSort"
   | "array"
   | "linkedList"
@@ -55,6 +56,12 @@ export function usePageMeta(pageKey: ExplanationKey) {
         title: t(`${pageKey}.complexity.space.title`),
         text: t(`${pageKey}.complexity.space.text`),
       },
+      headerTimeComplexity: t(`${pageKey}.headerComplexity.time`, {
+        defaultValue: "",
+      }),
+      headerSpaceComplexity: t(`${pageKey}.headerComplexity.space`, {
+        defaultValue: "",
+      }),
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps -- refresh when locale changes
     [pageKey, i18n.language, t],

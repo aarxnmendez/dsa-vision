@@ -79,6 +79,11 @@ export const common = {
     stepStatus: "Step status",
     codeAndReference: "Code and algorithm reference",
   },
+  infiniteCanvas: {
+    zoomIn: "Zoom in",
+    zoomOut: "Zoom out",
+    resetView: "Reset canvas view",
+  },
   validation: {
     invalidCharacters: "Only numbers, commas, and spaces are allowed.",
     maxElements: "Maximum {{max}} elements allowed.",
@@ -99,6 +104,8 @@ export const common = {
   },
   legend: {
     unsorted: "Unsorted",
+    comparing: "Comparing",
+    mergeSorted: "Sorted / Merged",
     outerIndex: "Outer index (i)",
     comparingMin: "Comparing / Min",
     sorted: "Sorted",
