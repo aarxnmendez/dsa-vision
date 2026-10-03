@@ -5,6 +5,13 @@ export interface AlgorithmSearchText {
   description: string;
 }
 
+export function normalizeText(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
 export function algorithmMatchesCategory(
   algorithm: AlgorithmMeta,
   category: AlgorithmCategory,
@@ -20,20 +27,21 @@ export function algorithmMatchesCategory(
 
 export function algorithmMatchesSearch(
   algorithm: AlgorithmMeta,
-  normalizedQuery: string,
+  query: string,
   searchText?: AlgorithmSearchText,
 ): boolean {
+  const normalizedQuery = normalizeText(query);
   if (normalizedQuery.length === 0) {
     return true;
   }
 
-  const haystack = [
-    searchText?.title ?? algorithm.title,
-    searchText?.description ?? algorithm.description,
-    ...algorithm.tags,
-  ]
-    .join(" ")
-    .toLowerCase();
+  const haystack = normalizeText(
+    [
+      searchText?.title ?? algorithm.title,
+      searchText?.description ?? algorithm.description,
+      ...algorithm.tags,
+    ].join(" "),
+  );
 
   return haystack.includes(normalizedQuery);
 }

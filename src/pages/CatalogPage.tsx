@@ -11,6 +11,7 @@ import type { AlgorithmCategory } from "../types/algorithm";
 import {
   algorithmMatchesCategory,
   algorithmMatchesSearch,
+  normalizeText,
 } from "../utils/catalogFilter";
 
 export function CatalogPage() {
@@ -19,7 +20,7 @@ export function CatalogPage() {
   const [activeCategory, setActiveCategory] = useState<AlgorithmCategory>("all");
 
   const filteredAlgorithms = useMemo(() => {
-    const normalizedQuery = searchQuery.trim().toLowerCase();
+    const normalizedQuery = normalizeText(searchQuery.trim());
 
     return algorithms.filter((algorithm) => {
       const matchesCategory = algorithmMatchesCategory(
