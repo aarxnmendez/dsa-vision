@@ -295,44 +295,44 @@ export const algorithms = {
       stepExplanation: "Caso base: los arrays con un elemento ya están ordenados.",
     },
     init: {
-      statusTitle: "Inicializando",
+      statusTitle: "Listo para ordenar",
       statusDetail:
-        "Array de {{n}} elementos. Quicksort particionará de forma recursiva usando la estrategia de pivote {{strategy}}.",
+        "Array de {{n}} elementos. La Ordenación Rápida particionará de forma recursiva con la estrategia de pivote {{strategy}}.",
       first:
-        "Inicializa quicksort con pivotes del primer elemento en un array de {{size}} elementos. Observa cómo la recursión se profundiza en entrada ya ordenada.",
+        "Inicia la Ordenación Rápida con pivote en el primer elemento ({{size}} valores). En entrada ya ordenada la recursión se profundiza mucho.",
       last:
-        "Inicializa quicksort con pivotes del último elemento en un array de {{size}} elementos. Las particiones pueden sesgarse en entrada ordenada en reversa.",
+        "Inicia la Ordenación Rápida con pivote en el último elemento ({{size}} valores). En entrada inversa las particiones pueden sesgarse.",
       middle:
-        "Inicializa quicksort con pivotes del medio en un array de {{size}} elementos. Espera particiones relativamente equilibradas.",
+        "Inicia la Ordenación Rápida con pivote central ({{size}} valores). Suele producir particiones equilibradas.",
       random:
-        "Inicializa quicksort aleatorizado en un array de {{size}} elementos. Cada partición elige un pivote aleatorio dentro del subarray activo.",
+        "Inicia la Ordenación Rápida aleatorizada ({{size}} valores). Cada partición elige un pivote al azar en el sub-array activo.",
     },
     pivot: {
       first: {
-        statusTitle: "Elegir pivote del primero",
+        statusTitle: "Pivote: primer elemento",
         statusDetail:
-          "Subarray {{range}}. El índice {{pivotPick}} (primer elemento) selecciona el pivote {{pivotValue}}.",
+          "Sub-array {{range}}. En el índice {{pivotPick}} (primer elemento) el pivote es {{pivotValue}}.",
         stepExplanation:
           "El pivote del primer elemento siempre usa el índice {{low}}. En datos ya ordenados esto crea particiones máximamente desequilibradas y profundidad de recursión O(n²).",
       },
       last: {
-        statusTitle: "Elegir pivote del último",
+        statusTitle: "Pivote: último elemento",
         statusDetail:
-          "Subarray {{range}}. El índice {{pivotPick}} (último elemento) selecciona el pivote {{pivotValue}}.",
+          "Sub-array {{range}}. En el índice {{pivotPick}} (último elemento) el pivote es {{pivotValue}}.",
         stepExplanation:
           "El pivote del último elemento siempre usa el índice {{high}}. En datos ordenados en reversa esto sesga las particiones y puede degradarse a O(n²).",
       },
       middle: {
-        statusTitle: "Elegir pivote del medio",
+        statusTitle: "Pivote: elemento central",
         statusDetail:
-          "Subarray {{range}}. El índice medio {{pivotPick}} selecciona el pivote {{pivotValue}}.",
+          "Sub-array {{range}}. En el índice central {{pivotPick}} el pivote es {{pivotValue}}.",
         stepExplanation:
           "El pivote del medio en el índice {{pivotPick}} tiende a dividir {{range}} por la mitad en entrada ordenada o uniforme, manteniendo la profundidad media cerca de O(log n).",
       },
       random: {
-        statusTitle: "Elegir pivote aleatorio",
+        statusTitle: "Pivote aleatorio",
         statusDetail:
-          "Subarray {{range}}. El índice aleatorio {{pivotPick}} selecciona el pivote {{pivotValue}}.",
+          "Sub-array {{range}}. En el índice aleatorio {{pivotPick}} el pivote es {{pivotValue}}.",
         stepExplanation:
           "Un pivote aleatorio en {{range}} (aquí: índice {{pivotPick}}) hace improbables los cortes muy desequilibrados en promedio, preservando un tiempo esperado de O(n log n).",
       },
@@ -342,7 +342,7 @@ export const algorithms = {
       statusDetail:
         "Intercambia el índice {{pivotPick}} con {{high}} para que el pivote quede en el límite de la partición.",
       stepExplanation:
-        "Mueve el candidato a pivote al índice {{high}} antes de escanear el subarray.",
+        "Mueve el candidato a pivote al índice {{high}} antes de escanear el sub-array.",
     },
     initPartition: {
       statusTitle: "Inicializar partición",
@@ -394,30 +394,30 @@ export const algorithms = {
     },
     baseCase: {
       statusTitle: "Caso base",
-      statusDetail: "El elemento único en el índice {{low}} ya está ordenado.",
+      statusDetail: "Un solo elemento en el índice {{low}} ya está ordenado.",
       stepExplanation:
-        "Caso base recursivo: un subarray de un elemento no requiere más particiones.",
+        "Caso base: un sub-array de un elemento no requiere más particiones.",
     },
     recursiveCall: {
-      statusTitle: "Llamada recursiva",
+      statusTitle: "Nueva llamada recursiva",
       statusDetail:
-        "Ordena el subarray [{{low}}..{{high}}] ({{count}} elementos).",
+        "Ordena el sub-array [{{low}}..{{high}}] ({{count}} elementos).",
       stepExplanation:
-        "Divide: se llama a quicksort sobre los índices {{low}} a {{high}}.",
+        "Se particionará el rango de índices {{low}} a {{high}} en el árbol de recursión.",
     },
     recurseLeft: {
-      statusTitle: "Recursión izquierda",
+      statusTitle: "Recursión en la izquierda",
       statusDetail:
-        "La partición izquierda [{{low}}..{{high}}] contiene elementos <= pivote.",
+        "El sub-array izquierdo [{{low}}..{{high}}] contiene elementos menores o iguales al pivote.",
       stepExplanation:
-        "Conquista izquierda: ordena recursivamente los índices {{low}} a {{high}}.",
+        "Ordena recursivamente los índices {{low}} a {{high}} (rama izquierda del árbol).",
     },
     recurseRight: {
-      statusTitle: "Recursión derecha",
+      statusTitle: "Recursión en la derecha",
       statusDetail:
-        "La partición derecha [{{low}}..{{high}}] contiene elementos > pivote.",
+        "El sub-array derecho [{{low}}..{{high}}] contiene elementos mayores que el pivote.",
       stepExplanation:
-        "Conquista derecha: ordena recursivamente los índices {{low}} a {{high}}.",
+        "Ordena recursivamente los índices {{low}} a {{high}} (rama derecha del árbol).",
     },
   },
   arrayOperations: {

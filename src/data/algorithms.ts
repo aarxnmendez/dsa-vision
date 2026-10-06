@@ -155,7 +155,7 @@ export const algorithms: AlgorithmMeta[] = [
     title: "Quicksort",
     description:
       "Partition around a pivot and recursively sort sub-arrays using divide-and-conquer.",
-    complexity: "O(n log n) avg",
+    complexity: "O(n log n)",
     complexityVariant: "success",
     difficulty: "intermediate",
     category: "sorting",

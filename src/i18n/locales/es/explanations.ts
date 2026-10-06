@@ -128,12 +128,12 @@ export const explanations = {
   },
   quickSort: {
     howItWorks:
-      "Quicksort aplica divide y vencerás sobre un array. En cada subarray activo se elige un pivote según una estrategia, se particiona para que elementos menores o iguales queden a la izquierda y mayores a la derecha, y luego cada lado se ordena recursivamente hasta subarrays de un elemento.",
+      "La Ordenación Rápida aplica divide y vencerás sobre un array. En cada sub-array activo se elige un pivote según una estrategia, se particiona para que elementos menores o iguales queden a la izquierda y mayores a la derecha, y luego cada lado se ordena recursivamente hasta sub-arrays de un elemento.",
     keyConcepts: [
-      "Divide y vencerás: divide en subarrays más pequeños, ordénalos independientemente y combina mediante partición.",
+      "Divide y vencerás: divide en sub-arrays más pequeños, ordénalos independientemente y combina mediante partición.",
       "Selección de pivote: pivotes al inicio o al final con entrada ordenada crean profundidad O(n²); medio o aleatorio mantienen O(n log n) promedio.",
       "Partición: escaneo con índices i y j para reorganizar elementos alrededor del pivote en O(n) por nivel.",
-      "Caso base: subarrays de cero o un elemento ya están ordenados.",
+      "Caso base: sub-arrays de cero o un elemento ya están ordenados.",
     ],
     complexityRows: [
       { label: "Mejor caso", value: "O(n log n)" },

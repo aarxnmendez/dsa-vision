@@ -1,5 +1,5 @@
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getStepTransitionMs } from "../constants/player";
 import { quickSortCode } from "../data/quickSortCode";
 import { QuickSortSetupPanel } from "../components/controls/QuickSortSetupPanel";
 import { PlayerControls } from "../components/controls/PlayerControls";
@@ -9,7 +9,9 @@ import { AlgorithmExplanationContent } from "../components/panels/AlgorithmExpla
 import { CodePanel } from "../components/panels/CodePanel";
 import { ExplanationPanelShell } from "../components/panels/ExplanationPanelShell";
 import { StatusCard } from "../components/panels/StatusCard";
-import { SortBarVisualizer, SortLegendBar } from "../components/visualizers/SortBarVisualizer";
+import { InfiniteCanvas } from "../components/visualizers/InfiniteCanvas";
+import { QuickSortLegendBar } from "../components/visualizers/QuickSortLegendBar";
+import { QuickSortTreeVisualizer } from "../components/visualizers/QuickSortTreeVisualizer";
 import { VisualizerIdleStatus } from "../components/visualizers/VisualizerIdleStatus";
 import { useQuickSortVisualizer } from "../hooks/useQuickSortVisualizer";
 import {
@@ -17,14 +19,64 @@ import {
   usePageMeta,
 } from "../hooks/useAlgorithmExplanation";
 import { DATA_SETUP_ICON } from "../constants/copy";
+import { layoutMergeSortTree } from "../utils/mergeSortTreeLayout";
 
 export function QuickSortPage() {
   const { t } = useTranslation("common");
   const pageMeta = usePageMeta("quickSort");
   const explanation = useAlgorithmExplanation("quickSort");
   const visualizer = useQuickSortVisualizer();
-  const transitionMs = getStepTransitionMs(visualizer.speed);
-  const defaultHighlights = visualizer.array.map(() => "default" as const);
+  const [isFocused, setIsFocused] = useState(false);
+
+  useEffect(() => {
+    if (!isFocused) {
+      return;
+    }
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isFocused]);
+
+  const treeNodes = useMemo(
+    () => visualizer.currentStep?.nodes ?? [],
+    [visualizer.currentStep?.nodes],
+  );
+  const treeLinks = useMemo(
+    () => visualizer.currentStep?.links ?? [],
+    [visualizer.currentStep?.links],
+  );
+  const layout = useMemo(
+    () => layoutMergeSortTree(treeNodes, treeLinks),
+    [treeLinks, treeNodes],
+  );
+
+  const treeView = useMemo(
+    () => (
+      <QuickSortTreeVisualizer nodes={treeNodes} links={treeLinks} />
+    ),
+    [treeLinks, treeNodes],
+  );
+
+  const playerControls = (
+    <PlayerControls
+      currentIndex={visualizer.currentIndex}
+      totalSteps={visualizer.steps.length}
+      isPlaying={visualizer.isPlaying}
+      speed={visualizer.speed}
+      canGoBack={visualizer.canGoBack}
+      canGoForward={visualizer.canGoForward}
+      onNext={visualizer.onNext}
+      onPrev={visualizer.onPrev}
+      onPlay={visualizer.onPlay}
+      onPause={visualizer.onPause}
+      onReset={visualizer.onReset}
+      onSpeedChange={visualizer.setSpeed}
+    />
+  );
 
   const statusContent = visualizer.currentStep ? (
     <StatusCard
@@ -32,7 +84,10 @@ export function QuickSortPage() {
       detail={visualizer.currentStep.statusDetail}
       pointerMovement={
         visualizer.currentStep.subArrayRange
-          ? `Active range: [${visualizer.currentStep.subArrayRange[0]}..${visualizer.currentStep.subArrayRange[1]}]`
+          ? t("player.activeRange", {
+              low: visualizer.currentStep.subArrayRange[0],
+              high: visualizer.currentStep.subArrayRange[1],
+            })
           : undefined
       }
       isSuccess={visualizer.currentStep.isComplete}
@@ -41,12 +96,34 @@ export function QuickSortPage() {
     <VisualizerIdleStatus message={t("idle.visualizer")} />
   );
 
+  const canvas = (
+    <InfiniteCanvas
+      worldWidth={layout.width}
+      worldHeight={layout.height}
+      isFocused={isFocused}
+      onFocusChange={setIsFocused}
+    >
+      {treeView}
+    </InfiniteCanvas>
+  );
+
+  if (isFocused) {
+    return (
+      <div className="fixed inset-0 z-[120] flex flex-col bg-background">
+        <div className="flex min-h-0 flex-1 flex-col px-3 pb-28 pt-3 sm:px-4">
+          {canvas}
+        </div>
+        {playerControls}
+      </div>
+    );
+  }
+
   return (
     <VisualizerLayout
       title={pageMeta.title}
       description={pageMeta.description}
-      timeComplexity="O(n log n) avg"
-      spaceComplexity="O(log n)"
+      timeComplexity={pageMeta.headerTimeComplexity}
+      spaceComplexity={pageMeta.headerSpaceComplexity}
       timeComplexityInfo={pageMeta.timeComplexityInfo}
       spaceComplexityInfo={pageMeta.spaceComplexityInfo}
       leftPanelSectionLabel={t("dataSetup.label")}
@@ -65,19 +142,8 @@ export function QuickSortPage() {
     >
       <AlgorithmPageShell
         bottomColumnsOrder="explanation-first"
-        heroLegend={<SortLegendBar />}
-        hero={
-          <SortBarVisualizer
-            currentArray={visualizer.currentArray}
-            trackedValues={visualizer.array}
-            highlights={
-              visualizer.barHighlights.length > 0
-                ? visualizer.barHighlights
-                : defaultHighlights
-            }
-            stepTransitionMs={transitionMs}
-          />
-        }
+        heroLegend={<QuickSortLegendBar />}
+        hero={canvas}
         statusSection={statusContent}
         codeColumn={
           <CodePanel
@@ -92,22 +158,7 @@ export function QuickSortPage() {
             <AlgorithmExplanationContent {...explanation} />
           </ExplanationPanelShell>
         }
-        playerControls={
-          <PlayerControls
-            currentIndex={visualizer.currentIndex}
-            totalSteps={visualizer.steps.length}
-            isPlaying={visualizer.isPlaying}
-            speed={visualizer.speed}
-            canGoBack={visualizer.canGoBack}
-            canGoForward={visualizer.canGoForward}
-            onNext={visualizer.onNext}
-            onPrev={visualizer.onPrev}
-            onPlay={visualizer.onPlay}
-            onPause={visualizer.onPause}
-            onReset={visualizer.onReset}
-            onSpeedChange={visualizer.setSpeed}
-          />
-        }
+        playerControls={playerControls}
       />
     </VisualizerLayout>
   );

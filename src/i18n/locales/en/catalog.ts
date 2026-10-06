@@ -83,7 +83,7 @@ export const catalog = {
       title: "Quicksort",
       description:
         "Partition around a pivot and recursively sort sub-arrays using divide-and-conquer.",
-      complexity: "O(n log n) avg",
+      complexity: "O(n log n)",
     },
   },
 } as const;

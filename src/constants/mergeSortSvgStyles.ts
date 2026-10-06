@@ -41,6 +41,11 @@ export const MERGE_SORT_SVG_CELL_STYLES: Record<
     stroke: "#f59e0b",
     text: "#b45309",
   },
+  pivot: {
+    fill: "rgba(249, 115, 22, 0.18)",
+    stroke: "#f97316",
+    text: "#c2410c",
+  },
 };
 
 export function mergeSortNodeFrameStyle(

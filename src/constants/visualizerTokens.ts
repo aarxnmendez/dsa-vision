@@ -52,6 +52,10 @@ export const VISUALIZER_BAR_STYLES: Record<
     fill: "sort-bar-comparing",
     label: "text-amber-600",
   },
+  pivot: {
+    fill: "sort-bar-pivot",
+    label: "text-orange-600",
+  },
   swapping: {
     fill: "sort-bar-comparing",
     label: "text-amber-600",

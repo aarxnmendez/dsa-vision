@@ -398,9 +398,9 @@ export const algorithms = {
     recursiveCall: {
       statusTitle: "Recursive call",
       statusDetail:
-        "Sort sub-array [{{low}}..{{high}}] ({{count}} elements).",
+        "Sort sub-array [{{low}}..{{high}}] ({{count}} elements) in the recursion tree.",
       stepExplanation:
-        "Divide: quicksort is called on sub-array indices {{low}} through {{high}}.",
+        "Partition indices {{low}} through {{high}} before recursing into child ranges.",
     },
     recurseLeft: {
       statusTitle: "Recurse left",

@@ -83,7 +83,7 @@ export const catalog = {
       title: "Ordenación Rápida",
       description:
         "Particiona alrededor de un pivote y ordena sub-arrays recursivamente con divide y vencerás.",
-      complexity: "O(n log n) prom.",
+      complexity: "O(n log n)",
     },
   },
 } as const;

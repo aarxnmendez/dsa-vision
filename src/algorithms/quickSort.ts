@@ -1,10 +1,28 @@
 import { getAlgorithmT } from "../i18n/index";
+import type { SortBarHighlight } from "../types/visualizer";
 import { generateRandomArray } from "../utils/randomArray";
 
 export type PivotStrategy = "first" | "middle" | "last" | "random";
 
+export interface QuickSortTreeNode {
+  id: string;
+  low: number;
+  high: number;
+  values: number[];
+  cellHighlights: SortBarHighlight[];
+  nodeHighlight: "default" | "active" | "done";
+}
+
+export interface QuickSortTreeLink {
+  fromId: string;
+  toId: string;
+}
+
 export interface QuickSortStep {
   array: number[];
+  nodes: QuickSortTreeNode[];
+  links: QuickSortTreeLink[];
+  activeNodeId: string | null;
   subArrayRange: [number, number];
   pivotIndex: number | null;
   leftIndex: number | null;
@@ -22,8 +40,230 @@ export interface QuickSortStep {
 interface StepContext {
   arr: number[];
   sortedIndices: Set<number>;
+  nodes: Map<string, QuickSortTreeNode>;
+  links: QuickSortTreeLink[];
   steps: QuickSortStep[];
   pivotStrategy: PivotStrategy;
+}
+
+function rangeId(low: number, high: number): string {
+  return `${low}-${high}`;
+}
+
+function defaultHighlights(length: number): SortBarHighlight[] {
+  return Array.from({ length }, () => "default");
+}
+
+function cloneNodes(nodes: Map<string, QuickSortTreeNode>): QuickSortTreeNode[] {
+  return [...nodes.values()].map((node) => ({
+    ...node,
+    values: [...node.values],
+    cellHighlights: [...node.cellHighlights],
+  }));
+}
+
+function cloneLinks(links: QuickSortTreeLink[]): QuickSortTreeLink[] {
+  return links.map((link) => ({ ...link }));
+}
+
+function ensureNode(
+  ctx: StepContext,
+  low: number,
+  high: number,
+): QuickSortTreeNode {
+  const id = rangeId(low, high);
+  let node = ctx.nodes.get(id);
+
+  if (!node) {
+    node = {
+      id,
+      low,
+      high,
+      values: ctx.arr.slice(low, high + 1),
+      cellHighlights: defaultHighlights(high - low + 1),
+      nodeHighlight: "default",
+    };
+    ctx.nodes.set(id, node);
+  } else {
+    refreshNodeValuesFromArray(ctx, node);
+  }
+
+  return node;
+}
+
+function highlightRank(highlight: SortBarHighlight): number {
+  switch (highlight) {
+    case "sorted":
+      return 4;
+    case "swapping":
+      return 3;
+    case "comparing":
+      return 2;
+    case "pivot":
+      return 1;
+    default:
+      return 0;
+  }
+}
+
+function pickStrongerHighlight(
+  current: SortBarHighlight,
+  next: SortBarHighlight,
+): SortBarHighlight {
+  return highlightRank(next) >= highlightRank(current) ? next : current;
+}
+
+function refreshNodeValuesFromArray(ctx: StepContext, node: QuickSortTreeNode): void {
+  node.values = ctx.arr.slice(node.low, node.high + 1);
+  if (node.cellHighlights.length !== node.values.length) {
+    node.cellHighlights = defaultHighlights(node.values.length);
+  }
+}
+
+function buildGlobalCellHighlights(
+  ctx: StepContext,
+  partial: Pick<
+    QuickSortStep,
+    "pivotIndex" | "comparingIdx" | "swapIndices" | "subArrayRange"
+  >,
+): Map<number, SortBarHighlight> {
+  const highlights = new Map<number, SortBarHighlight>();
+  const [rangeLow, rangeHigh] = partial.subArrayRange;
+
+  const applyEphemeral = (globalIndex: number, highlight: SortBarHighlight) => {
+    if (globalIndex < rangeLow || globalIndex > rangeHigh) {
+      return;
+    }
+
+    if (ctx.sortedIndices.has(globalIndex) && highlight !== "sorted") {
+      return;
+    }
+
+    highlights.set(
+      globalIndex,
+      pickStrongerHighlight(highlights.get(globalIndex) ?? "default", highlight),
+    );
+  };
+
+  for (const globalIndex of ctx.sortedIndices) {
+    highlights.set(globalIndex, "sorted");
+  }
+
+  if (partial.swapIndices) {
+    applyEphemeral(partial.swapIndices[0], "swapping");
+    applyEphemeral(partial.swapIndices[1], "swapping");
+  }
+
+  if (partial.comparingIdx !== null) {
+    applyEphemeral(partial.comparingIdx, "comparing");
+  }
+
+  if (partial.pivotIndex !== null) {
+    applyEphemeral(partial.pivotIndex, "pivot");
+  }
+
+  return highlights;
+}
+
+function syncTreeHighlights(
+  ctx: StepContext,
+  activeNodeId: string | null,
+  partial: Pick<
+    QuickSortStep,
+    "pivotIndex" | "comparingIdx" | "swapIndices" | "subArrayRange"
+  >,
+): void {
+  const globalHighlights = buildGlobalCellHighlights(ctx, partial);
+
+  for (const node of ctx.nodes.values()) {
+    refreshNodeValuesFromArray(ctx, node);
+
+    node.cellHighlights = node.values.map((_, local) => {
+      const global = node.low + local;
+      return globalHighlights.get(global) ?? "default";
+    });
+
+    if (activeNodeId && node.id === activeNodeId) {
+      node.nodeHighlight = "active";
+    } else if (node.nodeHighlight !== "done") {
+      node.nodeHighlight = "default";
+    }
+  }
+
+  if (!activeNodeId) {
+    return;
+  }
+
+  const activeNode = ctx.nodes.get(activeNodeId);
+
+  if (!activeNode) {
+    return;
+  }
+
+  for (const node of ctx.nodes.values()) {
+    if (
+      node.id === activeNode.id ||
+      node.low > activeNode.low ||
+      node.high < activeNode.high
+    ) {
+      continue;
+    }
+
+    for (let local = 0; local < activeNode.cellHighlights.length; local += 1) {
+      const global = activeNode.low + local;
+      const activeHighlight = activeNode.cellHighlights[local];
+
+      if (
+        activeHighlight !== "pivot" &&
+        activeHighlight !== "comparing" &&
+        activeHighlight !== "sorted"
+      ) {
+        continue;
+      }
+
+      const ancestorLocal = global - node.low;
+      if (ancestorLocal < 0 || ancestorLocal >= node.cellHighlights.length) {
+        continue;
+      }
+
+      node.cellHighlights[ancestorLocal] = pickStrongerHighlight(
+        node.cellHighlights[ancestorLocal] ?? "default",
+        activeHighlight,
+      );
+    }
+  }
+}
+
+function spawnPartitionChildren(
+  ctx: StepContext,
+  low: number,
+  high: number,
+  pivotIndex: number,
+): void {
+  const parentId = rangeId(low, high);
+  const parent = ctx.nodes.get(parentId);
+  if (parent) {
+    parent.nodeHighlight = "done";
+  }
+
+  const leftHigh = pivotIndex - 1;
+  const rightLow = pivotIndex + 1;
+
+  if (low <= leftHigh) {
+    const leftId = rangeId(low, leftHigh);
+    ensureNode(ctx, low, leftHigh);
+    if (!ctx.links.some((link) => link.fromId === parentId && link.toId === leftId)) {
+      ctx.links.push({ fromId: parentId, toId: leftId });
+    }
+  }
+
+  if (rightLow <= high) {
+    const rightId = rangeId(rightLow, high);
+    ensureNode(ctx, rightLow, high);
+    if (!ctx.links.some((link) => link.fromId === parentId && link.toId === rightId)) {
+      ctx.links.push({ fromId: parentId, toId: rightId });
+    }
+  }
 }
 
 function pickPivotIndex(
@@ -130,24 +370,27 @@ function initStepCopy(strategy: PivotStrategy, size: number): string {
   }
 }
 
-function createStep(partial: QuickSortStep): QuickSortStep {
-  return {
-    ...partial,
-    sortedIndices: [...partial.sortedIndices],
-  };
-}
-
 function pushStep(
   ctx: StepContext,
-  partial: Omit<QuickSortStep, "array" | "sortedIndices">,
+  partial: Omit<
+    QuickSortStep,
+    "array" | "sortedIndices" | "nodes" | "links" | "activeNodeId"
+  >,
+  activeNodeId: string | null = rangeId(
+    partial.subArrayRange[0],
+    partial.subArrayRange[1],
+  ),
 ): void {
-  ctx.steps.push(
-    createStep({
-      ...partial,
-      array: [...ctx.arr],
-      sortedIndices: [...ctx.sortedIndices],
-    }),
-  );
+  syncTreeHighlights(ctx, activeNodeId, partial);
+
+  ctx.steps.push({
+    ...partial,
+    array: [...ctx.arr],
+    sortedIndices: [...ctx.sortedIndices],
+    nodes: cloneNodes(ctx.nodes),
+    links: cloneLinks(ctx.links),
+    activeNodeId,
+  });
 }
 
 function swapElements(
@@ -186,6 +429,9 @@ function partition(
   high: number,
 ): number {
   const t = getAlgorithmT();
+  const nodeId = rangeId(low, high);
+  ensureNode(ctx, low, high);
+
   const pivotPick = pickPivotIndex(ctx.pivotStrategy, low, high);
   const pivotChoice = pivotChoiceCopy(
     ctx.pivotStrategy,
@@ -202,9 +448,9 @@ function partition(
     rightIndex: null,
     comparingIdx: null,
     swapIndices: null,
-    activeLine: 12,
+    activeLine: 10,
     ...pivotChoice,
-  });
+  }, nodeId);
 
   if (pivotPick !== high) {
     swapElements(
@@ -216,7 +462,7 @@ function partition(
       high,
       null,
       null,
-      13,
+      11,
       t("quickSort.movePivotToEnd.statusTitle"),
       t("quickSort.movePivotToEnd.statusDetail", { pivotPick, high }),
       t("quickSort.movePivotToEnd.stepExplanation", { high }),
@@ -232,7 +478,7 @@ function partition(
     rightIndex: null,
     comparingIdx: null,
     swapIndices: null,
-    activeLine: 14,
+    activeLine: 13,
     statusTitle: t("quickSort.initPartition.statusTitle"),
     statusDetail: t("quickSort.initPartition.statusDetail", {
       pivotValue,
@@ -243,7 +489,7 @@ function partition(
       pivotValue,
       i: low - 1,
     }),
-  });
+  }, nodeId);
 
   let i = low - 1;
 
@@ -258,7 +504,7 @@ function partition(
       rightIndex: j,
       comparingIdx: j,
       swapIndices: null,
-      activeLine: 17,
+      activeLine: 15,
       statusTitle: t("quickSort.compare.statusTitle", { j }),
       statusDetail: belongsLeft
         ? t("quickSort.compare.statusDetail.left", {
@@ -280,7 +526,7 @@ function partition(
             currentValue,
             pivotValue,
           }),
-    });
+    }, nodeId);
 
     if (belongsLeft) {
       i += 1;
@@ -295,7 +541,7 @@ function partition(
           high,
           i,
           j,
-          19,
+          17,
           t("quickSort.swapIntoLeft.statusTitle"),
           t("quickSort.swapIntoLeft.statusDetail", { i, j }),
           t("quickSort.swapIntoLeft.stepExplanation", { i, j }),
@@ -308,11 +554,11 @@ function partition(
           rightIndex: j,
           comparingIdx: j,
           swapIndices: null,
-          activeLine: 18,
+          activeLine: 16,
           statusTitle: t("quickSort.advanceBoundary.statusTitle"),
           statusDetail: t("quickSort.advanceBoundary.statusDetail", { i, j }),
           stepExplanation: t("quickSort.advanceBoundary.stepExplanation", { i }),
-        });
+        }, nodeId);
       }
     }
   }
@@ -328,7 +574,7 @@ function partition(
     pivotFinalIndex,
     i,
     high,
-    22,
+    18,
     t("quickSort.placePivot.statusTitle"),
     t("quickSort.placePivot.statusDetail", { high, pivotIndex: pivotFinalIndex }),
     t("quickSort.placePivot.stepExplanation", {
@@ -338,6 +584,7 @@ function partition(
   );
 
   ctx.sortedIndices.add(pivotFinalIndex);
+  spawnPartitionChildren(ctx, low, high, pivotFinalIndex);
 
   pushStep(ctx, {
     subArrayRange: [low, high],
@@ -346,7 +593,7 @@ function partition(
     rightIndex: null,
     comparingIdx: null,
     swapIndices: null,
-    activeLine: 23,
+    activeLine: 19,
     statusTitle: t("quickSort.partitionComplete.statusTitle"),
     statusDetail: t("quickSort.partitionComplete.statusDetail", {
       pivotValue: ctx.arr[pivotFinalIndex],
@@ -359,7 +606,7 @@ function partition(
     stepExplanation: t("quickSort.partitionComplete.stepExplanation", {
       pivotIndex: pivotFinalIndex,
     }),
-  });
+  }, nodeId);
 
   return pivotFinalIndex;
 }
@@ -370,10 +617,18 @@ function quickSortRange(
   high: number,
 ): void {
   const t = getAlgorithmT();
+  const nodeId = rangeId(low, high);
+  ensureNode(ctx, low, high);
 
   if (low >= high) {
     if (low === high && low >= 0 && low < ctx.arr.length) {
       ctx.sortedIndices.add(low);
+      const leaf = ctx.nodes.get(nodeId);
+      if (leaf) {
+        leaf.nodeHighlight = "done";
+        leaf.cellHighlights = leaf.values.map(() => "sorted");
+      }
+
       pushStep(ctx, {
         subArrayRange: [low, high],
         pivotIndex: low,
@@ -381,11 +636,11 @@ function quickSortRange(
         rightIndex: null,
         comparingIdx: null,
         swapIndices: null,
-        activeLine: 2,
+        activeLine: 4,
         statusTitle: t("quickSort.baseCase.statusTitle"),
         statusDetail: t("quickSort.baseCase.statusDetail", { low }),
         stepExplanation: t("quickSort.baseCase.stepExplanation"),
-      });
+      }, nodeId);
     }
     return;
   }
@@ -397,7 +652,7 @@ function quickSortRange(
     rightIndex: null,
     comparingIdx: null,
     swapIndices: null,
-    activeLine: 2,
+    activeLine: 5,
     statusTitle: t("quickSort.recursiveCall.statusTitle"),
     statusDetail: t("quickSort.recursiveCall.statusDetail", {
       low,
@@ -405,13 +660,14 @@ function quickSortRange(
       count: high - low + 1,
     }),
     stepExplanation: t("quickSort.recursiveCall.stepExplanation", { low, high }),
-  });
+  }, nodeId);
 
   const pivotIndex = partition(ctx, low, high);
   const leftHigh = pivotIndex - 1;
   const rightLow = pivotIndex + 1;
 
   if (low <= leftHigh) {
+    const leftId = rangeId(low, leftHigh);
     pushStep(ctx, {
       subArrayRange: [low, leftHigh],
       pivotIndex: null,
@@ -429,12 +685,13 @@ function quickSortRange(
         low,
         high: leftHigh,
       }),
-    });
+    }, leftId);
 
     quickSortRange(ctx, low, leftHigh);
   }
 
   if (rightLow <= high) {
+    const rightId = rangeId(rightLow, high);
     pushStep(ctx, {
       subArrayRange: [rightLow, high],
       pivotIndex: null,
@@ -452,7 +709,7 @@ function quickSortRange(
         low: rightLow,
         high,
       }),
-    });
+    }, rightId);
 
     quickSortRange(ctx, rightLow, high);
   }
@@ -468,6 +725,8 @@ export function generateQuickSortSteps(
   const ctx: StepContext = {
     arr,
     sortedIndices: new Set<number>(),
+    nodes: new Map(),
+    links: [],
     steps: [],
     pivotStrategy,
   };
@@ -478,6 +737,13 @@ export function generateQuickSortSteps(
 
   if (n === 1) {
     ctx.sortedIndices.add(0);
+    ensureNode(ctx, 0, 0);
+    const single = ctx.nodes.get(rangeId(0, 0));
+    if (single) {
+      single.nodeHighlight = "done";
+      single.cellHighlights = ["sorted"];
+    }
+
     pushStep(ctx, {
       subArrayRange: [0, 0],
       pivotIndex: 0,
@@ -485,14 +751,16 @@ export function generateQuickSortSteps(
       rightIndex: null,
       comparingIdx: null,
       swapIndices: null,
-      activeLine: 2,
+      activeLine: 4,
       statusTitle: t("quickSort.singleElement.statusTitle"),
       statusDetail: t("quickSort.singleElement.statusDetail"),
       stepExplanation: t("quickSort.singleElement.stepExplanation"),
       isComplete: true,
-    });
+    }, rangeId(0, 0));
     return ctx.steps;
   }
+
+  ensureNode(ctx, 0, n - 1);
 
   pushStep(ctx, {
     subArrayRange: [0, n - 1],
@@ -501,11 +769,11 @@ export function generateQuickSortSteps(
     rightIndex: null,
     comparingIdx: null,
     swapIndices: null,
-    activeLine: 1,
+    activeLine: 3,
     statusTitle: t("quickSort.init.statusTitle"),
     statusDetail: t("quickSort.init.statusDetail", { n, strategy: pivotStrategy }),
     stepExplanation: initStepCopy(pivotStrategy, n),
-  });
+  }, rangeId(0, n - 1));
 
   quickSortRange(ctx, 0, n - 1);
 
@@ -513,6 +781,11 @@ export function generateQuickSortSteps(
     ctx.sortedIndices.add(index);
   }
 
+  for (const node of ctx.nodes.values()) {
+    node.nodeHighlight = "done";
+    node.cellHighlights = node.values.map(() => "sorted");
+  }
+
   pushStep(ctx, {
     subArrayRange: [0, n - 1],
     pivotIndex: null,
@@ -520,12 +793,12 @@ export function generateQuickSortSteps(
     rightIndex: null,
     comparingIdx: null,
     swapIndices: null,
-    activeLine: 9,
+    activeLine: 4,
     statusTitle: t("quickSort.complete.statusTitle"),
     statusDetail: t("quickSort.complete.statusDetail"),
     stepExplanation: t("quickSort.complete.stepExplanation"),
     isComplete: true,
-  });
+  }, null);
 
   return ctx.steps;
 }

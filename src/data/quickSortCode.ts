@@ -2,7 +2,7 @@ import type { CodeLanguage } from "./binarySearchCode";
 
 export const quickSortCode: Record<CodeLanguage, string[]> = {
   python: [
-    "# Randomized Quicksort — in-place Lomuto partition",
+    "# Randomized Quicksort - in-place Lomuto partition",
     "",
     "def quicksort(arr, low, high):",
     "    if low < high:",
@@ -23,7 +23,7 @@ export const quickSortCode: Record<CodeLanguage, string[]> = {
     "    return i + 1",
   ],
   javascript: [
-    "// Randomized Quicksort — in-place Lomuto partition",
+    "// Randomized Quicksort - in-place Lomuto partition",
     "",
     "function quickSort(arr, low, high) {",
     "  if (low < high) {",
@@ -49,7 +49,7 @@ export const quickSortCode: Record<CodeLanguage, string[]> = {
     "}",
   ],
   java: [
-    "// Randomized Quicksort — in-place Lomuto partition",
+    "// Randomized Quicksort - in-place Lomuto partition",
     "",
     "void quickSort(int[] arr, int low, int high) {",
     "    if (low < high) {",

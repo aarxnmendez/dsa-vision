@@ -25,7 +25,8 @@ export type SortBarHighlight =
   | "sorted"
   | "minimum"
   | "comparing"
-  | "swapping";
+  | "swapping"
+  | "pivot";
 
 export interface SortBarState {
   index: number;

@@ -91,13 +91,17 @@ export const pages = {
   quickSort: {
     title: "Ordenación Rápida",
     description:
-      "Ordenación divide y vencerás que particiona alrededor de un pivote y ordena subarrays recursivamente.",
+      "Algoritmo de ordenación de tipo divide y vencerás que particiona alrededor de un pivote y ordena los sub-arrays de forma recursiva.",
     customInputHint:
       "Introduce valores en cualquier orden. Quicksort los ordenará en el propio array.",
+    headerComplexity: {
+      time: "O(n log n)",
+      space: "O(log n)",
+    },
     complexity: {
       time: {
         title: "Tiempo logarítmico promedio",
-        text: "Quicksort con pivote aleatorio elige un pivote aleatorio en cada partición, manteniendo profundidad de recursión esperada O(log n). Los casos promedio y mejor corren en O(n log n); una secuencia de pivotes desafortunada puede llegar a O(n²).",
+        text: "Quicksort con pivote aleatorio elige un pivote aleatorio en cada partición, manteniendo profundidad de recursión esperada O(log n). Los casos promedio y mejor se ejecutan en O(n log n); una secuencia de pivotes desafortunada puede llegar a O(n²).",
       },
       space: {
         title: "Pila de recursión logarítmica",

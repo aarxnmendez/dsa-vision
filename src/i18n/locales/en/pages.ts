@@ -90,6 +90,10 @@ export const pages = {
     description:
       "Divide-and-conquer sort that partitions around a pivot and recursively sorts sub-arrays.",
     customInputHint: "Enter values in any order. Quicksort will sort them in place.",
+    headerComplexity: {
+      time: "O(n log n)",
+      space: "O(log n)",
+    },
     complexity: {
       time: {
         title: "Logarithmic Average Time",
