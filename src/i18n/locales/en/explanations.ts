@@ -196,6 +196,29 @@ export const explanations = {
       "Prefer arrays when you need O(1) index access, cache locality, or binary search on sorted data.",
     ],
   },
+  queue: {
+    howItWorks:
+      "A queue is a linear FIFO (First In, First Out) data structure. New values enter at the rear and leave from the front. Enqueue appends at the rear, dequeue removes the front element, and peek inspects the front without changing the queue order.",
+    keyConcepts: [
+      "FIFO order: the oldest enqueued element is removed first.",
+      "Front and rear pointers: enqueue and dequeue update ends in O(1) time with a proper implementation.",
+      "Bounded capacity: enqueue on a full queue triggers overflow.",
+      "Underflow: dequeue or peek on an empty queue is invalid and must not mutate the structure.",
+      "BFS preview: graph breadth-first search uses a queue to visit nodes level by level.",
+    ],
+    complexityRows: [
+      { label: "Enqueue", value: "O(1)" },
+      { label: "Dequeue", value: "O(1)" },
+      { label: "Peek", value: "O(1)" },
+      { label: "Clear", value: "O(n)" },
+      { label: "Space", value: "O(n)" },
+    ],
+    whenToUse: [
+      "Breadth-first search (BFS) on graphs and trees.",
+      "Task schedulers, print job buffers, and customer service lines.",
+      "Rate limiting, message brokers, and any workload that must preserve arrival order.",
+    ],
+  },
   stack: {
     howItWorks:
       "A stack is a linear LIFO (Last In, First Out) data structure. Elements are added and removed strictly from the top. Push inserts an element onto the top, pop removes the most recent element, and peek accesses the top element without mutating the stack.",

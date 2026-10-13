@@ -30,6 +30,8 @@ export const common = {
       "Configure the data in the left panel, then press Play or Forward to begin.",
     stack:
       "Configure the stack parameters in the left panel, then press Play or Forward to step through operations.",
+    queue:
+      "Choose a queue operation in the left panel, then press Play or Forward to step through enqueue, dequeue, peek, or clear.",
   },
   player: {
     speed: "Speed",

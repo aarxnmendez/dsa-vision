@@ -196,6 +196,29 @@ export const explanations = {
       "Preferir arrays cuando necesitas acceso O(1) por índice, localidad de caché o búsqueda binaria.",
     ],
   },
+  queue: {
+    howItWorks:
+      "Una cola es una estructura lineal FIFO (primero en entrar, primero en salir). Los valores nuevos entran por el final y salen por el frente. Encolar añade al final, desencolar extrae del frente y consultar frente inspecciona el primer elemento sin alterar el orden.",
+    keyConcepts: [
+      "Orden FIFO: el elemento encolado más antiguo sale primero.",
+      "Punteros de frente y final: con una implementación adecuada, encolar y desencolar son O(1).",
+      "Capacidad limitada: encolar en una cola llena provoca desbordamiento.",
+      "Subdesbordamiento: desencolar o consultar frente en cola vacía es inválido y no debe modificar la estructura.",
+      "Avance hacia BFS: la búsqueda en anchura en grafos usa una cola para visitar nodos por niveles.",
+    ],
+    complexityRows: [
+      { label: "Encolar", value: "O(1)" },
+      { label: "Desencolar", value: "O(1)" },
+      { label: "Consultar frente", value: "O(1)" },
+      { label: "Vaciar", value: "O(n)" },
+      { label: "Espacio", value: "O(n)" },
+    ],
+    whenToUse: [
+      "Búsqueda en anchura (BFS) en grafos y árboles.",
+      "Planificadores de tareas, colas de impresión y líneas de atención.",
+      "Limitación de tasa, brokers de mensajes y cualquier flujo que deba respetar el orden de llegada.",
+    ],
+  },
   stack: {
     howItWorks:
       "Una pila es una estructura lineal LIFO (último en entrar, primero en salir). Los elementos se añaden y eliminan estrictamente desde la cima. Apilar inserta en la cima, desapilar elimina el más reciente y consultar tope accede sin modificar la pila.",

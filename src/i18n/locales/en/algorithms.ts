@@ -710,6 +710,150 @@ export const algorithms = {
       },
     },
   },
+  queueOperations: {
+    operations: {
+      enqueue: "Enqueue",
+      dequeue: "Dequeue",
+      peek: "Peek",
+      clear: "Clear",
+    },
+    enqueue: {
+      intro: {
+        statusTitle: "Enqueue {{value}}",
+        statusDetail: "Add the new element at the rear of the queue.",
+        stepExplanation:
+          "Preparing to enqueue value {{value}}. Queues always insert at the rear end.",
+      },
+      overflow: {
+        statusTitle: "Queue overflow!",
+        statusDetail:
+          "Queue overflow! Maximum capacity of {{maxCapacity}} elements reached. Enqueue rejected.",
+        stepExplanation:
+          "Enqueue rejected in O(1): the bounded queue already stores {{maxCapacity}} elements. No free slot remains at the rear.",
+      },
+      incoming: {
+        statusTitle: "Incoming element",
+        statusDetail:
+          "Placing value {{value}} at the end of the queue.",
+        stepMessage:
+          "Placing value {{value}} at the end of the queue.",
+        stepExplanation:
+          "The new value {{value}} occupies the next free slot at the rear. The rear pointer still marks the previous last element until enqueue finishes.",
+      },
+      complete: {
+        statusTitle: "Enqueue complete",
+        statusDetail:
+          "Enqueue completed: rear now points to the new element {{value}}.",
+        stepExplanation:
+          "Enqueue completed: rear now points to the new element {{value}}. The front element is still the next value to dequeue.",
+      },
+    },
+    dequeue: {
+      intro: {
+        statusTitle: "Dequeue front element",
+        statusDetail: "Remove and return the oldest enqueued value.",
+        stepMessage: "Preparing to dequeue the front element.",
+        stepExplanation: {
+          withFront:
+            "Preparing to dequeue. The operation targets the front element with value {{value}}.",
+          empty: "Preparing to dequeue the front element.",
+        },
+      },
+      underflow: {
+        statusTitle: "Queue underflow!",
+        statusDetail:
+          "Queue underflow! Cannot dequeue or peek on an empty queue.",
+        stepExplanation:
+          "Dequeue rejected in O(1): the queue is empty and there is no front element to remove.",
+      },
+      advanceFront: {
+        statusTitle: "Advance front pointer",
+        statusDetail: "Move the front pointer to the next element in the queue.",
+        stepMessage:
+          "Front advances to the next element. {{value}} stays visible as outgoing until consolidation.",
+        stepExplanation: {
+          withNext:
+            "The front pointer moves to index 1 (value {{nextValue}}). Value {{value}} at index 0 is marked outgoing toward the exit.",
+          emptyAfter:
+            "Value {{value}} at index 0 is marked outgoing. After consolidation the queue becomes empty.",
+        },
+      },
+      complete: {
+        statusTitle: "Dequeue complete",
+        statusDetail:
+          "Dequeue complete: element {{value}} removed from the front in O(1) time.",
+        stepExplanation: {
+          withNext:
+            "Element {{value}} left the queue. FIFO order advances and the next dequeue will read the new front.",
+          emptyAfter:
+            "Element {{value}} left the queue. The structure is now empty.",
+        },
+      },
+    },
+    peek: {
+      intro: {
+        statusTitle: "Peek at front",
+        statusDetail: "Inspect the front element without removing it.",
+        stepExplanation: {
+          withFront:
+            "Reading the front element (value {{value}}). Peek inspects without mutating the queue.",
+          empty: "Preparing to peek at the front without mutating the queue.",
+        },
+      },
+      underflow: {
+        statusTitle: "Queue underflow!",
+        statusDetail:
+          "Queue underflow! Cannot dequeue or peek on an empty queue.",
+        stepExplanation:
+          "Peek rejected in O(1): the queue is empty and there is no front element to read.",
+      },
+      read: {
+        statusTitle: "Read front",
+        statusDetail: "Front = {{value}}",
+        stepMessage: "Observe {{value}}: queue size unchanged.",
+        stepExplanation:
+          "Reading front value {{value}}. Peek does not change FIFO order or size.",
+      },
+      complete: {
+        statusTitle: "Peek complete",
+        statusDetail: "Value {{value}} at front. Size still {{size}}.",
+        stepMessage: "No elements were removed.",
+        stepExplanation:
+          "Peek complete. Queue order and size are unchanged.",
+      },
+    },
+    clear: {
+      intro: {
+        statusTitle: "Clear the queue",
+        statusDetail: "Remove every element until the structure is empty.",
+        stepExplanation: {
+          withElements:
+            "Preparing to clear the queue. {{count}} stored element(s) will be dropped from front to rear.",
+          empty: "Preparing to clear the queue. No elements are currently stored.",
+        },
+      },
+      alreadyEmpty: {
+        statusTitle: "Already empty",
+        statusDetail: "Nothing to remove.",
+        stepMessage: "Clear on an empty queue is a no-op.",
+        stepExplanation:
+          "Clear on an empty queue completes in O(1): no elements require removal.",
+      },
+      discard: {
+        statusTitle: "Discard all elements",
+        statusDetail: "Removing {{count}} element(s).",
+        stepMessage: "Every slot from front to rear is cleared.",
+        stepExplanation:
+          "Clearing all {{count}} elements sequentially (O(n)).",
+      },
+      complete: {
+        statusTitle: "Queue cleared",
+        statusDetail: "Queue cleared: all elements removed in O(n) time.",
+        stepExplanation:
+          "Clear complete. Enqueue can resume from an empty queue in O(1).",
+      },
+    },
+  },
   linkedListOperations: {
     operations: {
       "insert-at-head": "Insert at Head",

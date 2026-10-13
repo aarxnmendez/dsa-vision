@@ -35,6 +35,9 @@ const LinkedListPage = lazy(() =>
 const StackPage = lazy(() =>
   import("./pages/StackPage").then((module) => ({ default: module.StackPage })),
 );
+const QueuePage = lazy(() =>
+  import("./pages/QueuePage").then((module) => ({ default: module.QueuePage })),
+);
 const InsertionSortPage = lazy(() =>
   import("./pages/InsertionSortPage").then((module) => ({
     default: module.InsertionSortPage,
@@ -81,6 +84,7 @@ function App() {
           <Route path={APP_ROUTES.array} element={<ArrayPage />} />
           <Route path={APP_ROUTES.linkedList} element={<LinkedListPage />} />
           <Route path={APP_ROUTES.stack} element={<StackPage />} />
+          <Route path={APP_ROUTES.queue} element={<QueuePage />} />
           <Route path={APP_ROUTES.binarySearch} element={<BinarySearchPage />} />
           <Route
             path={APP_ROUTES.sequentialSearch}

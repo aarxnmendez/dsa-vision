@@ -49,6 +49,12 @@ export const catalog = {
         "Pila LIFO con apilar, desapilar y consultar tope en O(1). Capacidad limitada provoca desbordamiento.",
       complexity: "O(1)–O(n)",
     },
+    queue: {
+      title: "Cola",
+      description:
+        "Cola FIFO con encolar, desencolar y consultar frente en O(1). Base conceptual para búsqueda en anchura.",
+      complexity: "O(1)",
+    },
     "binary-search": {
       title: "Búsqueda binaria",
       description:

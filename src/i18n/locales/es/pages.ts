@@ -139,6 +139,22 @@ export const pages = {
       },
     },
   },
+  queue: {
+    title: "Cola (FIFO)",
+    seoTitle: "Estructura de Datos Cola",
+    description:
+      "Estructura FIFO con encolar, desencolar y consultar frente en O(1). La capacidad limitada provoca desbordamiento al encolar.",
+    complexity: {
+      time: {
+        title: "Operaciones nucleares en tiempo constante",
+        text: "Encolar, desencolar y consultar el frente solo actualizan los punteros de frente y final, así que cada una se ejecuta en tiempo O(1). Vaciar todos los elementos requiere O(n).",
+      },
+      space: {
+        title: "Espacio auxiliar lineal",
+        text: "La complejidad espacial es O(n) según los elementos almacenados, más O(1) para los punteros de frente y final.",
+      },
+    },
+  },
   stack: {
     title: "Pila",
     description:

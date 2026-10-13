@@ -11,7 +11,8 @@ export type ExplanationKey =
   | "quickSort"
   | "array"
   | "linkedList"
-  | "stack";
+  | "stack"
+  | "queue";
 
 export function useAlgorithmExplanation(
   key: ExplanationKey,

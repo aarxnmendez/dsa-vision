@@ -30,6 +30,8 @@ export const common = {
       "Configura los datos en el panel izquierdo y pulsa Reproducir o Adelante para comenzar.",
     stack:
       "Configura los parámetros de la pila en el panel izquierdo y pulsa Reproducir o Adelante para recorrer las operaciones.",
+    queue:
+      "Elige una operación de cola en el panel izquierdo y pulsa Reproducir o Adelante para recorrer encolar, desencolar, consultar o vaciar.",
   },
   player: {
     speed: "Velocidad",

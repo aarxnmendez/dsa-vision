@@ -9,6 +9,7 @@ const PAGE_SEO_KEYS: Partial<Record<AppRoute, ExplanationKey | "bigO">> = {
   [APP_ROUTES.array]: "array",
   [APP_ROUTES.linkedList]: "linkedList",
   [APP_ROUTES.stack]: "stack",
+  [APP_ROUTES.queue]: "queue",
   [APP_ROUTES.binarySearch]: "binarySearch",
   [APP_ROUTES.sequentialSearch]: "sequentialSearch",
   [APP_ROUTES.selectionSort]: "selectionSort",
@@ -77,7 +78,9 @@ export function DocumentMeta() {
       ogTitle = title;
       ogDescription = description;
     } else if (pageKey) {
-      const pageTitle = tPages(`${pageKey}.title`);
+      const pageTitle = tPages(`${pageKey}.seoTitle`, {
+        defaultValue: tPages(`${pageKey}.title`),
+      });
       title = `${pageTitle}${tSeo("titleSuffix")}`;
       description = tPages(`${pageKey}.description`);
       ogTitle = title;

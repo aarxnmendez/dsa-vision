@@ -49,6 +49,12 @@ export const catalog = {
         "LIFO stack with O(1) push, pop, and peek. Bounded capacity triggers overflow.",
       complexity: "O(1)–O(n)",
     },
+    queue: {
+      title: "Queue",
+      description:
+        "FIFO queue with O(1) enqueue, dequeue, and peek. Foundation for breadth-first search.",
+      complexity: "O(1)",
+    },
     "binary-search": {
       title: "Binary Search",
       description:

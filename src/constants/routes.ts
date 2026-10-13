@@ -3,6 +3,7 @@ export const APP_ROUTES = {
   array: "/array",
   linkedList: "/linked-list",
   stack: "/stack",
+  queue: "/queue",
   binarySearch: "/binary-search",
   selectionSort: "/selection-sort",
   insertionSort: "/insertion-sort",
@@ -18,6 +19,7 @@ export type VisualizerRoute =
   | typeof APP_ROUTES.array
   | typeof APP_ROUTES.linkedList
   | typeof APP_ROUTES.stack
+  | typeof APP_ROUTES.queue
   | typeof APP_ROUTES.binarySearch
   | typeof APP_ROUTES.sequentialSearch
   | typeof APP_ROUTES.selectionSort

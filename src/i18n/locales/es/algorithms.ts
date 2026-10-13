@@ -709,7 +709,151 @@ export const algorithms = {
         statusTitle: "Pila limpiada",
         statusDetail: "Pila limpiada: todos los elementos eliminados en tiempo O(n).",
         stepExplanation:
-          "Limpieza completada. Cada ranura quedó vacía en tiempo O(n) — apilar puede reanudarse desde una pila vacía en O(1).",
+          "Limpieza completada. Cada ranura quedó vacía en tiempo O(n). Apilar puede reanudarse desde una pila vacía en O(1).",
+      },
+    },
+  },
+  queueOperations: {
+    operations: {
+      enqueue: "Encolar",
+      dequeue: "Desencolar",
+      peek: "Consultar frente",
+      clear: "Vaciar",
+    },
+    enqueue: {
+      intro: {
+        statusTitle: "Encolar {{value}}",
+        statusDetail: "Añade el nuevo elemento al final de la cola.",
+        stepExplanation:
+          "Preparando encolar el valor {{value}}. Las colas insertan siempre por el final.",
+      },
+      overflow: {
+        statusTitle: "Desbordamiento de cola",
+        statusDetail:
+          "Desbordamiento: capacidad máxima de {{maxCapacity}} elementos alcanzada. Encolar rechazado.",
+        stepExplanation:
+          "Encolar rechazado en O(1): la cola acotada ya almacena {{maxCapacity}} elementos. No queda hueco libre al final.",
+      },
+      incoming: {
+        statusTitle: "Elemento entrante",
+        statusDetail:
+          "Colocando el valor {{value}} en el final de la cola.",
+        stepMessage:
+          "Colocando el valor {{value}} en el final de la cola.",
+        stepExplanation:
+          "El nuevo valor {{value}} ocupa la siguiente casilla libre al final. El puntero rear sigue en el último elemento anterior hasta completar el encolado.",
+      },
+      complete: {
+        statusTitle: "Encolar completado",
+        statusDetail:
+          "Encolado completado: rear apunta ahora al nuevo elemento {{value}}.",
+        stepExplanation:
+          "Encolado completado: rear apunta ahora al nuevo elemento {{value}}. El frente sigue siendo el siguiente valor a desencolar.",
+      },
+    },
+    dequeue: {
+      intro: {
+        statusTitle: "Desencolar del frente",
+        statusDetail: "Extrae y devuelve el valor más antiguo.",
+        stepMessage: "Preparando para desencolar el elemento del frente.",
+        stepExplanation: {
+          withFront:
+            "Preparando desencolar. La operación apunta al frente con valor {{value}}.",
+          empty: "Preparando desencolar el elemento del frente.",
+        },
+      },
+      underflow: {
+        statusTitle: "Subdesbordamiento de cola",
+        statusDetail:
+          "Subdesbordamiento: no se puede desencolar ni consultar frente en una cola vacía.",
+        stepExplanation:
+          "Desencolar rechazado en O(1): la cola está vacía y no hay frente que eliminar.",
+      },
+      advanceFront: {
+        statusTitle: "Avanzar puntero front",
+        statusDetail: "Mueve el puntero front al siguiente elemento de la cola.",
+        stepMessage:
+          "Front avanza al siguiente elemento. {{value}} sigue visible como saliente hasta consolidar.",
+        stepExplanation: {
+          withNext:
+            "El puntero front pasa al índice 1 (valor {{nextValue}}). El valor {{value}} en el índice 0 queda marcado como saliente hacia la salida.",
+          emptyAfter:
+            "El valor {{value}} en el índice 0 queda marcado como saliente. Tras consolidar, la cola queda vacía.",
+        },
+      },
+      complete: {
+        statusTitle: "Desencolar completado",
+        statusDetail:
+          "Desencolar completado: elemento {{value}} eliminado del frente en O(1).",
+        stepExplanation: {
+          withNext:
+            "El elemento {{value}} salió de la cola. El orden FIFO avanza y el siguiente desencolado leerá el nuevo frente.",
+          emptyAfter:
+            "El elemento {{value}} salió de la cola. La estructura queda vacía.",
+        },
+      },
+    },
+    peek: {
+      intro: {
+        statusTitle: "Consultar frente",
+        statusDetail: "Inspecciona el frente sin eliminarlo.",
+        stepExplanation: {
+          withFront:
+            "Leyendo el frente (valor {{value}}). Consultar no modifica la cola.",
+          empty: "Preparando consultar el frente sin modificar la cola.",
+        },
+      },
+      underflow: {
+        statusTitle: "Subdesbordamiento de cola",
+        statusDetail:
+          "Subdesbordamiento: no se puede desencolar ni consultar frente en una cola vacía.",
+        stepExplanation:
+          "Consultar rechazado en O(1): la cola está vacía y no hay frente que leer.",
+      },
+      read: {
+        statusTitle: "Leer frente",
+        statusDetail: "Frente = {{value}}",
+        stepMessage: "Observa {{value}}: el tamaño no cambia.",
+        stepExplanation:
+          "Leyendo el valor {{value}} del frente. Consultar no altera el orden FIFO ni el tamaño.",
+      },
+      complete: {
+        statusTitle: "Consulta completada",
+        statusDetail: "Valor {{value}} en el frente. Tamaño sigue siendo {{size}}.",
+        stepMessage: "No se eliminó ningún elemento.",
+        stepExplanation:
+          "Consulta completada. El orden y el tamaño de la cola no cambian.",
+      },
+    },
+    clear: {
+      intro: {
+        statusTitle: "Vaciar la cola",
+        statusDetail: "Elimina todos los elementos hasta dejarla vacía.",
+        stepExplanation: {
+          withElements:
+            "Preparando vaciar la cola. Se descartarán {{count}} elemento(s) del frente al final.",
+          empty: "Preparando vaciar la cola. No hay elementos almacenados.",
+        },
+      },
+      alreadyEmpty: {
+        statusTitle: "Ya está vacía",
+        statusDetail: "No hay nada que eliminar.",
+        stepMessage: "Vaciar una cola vacía no hace nada.",
+        stepExplanation:
+          "Vaciar una cola vacía termina en O(1): no hay elementos que retirar.",
+      },
+      discard: {
+        statusTitle: "Descartar todos los elementos",
+        statusDetail: "Eliminando {{count}} elemento(s).",
+        stepMessage: "Se limpian todas las posiciones del frente al final.",
+        stepExplanation:
+          "Eliminando los {{count}} elementos de forma secuencial (O(n)).",
+      },
+      complete: {
+        statusTitle: "Cola vaciada",
+        statusDetail: "Cola vaciada: todos los elementos eliminados en O(n).",
+        stepExplanation:
+          "Vaciado completado. Encolar puede reanudarse desde una cola vacía en O(1).",
       },
     },
   },

@@ -1,7 +1,7 @@
 interface StatusCardProps {
   title: string;
   detail: string;
-  pointerMovement?: string;
+  pointerMovement?: string | string[];
   isSuccess?: boolean;
   isError?: boolean;
 }
@@ -13,6 +13,12 @@ export function StatusCard({
   isSuccess = false,
   isError = false,
 }: StatusCardProps) {
+  const pointerLines = pointerMovement
+    ? Array.isArray(pointerMovement)
+      ? pointerMovement
+      : [pointerMovement]
+    : [];
+
   return (
     <div
       className={[
@@ -44,11 +50,14 @@ export function StatusCard({
       >
         {detail}
       </p>
-      {pointerMovement && (
-        <p className="font-body-md text-body-md font-bold leading-snug text-primary">
-          {pointerMovement}
+      {pointerLines.map((line, lineIndex) => (
+        <p
+          key={`${lineIndex}-${line}`}
+          className="font-body-md text-body-md font-bold leading-snug text-primary"
+        >
+          {line}
         </p>
-      )}
+      ))}
     </div>
   );
 }

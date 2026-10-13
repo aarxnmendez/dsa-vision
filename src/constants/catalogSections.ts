@@ -8,7 +8,7 @@ export interface CatalogSectionDefinition {
 export const CATALOG_SECTIONS: readonly CatalogSectionDefinition[] = [
   {
     id: "dataStructures",
-    algorithmIds: ["array", "linked-list", "stack"],
+    algorithmIds: ["array", "linked-list", "stack", "queue"],
   },
   {
     id: "searching",

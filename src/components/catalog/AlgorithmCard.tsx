@@ -58,7 +58,6 @@ export function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
   const complexity = tCatalog(`algorithms.${algorithm.id}.complexity`, {
     defaultValue: algorithm.complexity,
   });
-
   return (
     <article
       className={[

@@ -511,3 +511,68 @@ export const STACK_LEGEND_SWATCH_CLASS: Record<StackLegendToken, string> = {
   incoming: "border border-solid border-cyan-500 bg-cyan-50",
   delete: "border border-solid border-orange-500 bg-orange-50",
 };
+
+export const QUEUE_BUCKET_CLASS = STACK_BUCKET_CLASS;
+export const QUEUE_BUCKET_ERROR_CLASS = STACK_BUCKET_ERROR_CLASS;
+export const QUEUE_CAPACITY_LABEL_CLASS = STACK_CAPACITY_LABEL_CLASS;
+export const QUEUE_CAPACITY_LABEL_NEUTRAL_CLASS =
+  STACK_CAPACITY_LABEL_NEUTRAL_CLASS;
+export const QUEUE_CAPACITY_LABEL_OVERFLOW_CLASS =
+  STACK_CAPACITY_LABEL_OVERFLOW_CLASS;
+
+export const QUEUE_BLOCK_IDLE_FRONT: StackBlockStyle = {
+  fill: "#eff6ff",
+  stroke: "#3b82f6",
+  strokeWidth: 2,
+  textFill: "#1e3a8a",
+  textOpacity: 1,
+  fontWeight: 700,
+};
+
+export const QUEUE_BLOCK_IDLE_REAR: StackBlockStyle = {
+  fill: "#f0fdf4",
+  stroke: "#22c55e",
+  strokeWidth: 2,
+  textFill: "#166534",
+  textOpacity: 1,
+  fontWeight: 700,
+};
+
+export const QUEUE_BLOCK_IDLE_BODY: StackBlockStyle = {
+  fill: "#f8fafc",
+  stroke: "#cbd5e1",
+  strokeWidth: 1.5,
+  textFill: "#64748b",
+  textOpacity: 0.4,
+  fontWeight: 500,
+};
+
+export const QUEUE_BLOCK_HIGHLIGHT_STYLE: Record<
+  import("../types/queueStructure").QueueItemHighlight,
+  StackBlockStyle | null
+> = {
+  default: null,
+  enqueueing: STACK_BLOCK_HIGHLIGHT_STYLE.pushing!,
+  dequeuing: STACK_BLOCK_HIGHLIGHT_STYLE.popping!,
+  outgoing: STACK_BLOCK_HIGHLIGHT_STYLE.popping!,
+  peeking: STACK_BLOCK_HIGHLIGHT_STYLE.peeking!,
+  found: STACK_BLOCK_HIGHLIGHT_STYLE.found!,
+  clearing: STACK_BLOCK_HIGHLIGHT_STYLE.clearing!,
+  removed: STACK_BLOCK_HIGHLIGHT_STYLE.removed!,
+};
+
+export type QueueLegendToken = "front" | "rear" | "incoming" | "outgoing";
+
+export const QUEUE_LEGEND_ITEMS: { token: QueueLegendToken }[] = [
+  { token: "front" },
+  { token: "rear" },
+  { token: "incoming" },
+  { token: "outgoing" },
+];
+
+export const QUEUE_LEGEND_SWATCH_CLASS: Record<QueueLegendToken, string> = {
+  front: "border border-solid border-blue-500 bg-blue-50",
+  rear: "border border-solid border-emerald-500 bg-emerald-50",
+  incoming: "border border-solid border-cyan-500 bg-cyan-50",
+  outgoing: "border border-solid border-orange-500 bg-orange-50",
+};

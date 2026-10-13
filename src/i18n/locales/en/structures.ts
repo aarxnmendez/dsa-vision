@@ -44,6 +44,29 @@ export const structures = {
       reverse: "Reverse — O(n)",
     },
   },
+  queue: {
+    initialSize: "Initial Queue Size",
+    customInputDescription:
+      "Enter front-to-rear values in traversal order (max {{max}} elements).",
+    queueOperation: "Queue Operation",
+    valueToEnqueue: "Value to Enqueue",
+    capacityLoaded: "Capacity: {{loaded}} / {{max}} elements loaded.",
+    statusReturnedValue: "Returned value: {{value}}",
+    statusFrontIndex: "Front index: {{index}}",
+    statusRearIndex: "Rear index: {{index}}",
+    statusFrontValue: "Front value: {{value}}",
+    statusCapacitySummary: "Capacity: {{size}} / {{max}}",
+    operations: {
+      enqueue: "Enqueue",
+      enqueueDescription: "O(1) - add at rear",
+      dequeue: "Dequeue",
+      dequeueDescription: "O(1) - remove front",
+      peek: "Peek",
+      peekDescription: "O(1) - read front",
+      clear: "Clear",
+      clearDescription: "O(n) - empty queue",
+    },
+  },
   stack: {
     initialSize: "Initial Stack Size",
     customInputDescription:
@@ -83,6 +106,12 @@ export const structures = {
       incoming: "Push / Incoming",
       delete: "Pop / Error",
     },
+    queue: {
+      front: "Front",
+      rear: "Rear",
+      incoming: "Enqueue / Incoming",
+      outgoing: "Dequeue / Outgoing",
+    },
   },
   quickSort: {
     pivotStrategy: "Pivot Strategy",
@@ -109,6 +138,17 @@ export const structures = {
       topBadge: "TOP",
       capacitySummary: "STACK · {{size}} / {{max}} elements",
       ariaLabel: "Stack with {{size}} of {{max}} elements",
+    },
+    queue: {
+      frontBadge: "FRONT",
+      rearBadge: "REAR",
+      frontRearBadge: "FRONT",
+      frontPointer: "front",
+      rearPointer: "rear",
+      dequeueEnd: "Dequeue",
+      enqueueEnd: "Enqueue",
+      capacitySummary: "QUEUE · {{size}} / {{max}} elements",
+      ariaLabel: "Queue with {{size}} of {{max}} elements",
     },
     linkedList: {
       singlyTitle: "Singly linked nodes (value + next)",

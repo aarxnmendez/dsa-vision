@@ -45,6 +45,29 @@ export const structures = {
       reverse: "Invertir — O(n)",
     },
   },
+  queue: {
+    initialSize: "Tamaño inicial de la cola",
+    customInputDescription:
+      "Introduce valores de frente a final en orden de recorrido (máx. {{max}} elementos).",
+    queueOperation: "Operación de cola",
+    valueToEnqueue: "Valor a encolar",
+    capacityLoaded: "Capacidad: {{loaded}} / {{max}} elementos cargados.",
+    statusReturnedValue: "Valor devuelto: {{value}}",
+    statusFrontIndex: "Índice del frente: {{index}}",
+    statusRearIndex: "Índice del final: {{index}}",
+    statusFrontValue: "Valor del frente: {{value}}",
+    statusCapacitySummary: "Capacidad: {{size}} / {{max}}",
+    operations: {
+      enqueue: "Encolar",
+      enqueueDescription: "O(1) - añadir al final",
+      dequeue: "Desencolar",
+      dequeueDescription: "O(1) - extraer del frente",
+      peek: "Consultar frente",
+      peekDescription: "O(1) - leer el frente",
+      clear: "Vaciar",
+      clearDescription: "O(n) - vaciar la cola",
+    },
+  },
   stack: {
     initialSize: "Tamaño inicial de la pila",
     customInputDescription:
@@ -84,6 +107,12 @@ export const structures = {
       incoming: "Apilar / Entrante",
       delete: "Desapilar / Error",
     },
+    queue: {
+      front: "Frente",
+      rear: "Final",
+      incoming: "Encolar / Entrante",
+      outgoing: "Desencolar / Saliente",
+    },
   },
   quickSort: {
     pivotStrategy: "Estrategia de pivote",
@@ -110,6 +139,17 @@ export const structures = {
       topBadge: "CIMA",
       capacitySummary: "PILA · {{size}} / {{max}} elementos",
       ariaLabel: "Pila con {{size}} de {{max}} elementos",
+    },
+    queue: {
+      frontBadge: "FRENTE",
+      rearBadge: "FINAL",
+      frontRearBadge: "FRENTE",
+      frontPointer: "frente",
+      rearPointer: "final",
+      dequeueEnd: "Desencolar",
+      enqueueEnd: "Encolar",
+      capacitySummary: "COLA · {{size}} / {{max}} elementos",
+      ariaLabel: "Cola con {{size}} de {{max}} elementos",
     },
     linkedList: {
       singlyTitle: "Nodos enlazados simples (valor + next)",

@@ -60,6 +60,23 @@ export const algorithms: AlgorithmMeta[] = [
     route: APP_ROUTES.stack,
   },
   {
+    id: "queue",
+    title: "Queue",
+    description:
+      "FIFO queue with O(1) enqueue, dequeue, and peek. Bounded capacity triggers overflow on enqueue.",
+    complexity: "O(1)",
+    complexityVariant: "success",
+    difficulty: "beginner",
+    category: "data-structures",
+    tags: ["queue", "queues", "data-structures", "fifo", "bfs"],
+    imageUrl: "/images/queue-cover.webp",
+    imageWidth: 960,
+    imageHeight: 536,
+    imageBg: "bg-queue-cover-bg",
+    availability: "available",
+    route: APP_ROUTES.queue,
+  },
+  {
     id: "binary-search",
     title: "Binary Search",
     description:
