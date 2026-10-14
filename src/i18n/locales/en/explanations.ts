@@ -198,17 +198,18 @@ export const explanations = {
   },
   queue: {
     howItWorks:
-      "A queue is a linear FIFO (First In, First Out) data structure. New values enter at the rear and leave from the front. Enqueue appends at the rear, dequeue removes the front element, and peek inspects the front without changing the queue order.",
+      "A queue is a linear FIFO (First In, First Out) structure. Values enter at the rear and leave from the front. With explicit front and rear pointers (or a circular buffer), enqueue and dequeue are O(1). A plain dynamic array that uses shift or pop(0) at the front is still FIFO logically, but each dequeue costs O(n) because remaining elements move.",
     keyConcepts: [
       "FIFO order: the oldest enqueued element is removed first.",
-      "Front and rear pointers: enqueue and dequeue update ends in O(1) time with a proper implementation.",
+      "Pointer-based or circular-buffer queues: O(1) enqueue and dequeue at the ends without shifting the whole array.",
+      "Array with shift at index 0: FIFO semantics, but dequeue is O(n) due to element movement.",
       "Bounded capacity: enqueue on a full queue triggers overflow.",
       "Underflow: dequeue or peek on an empty queue is invalid and must not mutate the structure.",
       "BFS preview: graph breadth-first search uses a queue to visit nodes level by level.",
     ],
     complexityRows: [
       { label: "Enqueue", value: "O(1)" },
-      { label: "Dequeue", value: "O(1)" },
+      { label: "Dequeue", value: "O(1) pointers / O(n) array shift" },
       { label: "Peek", value: "O(1)" },
       { label: "Clear", value: "O(n)" },
       { label: "Space", value: "O(n)" },

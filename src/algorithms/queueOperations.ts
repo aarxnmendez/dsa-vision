@@ -424,23 +424,19 @@ export function generateQueueClearSteps(
 ): QueueOperationStep[] {
   const t = getAlgorithmT();
   const queue = buildQueueFromValues(values, maxCapacity);
-  const elementCount = queue.items.length;
-  const steps: QueueOperationStep[] = [
-    introStep(
-      queue,
-      "clear",
-      t("queueOperations.clear.intro.statusTitle"),
-      t("queueOperations.clear.intro.statusDetail"),
-      12,
-      elementCount > 0
-        ? t("queueOperations.clear.intro.stepExplanation.withElements", {
-            count: elementCount,
-          })
-        : t("queueOperations.clear.intro.stepExplanation.empty"),
-    ),
-  ];
+  const steps: QueueOperationStep[] = [];
 
   if (queue.items.length === 0) {
+    steps.push(
+      introStep(
+        queue,
+        "clear",
+        t("queueOperations.clear.intro.statusTitle"),
+        t("queueOperations.clear.intro.statusDetail"),
+        12,
+        t("queueOperations.clear.intro.stepExplanation.empty"),
+      ),
+    );
     const alreadyEmptyDetail = t(
       "queueOperations.clear.alreadyEmpty.statusDetail",
     );

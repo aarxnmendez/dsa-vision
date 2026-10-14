@@ -520,47 +520,6 @@ export const QUEUE_CAPACITY_LABEL_NEUTRAL_CLASS =
 export const QUEUE_CAPACITY_LABEL_OVERFLOW_CLASS =
   STACK_CAPACITY_LABEL_OVERFLOW_CLASS;
 
-export const QUEUE_BLOCK_IDLE_FRONT: StackBlockStyle = {
-  fill: "#eff6ff",
-  stroke: "#3b82f6",
-  strokeWidth: 2,
-  textFill: "#1e3a8a",
-  textOpacity: 1,
-  fontWeight: 700,
-};
-
-export const QUEUE_BLOCK_IDLE_REAR: StackBlockStyle = {
-  fill: "#f0fdf4",
-  stroke: "#22c55e",
-  strokeWidth: 2,
-  textFill: "#166534",
-  textOpacity: 1,
-  fontWeight: 700,
-};
-
-export const QUEUE_BLOCK_IDLE_BODY: StackBlockStyle = {
-  fill: "#f8fafc",
-  stroke: "#cbd5e1",
-  strokeWidth: 1.5,
-  textFill: "#64748b",
-  textOpacity: 0.4,
-  fontWeight: 500,
-};
-
-export const QUEUE_BLOCK_HIGHLIGHT_STYLE: Record<
-  import("../types/queueStructure").QueueItemHighlight,
-  StackBlockStyle | null
-> = {
-  default: null,
-  enqueueing: STACK_BLOCK_HIGHLIGHT_STYLE.pushing!,
-  dequeuing: STACK_BLOCK_HIGHLIGHT_STYLE.popping!,
-  outgoing: STACK_BLOCK_HIGHLIGHT_STYLE.popping!,
-  peeking: STACK_BLOCK_HIGHLIGHT_STYLE.peeking!,
-  found: STACK_BLOCK_HIGHLIGHT_STYLE.found!,
-  clearing: STACK_BLOCK_HIGHLIGHT_STYLE.clearing!,
-  removed: STACK_BLOCK_HIGHLIGHT_STYLE.removed!,
-};
-
 export type QueueLegendToken = "front" | "rear" | "incoming" | "outgoing";
 
 export const QUEUE_LEGEND_ITEMS: { token: QueueLegendToken }[] = [

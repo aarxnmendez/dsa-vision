@@ -198,17 +198,18 @@ export const explanations = {
   },
   queue: {
     howItWorks:
-      "Una cola es una estructura lineal FIFO (primero en entrar, primero en salir). Los valores nuevos entran por el final y salen por el frente. Encolar añade al final, desencolar extrae del frente y consultar frente inspecciona el primer elemento sin alterar el orden.",
+      "Una cola es una estructura lineal FIFO (primero en entrar, primero en salir). Los valores entran por el final y salen por el frente. Con punteros explícitos o buffer circular, encolar y desencolar son O(1). Un arreglo dinámico que usa shift o pop(0) en el frente sigue siendo FIFO en la lógica, pero cada desencolado cuesta O(n) porque los elementos restantes se desplazan.",
     keyConcepts: [
       "Orden FIFO: el elemento encolado más antiguo sale primero.",
-      "Punteros de frente y final: con una implementación adecuada, encolar y desencolar son O(1).",
+      "Cola con punteros o buffer circular: O(1) en los extremos sin desplazar todo el arreglo.",
+      "Arreglo con shift en el índice 0: semántica FIFO, pero desencolar es O(n) por el movimiento de elementos.",
       "Capacidad limitada: encolar en una cola llena provoca desbordamiento.",
       "Subdesbordamiento: desencolar o consultar frente en cola vacía es inválido y no debe modificar la estructura.",
       "Avance hacia BFS: la búsqueda en anchura en grafos usa una cola para visitar nodos por niveles.",
     ],
     complexityRows: [
       { label: "Encolar", value: "O(1)" },
-      { label: "Desencolar", value: "O(1)" },
+      { label: "Desencolar", value: "O(1) punteros / O(n) shift" },
       { label: "Consultar frente", value: "O(1)" },
       { label: "Vaciar", value: "O(n)" },
       { label: "Espacio", value: "O(n)" },

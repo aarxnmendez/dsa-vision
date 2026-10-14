@@ -136,14 +136,15 @@ export const pages = {
     },
   },
   queue: {
-    title: "Queue (FIFO)",
+    title: "Queue",
     seoTitle: "Queue Data Structure",
     description:
       "FIFO structure with O(1) enqueue, dequeue, and peek. Bounded capacity triggers overflow on enqueue.",
     complexity: {
       time: {
         title: "Constant time core operations",
-        text: "Enqueue, dequeue, and peek touch only the front and rear pointers, so each runs in O(1) time. Clearing every stored element requires O(n) work.",
+        text:
+          "With front and rear pointers (or a circular buffer), enqueue and peek are O(1). Dequeue is O(1) when the front advances without shifting the whole array; shift or pop(0) on a plain array is O(n). Clearing every stored element requires O(n) work.",
       },
       space: {
         title: "Linear auxiliary space",

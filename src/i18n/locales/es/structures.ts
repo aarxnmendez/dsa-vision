@@ -146,8 +146,6 @@ export const structures = {
       frontRearBadge: "FRENTE",
       frontPointer: "frente",
       rearPointer: "final",
-      dequeueEnd: "Desencolar",
-      enqueueEnd: "Encolar",
       capacitySummary: "COLA · {{size}} / {{max}} elementos",
       ariaLabel: "Cola con {{size}} de {{max}} elementos",
     },

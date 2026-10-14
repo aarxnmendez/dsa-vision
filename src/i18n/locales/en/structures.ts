@@ -145,8 +145,6 @@ export const structures = {
       frontRearBadge: "FRONT",
       frontPointer: "front",
       rearPointer: "rear",
-      dequeueEnd: "Dequeue",
-      enqueueEnd: "Enqueue",
       capacitySummary: "QUEUE · {{size}} / {{max}} elements",
       ariaLabel: "Queue with {{size}} of {{max}} elements",
     },

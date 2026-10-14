@@ -140,14 +140,15 @@ export const pages = {
     },
   },
   queue: {
-    title: "Cola (FIFO)",
+    title: "Cola",
     seoTitle: "Estructura de Datos Cola",
     description:
       "Estructura FIFO con encolar, desencolar y consultar frente en O(1). La capacidad limitada provoca desbordamiento al encolar.",
     complexity: {
       time: {
         title: "Operaciones nucleares en tiempo constante",
-        text: "Encolar, desencolar y consultar el frente solo actualizan los punteros de frente y final, así que cada una se ejecuta en tiempo O(1). Vaciar todos los elementos requiere O(n).",
+        text:
+          "Con punteros de frente y final (o buffer circular), encolar y consultar el frente son O(1). Desencolar es O(1) si el frente avanza sin desplazar todo el arreglo; shift o pop(0) en un arreglo simple es O(n). Vaciar todos los elementos requiere O(n).",
       },
       space: {
         title: "Espacio auxiliar lineal",
