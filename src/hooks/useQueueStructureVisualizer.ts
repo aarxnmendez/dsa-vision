@@ -11,15 +11,25 @@ import {
 } from "../types/queueStructure";
 import { createRandomQueueDataset } from "../utils/randomQueue";
 import { usePlayerControls } from "./usePlayerControls";
+import { usePersistSnapshot, useRestoredSnapshot } from "./useVisualizerSnapshot";
+import {
+  parseQueueSnapshot,
+} from "../utils/visualizerSnapshotParsers";
 
 export function useQueueStructureVisualizer() {
   const { i18n } = useTranslation();
-  const [queueSize, setQueueSize] = useState(INITIAL_QUEUE_SIZE);
-  const [dataset, setDataset] = useState(() =>
-    createRandomQueueDataset(INITIAL_QUEUE_SIZE),
+  const restored = useRestoredSnapshot("queue", parseQueueSnapshot);
+  const [queueSize, setQueueSize] = useState(
+    restored?.queueSize ?? INITIAL_QUEUE_SIZE,
+  );
+  const [dataset, setDataset] = useState(
+    () => restored?.dataset ?? createRandomQueueDataset(INITIAL_QUEUE_SIZE),
   );
   const { values, enqueueValue } = dataset;
-  const [operation, setOperation] = useState<QueueOperationId>("enqueue");
+  const [operation, setOperation] = useState<QueueOperationId>(
+    restored?.operation ?? "enqueue",
+  );
+  usePersistSnapshot("queue", { queueSize, dataset, operation });
   const steps = useMemo(
     () =>
       generateQueueOperationSteps(operation, values, { value: enqueueValue }),

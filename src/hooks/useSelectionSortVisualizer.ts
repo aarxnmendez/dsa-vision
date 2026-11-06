@@ -7,6 +7,8 @@ import {
 } from "../algorithms/selectionSort";
 import type { SortBarHighlight } from "../types/visualizer";
 import { usePlayerControls } from "./usePlayerControls";
+import { usePersistSnapshot, useRestoredSnapshot } from "./useVisualizerSnapshot";
+import { parseSortSnapshot } from "../utils/visualizerSnapshotParsers";
 
 const DEFAULT_SIZE = 10;
 
@@ -52,8 +54,12 @@ function buildBarHighlights(step: SelectionSortStep | undefined): SortBarHighlig
 
 export function useSelectionSortVisualizer() {
   const { i18n } = useTranslation();
-  const [arraySize, setArraySize] = useState(DEFAULT_SIZE);
-  const [array, setArray] = useState(() => generateUnsortedArray(DEFAULT_SIZE));
+  const restored = useRestoredSnapshot("selection-sort", parseSortSnapshot);
+  const [arraySize, setArraySize] = useState(restored?.arraySize ?? DEFAULT_SIZE);
+  const [array, setArray] = useState(
+    () => restored?.array ?? generateUnsortedArray(DEFAULT_SIZE),
+  );
+  usePersistSnapshot("selection-sort", { arraySize, array });
 
   const steps = useMemo(
     () => generateSelectionSortSteps(array),

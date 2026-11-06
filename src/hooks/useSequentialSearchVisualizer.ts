@@ -11,6 +11,8 @@ import type {
 } from "../types/visualizer";
 import { generateRandomArray } from "../utils/randomArray";
 import { usePlayerControls } from "./usePlayerControls";
+import { usePersistSnapshot, useRestoredSnapshot } from "./useVisualizerSnapshot";
+import { parseSearchSnapshot } from "../utils/visualizerSnapshotParsers";
 
 const DEFAULT_SIZE = 8;
 const MIN_SIZE = 5;
@@ -88,9 +90,13 @@ function buildPointers(step: SequentialSearchStep | undefined): ArrayPointer[] {
 
 export function useSequentialSearchVisualizer() {
   const { i18n } = useTranslation();
-  const [arraySize, setArraySize] = useState(DEFAULT_SIZE);
-  const [dataset, setDataset] = useState(() => createDataset(DEFAULT_SIZE));
+  const restored = useRestoredSnapshot("sequential-search", parseSearchSnapshot);
+  const [arraySize, setArraySize] = useState(restored?.arraySize ?? DEFAULT_SIZE);
+  const [dataset, setDataset] = useState(
+    () => restored?.dataset ?? createDataset(DEFAULT_SIZE),
+  );
   const { array, target } = dataset;
+  usePersistSnapshot("sequential-search", { arraySize, dataset });
 
   const steps = useMemo(
     () => sequentialSearch(array, target),

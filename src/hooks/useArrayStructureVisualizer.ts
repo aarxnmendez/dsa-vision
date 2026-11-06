@@ -13,18 +13,28 @@ import {
   type RandomArrayDataset,
 } from "../utils/randomArray";
 import { usePlayerControls } from "./usePlayerControls";
+import { usePersistSnapshot, useRestoredSnapshot } from "./useVisualizerSnapshot";
+import {
+  parseArraySnapshot,
+} from "../utils/visualizerSnapshotParsers";
 
 const DEFAULT_SIZE = 8;
 
 export function useArrayStructureVisualizer() {
   const { i18n } = useTranslation();
-  const [arraySize, setArraySize] = useState(DEFAULT_SIZE);
-  const [dataset, setDataset] = useState<RandomArrayDataset>(() =>
-    createRandomArrayDataset(DEFAULT_SIZE),
+  const restored = useRestoredSnapshot("array", parseArraySnapshot);
+  const [arraySize, setArraySize] = useState(restored?.arraySize ?? DEFAULT_SIZE);
+  const [dataset, setDataset] = useState<RandomArrayDataset>(
+    () => restored?.dataset ?? createRandomArrayDataset(DEFAULT_SIZE),
   );
   const { array, searchTarget, operationValue } = dataset;
-  const [operation, setOperation] = useState<ArrayOperationId>("access");
-  const [operationIndex, setOperationIndex] = useState(0);
+  const [operation, setOperation] = useState<ArrayOperationId>(
+    restored?.operation ?? "access",
+  );
+  const [operationIndex, setOperationIndex] = useState(
+    restored?.operationIndex ?? 0,
+  );
+  usePersistSnapshot("array", { arraySize, dataset, operation, operationIndex });
 
   const resolvedIndex = useMemo(() => {
     if (operation === "insert-start" || operation === "delete-start") return 0;

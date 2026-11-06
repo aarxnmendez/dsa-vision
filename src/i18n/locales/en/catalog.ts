@@ -24,6 +24,12 @@ export const catalog = {
     searching: { title: "Searching Algorithms" },
     sorting: { title: "Sorting Algorithms" },
   },
+  resume: {
+    ariaLabel: "Resume your last visualizer",
+    label: "Pick up where you left off",
+    action: "Continue",
+    dismiss: "Dismiss",
+  },
   upcoming: {
     title: "Coming soon",
     items: {

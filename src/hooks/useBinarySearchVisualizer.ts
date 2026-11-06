@@ -11,6 +11,8 @@ import type {
   CellHighlight,
 } from "../types/visualizer";
 import { usePlayerControls } from "./usePlayerControls";
+import { usePersistSnapshot, useRestoredSnapshot } from "./useVisualizerSnapshot";
+import { parseSearchSnapshot } from "../utils/visualizerSnapshotParsers";
 
 const DEFAULT_SIZE = 10;
 
@@ -65,9 +67,13 @@ function buildPointers(step: BinarySearchStep | undefined): ArrayPointer[] {
 
 export function useBinarySearchVisualizer() {
   const { i18n } = useTranslation();
-  const [arraySize, setArraySize] = useState(DEFAULT_SIZE);
-  const [dataset, setDataset] = useState(() => createDataset(DEFAULT_SIZE));
+  const restored = useRestoredSnapshot("binary-search", parseSearchSnapshot);
+  const [arraySize, setArraySize] = useState(restored?.arraySize ?? DEFAULT_SIZE);
+  const [dataset, setDataset] = useState(
+    () => restored?.dataset ?? createDataset(DEFAULT_SIZE),
+  );
   const { array, target } = dataset;
+  usePersistSnapshot("binary-search", { arraySize, dataset });
 
   const steps = useMemo(
     () => binarySearch(array, target),

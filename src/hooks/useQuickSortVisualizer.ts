@@ -7,14 +7,22 @@ import {
   type QuickSortStep,
 } from "../algorithms/quickSort";
 import { IDLE_STEP_INDEX, usePlayerControls } from "./usePlayerControls";
+import { usePersistSnapshot, useRestoredSnapshot } from "./useVisualizerSnapshot";
+import { parseQuickSortSnapshot } from "../utils/visualizerSnapshotParsers";
 
 const DEFAULT_SIZE = 10;
 
 export function useQuickSortVisualizer() {
   const { i18n } = useTranslation();
-  const [arraySize, setArraySize] = useState(DEFAULT_SIZE);
-  const [array, setArray] = useState(() => generateUnsortedArray(DEFAULT_SIZE));
-  const [pivotStrategy, setPivotStrategy] = useState<PivotStrategy>("random");
+  const restored = useRestoredSnapshot("quick-sort", parseQuickSortSnapshot);
+  const [arraySize, setArraySize] = useState(restored?.arraySize ?? DEFAULT_SIZE);
+  const [array, setArray] = useState(
+    () => restored?.array ?? generateUnsortedArray(DEFAULT_SIZE),
+  );
+  const [pivotStrategy, setPivotStrategy] = useState<PivotStrategy>(
+    restored?.pivotStrategy ?? "random",
+  );
+  usePersistSnapshot("quick-sort", { arraySize, array, pivotStrategy });
 
   const steps = useMemo(
     () => generateQuickSortSteps(array, pivotStrategy),

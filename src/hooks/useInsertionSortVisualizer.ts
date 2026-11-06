@@ -7,6 +7,8 @@ import {
 } from "../algorithms/insertionSort";
 import type { SortBarHighlight } from "../types/visualizer";
 import { usePlayerControls } from "./usePlayerControls";
+import { usePersistSnapshot, useRestoredSnapshot } from "./useVisualizerSnapshot";
+import { parseSortSnapshot } from "../utils/visualizerSnapshotParsers";
 
 const DEFAULT_SIZE = 10;
 
@@ -77,8 +79,12 @@ function numericValuesForScale(
 
 export function useInsertionSortVisualizer() {
   const { i18n } = useTranslation();
-  const [arraySize, setArraySize] = useState(DEFAULT_SIZE);
-  const [array, setArray] = useState(() => generateUnsortedArray(DEFAULT_SIZE));
+  const restored = useRestoredSnapshot("insertion-sort", parseSortSnapshot);
+  const [arraySize, setArraySize] = useState(restored?.arraySize ?? DEFAULT_SIZE);
+  const [array, setArray] = useState(
+    () => restored?.array ?? generateUnsortedArray(DEFAULT_SIZE),
+  );
+  usePersistSnapshot("insertion-sort", { arraySize, array });
 
   const steps = useMemo(
     () => generateInsertionSortSteps(array),

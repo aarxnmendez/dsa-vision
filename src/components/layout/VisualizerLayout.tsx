@@ -3,6 +3,7 @@ import { COMPACT_LAYOUT_QUERY } from "../../constants/breakpoints";
 import { ComplexityBadges } from "../panels/ComplexityBadges";
 import type { ComponentProps } from "react";
 import type { IconName } from "../ui/Icon";
+import { useRecordVisit } from "../../hooks/useRecordVisit";
 import { LeftSidebar } from "./Sidebars";
 
 type ComplexityBadgesProps = ComponentProps<typeof ComplexityBadges>;
@@ -43,6 +44,7 @@ export function VisualizerLayout({
   children,
 }: VisualizerLayoutProps) {
   const [isLeftOpen, setIsLeftOpen] = useState(getInitialLeftSidebarOpenState);
+  useRecordVisit();
 
   return (
     <div className="bg-background text-on-surface font-body-md h-screen overflow-hidden flex">

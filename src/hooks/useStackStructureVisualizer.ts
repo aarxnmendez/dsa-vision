@@ -11,15 +11,25 @@ import {
   createRandomStackDataset,
 } from "../utils/randomStack";
 import { usePlayerControls } from "./usePlayerControls";
+import { usePersistSnapshot, useRestoredSnapshot } from "./useVisualizerSnapshot";
+import {
+  parseStackSnapshot,
+} from "../utils/visualizerSnapshotParsers";
 
 const DEFAULT_SIZE = 3;
 
 export function useStackStructureVisualizer() {
   const { i18n } = useTranslation();
-  const [stackSize, setStackSize] = useState(DEFAULT_SIZE);
-  const [dataset, setDataset] = useState(createDefaultStackDataset);
+  const restored = useRestoredSnapshot("stack", parseStackSnapshot);
+  const [stackSize, setStackSize] = useState(restored?.stackSize ?? DEFAULT_SIZE);
+  const [dataset, setDataset] = useState(
+    () => restored?.dataset ?? createDefaultStackDataset(),
+  );
   const { values, pushValue } = dataset;
-  const [operation, setOperation] = useState<StackOperationId>("push");
+  const [operation, setOperation] = useState<StackOperationId>(
+    restored?.operation ?? "push",
+  );
+  usePersistSnapshot("stack", { stackSize, dataset, operation });
 
   const steps = useMemo(
     () =>

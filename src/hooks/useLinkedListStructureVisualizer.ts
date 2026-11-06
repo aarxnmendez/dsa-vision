@@ -16,19 +16,28 @@ import {
   type RandomLinkedListDataset,
 } from "../utils/randomLinkedList";
 import { usePlayerControls } from "./usePlayerControls";
+import { usePersistSnapshot, useRestoredSnapshot } from "./useVisualizerSnapshot";
+import {
+  parseLinkedListSnapshot,
+} from "../utils/visualizerSnapshotParsers";
 
 const DEFAULT_SIZE = 5;
 
 export function useLinkedListStructureVisualizer() {
   const { i18n } = useTranslation();
-  const [listSize, setListSize] = useState(DEFAULT_SIZE);
-  const [listType, setListType] = useState<LinkedListType>("singly");
-  const [dataset, setDataset] = useState<RandomLinkedListDataset>(() =>
-    createRandomLinkedListDataset(DEFAULT_SIZE),
+  const restored = useRestoredSnapshot("linked-list", parseLinkedListSnapshot);
+  const [listSize, setListSize] = useState(restored?.listSize ?? DEFAULT_SIZE);
+  const [listType, setListType] = useState<LinkedListType>(
+    restored?.listType ?? "singly",
+  );
+  const [dataset, setDataset] = useState<RandomLinkedListDataset>(
+    () => restored?.dataset ?? createRandomLinkedListDataset(DEFAULT_SIZE),
   );
   const { values, operationValue, searchTarget, operationIndex } = dataset;
-  const [operation, setOperation] =
-    useState<LinkedListOperationId>("insert-at-head");
+  const [operation, setOperation] = useState<LinkedListOperationId>(
+    restored?.operation ?? "insert-at-head",
+  );
+  usePersistSnapshot("linked-list", { listSize, listType, dataset, operation });
 
   const steps = useMemo(
     () =>

@@ -9,13 +9,19 @@ import {
   type MergeSortStep,
 } from "../algorithms/mergeSort";
 import { IDLE_STEP_INDEX, usePlayerControls } from "./usePlayerControls";
+import { usePersistSnapshot, useRestoredSnapshot } from "./useVisualizerSnapshot";
+import { parseSortSnapshot } from "../utils/visualizerSnapshotParsers";
 
 export function useMergeSortVisualizer() {
   const { i18n } = useTranslation();
-  const [arraySize, setArraySize] = useState(MERGE_SORT_DEFAULT_SIZE);
-  const [array, setArray] = useState(() =>
-    generateUnsortedArray(MERGE_SORT_DEFAULT_SIZE),
+  const restored = useRestoredSnapshot("merge-sort", parseSortSnapshot);
+  const [arraySize, setArraySize] = useState(
+    restored?.arraySize ?? MERGE_SORT_DEFAULT_SIZE,
   );
+  const [array, setArray] = useState(
+    () => restored?.array ?? generateUnsortedArray(MERGE_SORT_DEFAULT_SIZE),
+  );
+  usePersistSnapshot("merge-sort", { arraySize, array });
 
   const steps = useMemo(
     () => generateMergeSortSteps(array),

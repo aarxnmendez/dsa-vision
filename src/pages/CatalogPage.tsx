@@ -4,6 +4,7 @@ import { CatalogSectionList } from "../components/catalog/CatalogSectionList";
 import { CatalogTable } from "../components/catalog/CatalogTable";
 import { FilterBar } from "../components/catalog/FilterBar";
 import { Hero } from "../components/catalog/Hero";
+import { ResumeToast } from "../components/catalog/ResumeToast";
 import { UpcomingSection } from "../components/catalog/UpcomingSection";
 import {
   ViewToggle,
@@ -13,12 +14,14 @@ import { SearchBar } from "../components/catalog/SearchBar";
 import { CatalogLayout } from "../components/layout/CatalogLayout";
 import { Footer } from "../components/layout/Footer";
 import { algorithms } from "../data/algorithms";
-import type { AlgorithmCategory } from "../types/algorithm";
+import { isAlgorithmAvailable, type AlgorithmCategory } from "../types/algorithm";
 import {
   algorithmMatchesCategory,
   algorithmMatchesSearch,
   normalizeText,
 } from "../utils/catalogFilter";
+import { findLastVisitedId, readVisitHistory } from "../utils/visitHistory";
+import { hasSnapshot } from "../utils/visualizerSnapshot";
 
 const CATALOG_VIEW_KEY = "dsavision-catalog-view";
 
@@ -46,6 +49,7 @@ export function CatalogPage() {
   const { t } = useTranslation("catalog");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<AlgorithmCategory>("all");
+  const [visitHistory] = useState(readVisitHistory);
   const [view, setView] = useState<CatalogView>(readStoredView);
 
   const handleViewChange = (nextView: CatalogView) => {
@@ -102,6 +106,19 @@ export function CatalogPage() {
     [],
   );
 
+  const availableAlgorithms = useMemo(
+    () => algorithms.filter((algorithm) => isAlgorithmAvailable(algorithm)),
+    [],
+  );
+
+  const lastVisited = useMemo(() => {
+    const resumableIds = availableAlgorithms
+      .map((algorithm) => algorithm.id)
+      .filter((id) => hasSnapshot(id));
+    const lastId = findLastVisitedId(visitHistory, resumableIds);
+    return availableAlgorithms.find((algorithm) => algorithm.id === lastId) ?? null;
+  }, [availableAlgorithms, visitHistory]);
+
   const isUnfiltered =
     activeCategory === "all" && searchQuery.trim().length === 0;
 
@@ -129,6 +146,7 @@ export function CatalogPage() {
           {isUnfiltered && <UpcomingSection />}
         </>
       )}
+      <ResumeToast lastVisited={lastVisited} />
     </CatalogLayout>
   );
 }
