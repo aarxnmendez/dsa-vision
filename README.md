@@ -15,15 +15,17 @@ Live site: [dsavision.dev](https://www.dsavision.dev/)
 - **Arrays and memory**: contiguous memory operations
 - **Linked lists**: singly, doubly, circular
 - **LIFO structures**: Stack
+- **FIFO structures**: Queue
 - **Theory**: interactive Big-O reference (time and space)
 
 **Merge Sort** and **Quick Sort** use a **recursion tree** on an **infinite canvas** (pan, zoom, fit-to-view, focus mode) so divide-and-conquer calls stay readable as the array changes in place.
+
+The catalog also includes a **complexity comparison table**, a global **quick search** (`⌘K` / `Ctrl K` or `/`) available on every page, and a **continue** shortcut that reopens your last visualizer with its saved data (stored locally in the browser).
 
 ---
 
 ## Upcoming Algorithms and Structures
 
-- Queues
 - Hash tables
 - Graphs (BFS, DFS, Dijkstra)
 - Trees (BST, traversals)
