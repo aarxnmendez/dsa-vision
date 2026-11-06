@@ -6,6 +6,7 @@ import { Route, Routes } from "react-router-dom";
 import { DocumentMeta } from "./components/i18n/DocumentMeta";
 import { LegacyEsRouteRedirect } from "./components/i18n/LegacyEsRouteRedirect";
 import { APP_ROUTES } from "./constants/routes";
+import { CommandPaletteProvider } from "./components/search/CommandPaletteProvider";
 import { MobileNoticeOverlay } from "./components/layout/MobileNoticeOverlay";
 import { CatalogPage } from "./pages/CatalogPage";
 
@@ -75,7 +76,7 @@ function RouteLoadingFallback() {
 
 function App() {
   return (
-    <>
+    <CommandPaletteProvider>
       <LegacyEsRouteRedirect />
       <DocumentMeta />
       <Suspense fallback={<RouteLoadingFallback />}>
@@ -100,7 +101,7 @@ function App() {
       <MobileNoticeOverlay />
       <Analytics />
       <SpeedInsights />
-    </>
+    </CommandPaletteProvider>
   );
 }
 

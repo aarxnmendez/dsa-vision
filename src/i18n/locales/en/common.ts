@@ -25,6 +25,20 @@ export const common = {
     targetPlaceholder: "e.g. 23",
     closeModalAria: "Close modal",
   },
+  palette: {
+    open: "Search algorithms",
+    trigger: "Search",
+    title: "Quick search",
+    placeholder: "Jump to a visualizer…",
+    listLabel: "Visualizers",
+    empty: "No visualizers match “{{query}}”.",
+    resume: "Pick up where you left off",
+    hints: {
+      navigate: "Navigate",
+      open: "Open",
+      close: "Close",
+    },
+  },
   idle: {
     visualizer:
       "Configure the data in the left panel, then press Play or Forward to begin.",
