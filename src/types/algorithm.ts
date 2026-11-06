@@ -22,10 +22,6 @@ interface AlgorithmMetaBase {
   difficulty: Difficulty;
   category: Exclude<AlgorithmCategory, "all">;
   tags: string[];
-  imageUrl: string;
-  imageWidth: number;
-  imageHeight: number;
-  imageBg: string;
 }
 
 export type AvailableAlgorithmMeta = AlgorithmMetaBase & {

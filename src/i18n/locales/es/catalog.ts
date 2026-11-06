@@ -3,9 +3,11 @@ export const catalog = {
     title: "Explora y visualiza algoritmos",
     subtitle:
       "Domina estructuras de datos y algoritmos con visualizadores interactivos y gamificados. Aprendizaje táctil.",
+    bigOLink: "¿Nuevo en Big-O? Lee la guía de notación",
   },
   search: {
     placeholder: "Buscar algoritmos (ej. Búsqueda binaria)...",
+    ariaLabel: "Buscar algoritmos",
   },
   filters: {
     all: "Todos",
@@ -15,21 +17,58 @@ export const catalog = {
     sorting: "Ordenación",
     trees: "Árboles",
     graphs: "Grafos",
+    ariaLabel: "Filtrar por categoría",
   },
   sections: {
     dataStructures: { title: "Estructuras de datos" },
     searching: { title: "Algoritmos de búsqueda" },
     sorting: { title: "Algoritmos de ordenación" },
   },
-  emptyResults: "Ningún algoritmo coincide con tu búsqueda.",
-  categories: {
-    array: "Array",
-    "data-structures": "Estructura de datos",
-    searching: "Búsqueda",
-    sorting: "Ordenación",
-    trees: "Árboles",
-    graphs: "Grafos",
+  upcoming: {
+    title: "Próximamente",
+    items: {
+      hashTables: {
+        title: "Tablas hash",
+        description: "Funciones hash, colisiones y búsquedas O(1) en promedio.",
+      },
+      trees: {
+        title: "Árboles",
+        description: "Árboles binarios de búsqueda y recorridos.",
+      },
+      graphs: {
+        title: "Grafos",
+        description: "BFS, DFS y caminos mínimos de Dijkstra.",
+      },
+    },
   },
+  view: {
+    ariaLabel: "Vista del catálogo",
+    cards: "Tarjetas",
+    table: "Tabla comparativa",
+  },
+  table: {
+    structuresTitle: "Estructuras de datos",
+    algorithmsTitle: "Algoritmos de búsqueda y ordenación",
+    name: "Nombre",
+    access: "Acceso",
+    search: "Búsqueda",
+    insert: "Inserción",
+    remove: "Eliminación",
+    space: "Espacio",
+    best: "Mejor",
+    average: "Promedio",
+    worst: "Peor",
+    stable: "Estable",
+    yes: "Sí",
+    no: "No",
+    notApplicable: "N/A",
+    notes: {
+      array: "Array: insertar y eliminar al final es O(1); en medio hay que desplazar elementos, O(n).",
+      linkedList: "Lista enlazada: insertar y eliminar es O(1) en la cabeza. Llegar a cualquier otra posición es O(n).",
+      stackQueue: "Pila y cola: solo el tope o el frente son accesibles directamente (consultar es O(1)); leer un elemento cualquiera es O(n).",
+    },
+  },
+  emptyResults: "Ningún algoritmo coincide con tu búsqueda.",
   algorithms: {
     array: {
       title: "Array",

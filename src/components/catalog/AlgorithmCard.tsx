@@ -4,8 +4,9 @@ import {
   isAlgorithmAvailable,
   type AlgorithmMeta,
 } from "../../types/algorithm";
+import { CATEGORY_ICON_NAMES } from "../../constants/categoryIcons";
 import { Badge } from "../ui/Badge";
-import { Button } from "../ui/Button";
+import { Icon } from "../ui/Icon";
 
 interface AlgorithmCardProps {
   algorithm: AlgorithmMeta;
@@ -24,27 +25,13 @@ const difficultyVariantMap = {
   advanced: "difficulty-advanced",
 } as const;
 
-type CategoryLabelKey =
-  | "categories.array"
-  | "categories.data-structures"
-  | "categories.searching"
-  | "categories.sorting"
-  | "categories.trees"
-  | "categories.graphs";
 
-const categoryLabelKeys: Record<
-  Exclude<AlgorithmMeta["category"], "all">,
-  CategoryLabelKey
-> = {
-  arrays: "categories.array",
-  "data-structures": "categories.data-structures",
-  searching: "categories.searching",
-  sorting: "categories.sorting",
-  trees: "categories.trees",
-  graphs: "categories.graphs",
-};
+const cardBaseClass =
+  "flex h-full flex-col gap-3 rounded-2xl border-2 border-surface-variant border-b-4 bg-surface-container-lowest p-5 transition-all duration-300 ease-in-out";
 
-export function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
+export function AlgorithmCard({
+  algorithm,
+}: AlgorithmCardProps) {
   const { t: tCatalog } = useTranslation("catalog");
   const { t: tCommon } = useTranslation("common");
   const isAvailable = isAlgorithmAvailable(algorithm);
@@ -58,76 +45,65 @@ export function AlgorithmCard({ algorithm }: AlgorithmCardProps) {
   const complexity = tCatalog(`algorithms.${algorithm.id}.complexity`, {
     defaultValue: algorithm.complexity,
   });
-  return (
-    <article
-      className={[
-        "bg-surface-container-lowest rounded-2xl border-2 border-surface-variant border-b-4 flex flex-col overflow-hidden transition-all duration-300 ease-in-out",
-        isAvailable
-          ? "hover:bg-surface-bright hover:border-primary/30 hover:shadow-[0_8px_24px_rgba(0,87,191,0.1)] group"
-          : "opacity-95",
-      ].join(" ")}
-      aria-disabled={!isAvailable}
-    >
-      <div
-        className={[
-          `relative w-full aspect-[16/9] overflow-hidden rounded-t-xl p-3 ${algorithm.imageBg} border-b-2 border-surface-variant transition-colors duration-300 ease-in-out`,
-          isAvailable ? "group-hover:border-primary/20" : "",
-        ].join(" ")}
-      >
-        <img
-          src={algorithm.imageUrl}
-          alt=""
-          width={algorithm.imageWidth}
-          height={algorithm.imageHeight}
-          loading="lazy"
-          decoding="async"
-          className="block h-full w-full rounded-lg object-cover"
-        />
+
+  const content = (
+    <>
+      <div className="flex items-start justify-between gap-3">
+        <span
+          className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary-fixed text-xl text-primary"
+          aria-hidden="true"
+        >
+          <Icon name={CATEGORY_ICON_NAMES[algorithm.category]} filled={false} />
+        </span>
+        <Badge variant={complexityVariantMap[algorithm.complexityVariant]}>
+          {complexity}
+        </Badge>
       </div>
 
-      <div className="p-6 flex flex-col gap-4 flex-grow">
-        <div className="flex flex-col items-start gap-2">
-          <Badge variant={complexityVariantMap[algorithm.complexityVariant]}>
-            {complexity}
-          </Badge>
-          <h2 className="font-headline-md text-headline-md text-on-surface">
-            {title}
-          </h2>
-        </div>
+      <h2 className="font-headline-md text-headline-md text-on-surface">
+        {title}
+      </h2>
 
-        <div className="flex gap-2 flex-wrap">
-          <Badge variant={difficultyVariantMap[algorithm.difficulty]}>
-            {tCommon(`difficulty.${algorithm.difficulty}`)}
-          </Badge>
-          <Badge variant="category">
-            {tCatalog(categoryLabelKeys[algorithm.category])}
-          </Badge>
-          {!isAvailable && (
-            <Badge variant="category">{tCommon("comingSoon")}</Badge>
-          )}
-        </div>
+      <p className="font-body-md text-body-md text-on-surface-variant line-clamp-3 flex-grow">
+        {description}
+      </p>
 
-        <p className="font-body-md text-body-md text-on-surface-variant flex-grow">
-          {description}
-        </p>
-
+      <div className="mt-1 flex items-center justify-between gap-2">
+        <Badge variant={difficultyVariantMap[algorithm.difficulty]}>
+          {tCommon(`difficulty.${algorithm.difficulty}`)}
+        </Badge>
         {isAvailable ? (
-          <Link to={algorithm.route} className="mt-4 cursor-pointer">
-            <Button fullWidth className="uppercase">
-              {tCommon("explore")}
-            </Button>
-          </Link>
+          <span className="inline-flex items-center gap-1 text-sm font-bold text-primary transition-transform duration-300 group-hover:translate-x-0.5">
+            {tCommon("explore")}
+            <Icon name="arrow_forward" filled={false} />
+          </span>
         ) : (
-          <Button
-            fullWidth
-            disabled
-            aria-disabled="true"
-            className="mt-4 uppercase opacity-60 cursor-not-allowed"
-          >
-            {tCommon("comingSoon")}
-          </Button>
+          <Badge variant="category">{tCommon("comingSoon")}</Badge>
         )}
       </div>
-    </article>
+    </>
+  );
+
+  if (!isAvailable) {
+    return (
+      <article
+        className={[cardBaseClass, "opacity-70"].join(" ")}
+        aria-disabled="true"
+      >
+        {content}
+      </article>
+    );
+  }
+
+  return (
+    <Link
+      to={algorithm.route}
+      className={[
+        cardBaseClass,
+        "group cursor-pointer hover:border-primary/30 hover:bg-surface-bright hover:shadow-[0_8px_24px_rgba(0,87,191,0.1)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+      ].join(" ")}
+    >
+      {content}
+    </Link>
   );
 }

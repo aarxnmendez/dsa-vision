@@ -3,9 +3,11 @@ export const catalog = {
     title: "Explore & Visualize Algorithms",
     subtitle:
       "Master Data Structures and Algorithms with interactive, gamified visualizers. Learning made tactile.",
+    bigOLink: "New to Big-O? Read the notation guide",
   },
   search: {
     placeholder: "Search algorithms (e.g. Binary Search)...",
+    ariaLabel: "Search algorithms",
   },
   filters: {
     all: "All",
@@ -15,21 +17,58 @@ export const catalog = {
     sorting: "Sorting",
     trees: "Trees",
     graphs: "Graphs",
+    ariaLabel: "Filter by category",
   },
   sections: {
     dataStructures: { title: "Data Structures" },
     searching: { title: "Searching Algorithms" },
     sorting: { title: "Sorting Algorithms" },
   },
-  emptyResults: "No algorithms match your search.",
-  categories: {
-    array: "Array",
-    "data-structures": "Data Structure",
-    searching: "Searching",
-    sorting: "Sorting",
-    trees: "Trees",
-    graphs: "Graphs",
+  upcoming: {
+    title: "Coming soon",
+    items: {
+      hashTables: {
+        title: "Hash Tables",
+        description: "Hash functions, collisions, and O(1) average lookups.",
+      },
+      trees: {
+        title: "Trees",
+        description: "Binary search trees and traversals.",
+      },
+      graphs: {
+        title: "Graphs",
+        description: "BFS, DFS, and Dijkstra's shortest paths.",
+      },
+    },
   },
+  view: {
+    ariaLabel: "Catalog view",
+    cards: "Cards",
+    table: "Compare table",
+  },
+  table: {
+    structuresTitle: "Data structures",
+    algorithmsTitle: "Search and sorting algorithms",
+    name: "Name",
+    access: "Access",
+    search: "Search",
+    insert: "Insert",
+    remove: "Delete",
+    space: "Space",
+    best: "Best",
+    average: "Average",
+    worst: "Worst",
+    stable: "Stable",
+    yes: "Yes",
+    no: "No",
+    notApplicable: "N/A",
+    notes: {
+      array: "Array: insert and delete at the end are O(1); in the middle they shift elements, O(n).",
+      linkedList: "Linked list: insert and delete are O(1) at the head. Reaching any other position is O(n).",
+      stackQueue: "Stack and queue: only the top or front is directly reachable (peek is O(1)); reading an arbitrary element is O(n).",
+    },
+  },
+  emptyResults: "No algorithms match your search.",
   algorithms: {
     array: {
       title: "Array",

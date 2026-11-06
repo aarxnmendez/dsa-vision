@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowDownUp,
+  ArrowRight,
   ArrowLeft,
   ArrowLeftRight,
   BookOpen,
@@ -31,6 +32,7 @@ import {
 
 const iconMap = {
   arrow_back: ArrowLeft,
+  arrow_forward: ArrowRight,
   add: Plus,
   check: Check,
   close: X,

@@ -5,13 +5,15 @@ import type { AlgorithmMeta } from "../../types/algorithm";
 import { AlgorithmCard } from "./AlgorithmCard";
 
 const CARD_GRID_CLASS =
-  "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6";
+  "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5";
 
 interface CatalogSectionListProps {
   algorithms: AlgorithmMeta[];
 }
 
-export function CatalogSectionList({ algorithms }: CatalogSectionListProps) {
+export function CatalogSectionList({
+  algorithms,
+}: CatalogSectionListProps) {
   const { t } = useTranslation("catalog");
 
   const sections = useMemo(() => {
