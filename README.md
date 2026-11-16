@@ -1,5 +1,7 @@
 # DSAVision
 
+[![DSAVision preview](public/og-image.png)](https://www.dsavision.dev/)
+
 **An interactive platform for learning and visualizing data structures and algorithms.**
 
 DSAVision turns abstract pointer logic and algorithm execution into step-by-step visual stories: smooth SVG animations, side-by-side code execution in multiple languages (**Python, JavaScript, Java, Pseudocode**), and interactive playback controls.
